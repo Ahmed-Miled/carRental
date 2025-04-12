@@ -70,7 +70,7 @@
       */?>
 
       <?php if (!$logged_in): ?>
-        <li><a class="connexion" href="/carRental/views/auth/auth.php" title="Connexion">Connexion</a></li>
+        <li><a class="connexion" href="/carRental/views/auth/authentification.php" title="Connexion">Connexion</a></li>
          
       <?php endif; ?>
     </ul>

@@ -58,7 +58,7 @@ require_once __DIR__ . '/../../config/database.php';
     <?php if ($role): ?>
       <div class="auth-forms">
         <!-- Login Form --> 
-        <form method="POST" action="/carRental/controller/trait.php" class="auth-form <?= $isLogin ? '' : 'hidden' ?>">
+        <form method="POST" action="/carRental/controller/traitemant.php" class="auth-form <?= $isLogin ? '' : 'hidden' ?>">
           <input type="hidden" name="action" value="login">
           <input type="hidden" name="role" value="<?= htmlspecialchars($role) ?>">
           
@@ -87,7 +87,7 @@ require_once __DIR__ . '/../../config/database.php';
 
 
 
-        <form method="POST" action="/carRental/controller/trait.php" class="auth-form <?= !$isLogin ? '' : 'hidden' ?>">
+        <form method="POST" action="/carRental/controller/traitemant.php" class="auth-form <?= !$isLogin ? '' : 'hidden' ?>">
           <input type="hidden" name="action" value="signup">
           <input type="hidden" name="role" value="<?= htmlspecialchars($role) ?>">
           

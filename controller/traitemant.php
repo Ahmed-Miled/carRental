@@ -1,76 +1,107 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
+require_once '../config/database.php';
 
-// 1. CONNEXION DB
-$db_path = __DIR__ . '/../config/database.php';
-echo "<pre>Chemin DB testé: " . realpath($db_path) . "</pre>";
-
-if (!file_exists($db_path)) {
-    die("ERREUR: Fichier non trouvé. Essayer: " . __DIR__ . '/../../config/database.php');
-}
-
-require_once $db_path;
-
-
-// Debug initial
-echo "<pre>SERVER: ";
-print_r([
-    'REQUEST_METHOD' => $_SERVER['REQUEST_METHOD'],
-    'POST_DATA' => $_POST,
-    'SESSION' => $_SESSION ?? null
-]);
-echo "</pre>";
-
-
-
-// 2. Vérification PDO
-if (!isset($pdo)) {
-    die("ERREUR: Connexion DB échouée. Vérifiez database.php");
-}
-
-// 3. SESSION
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-// 4. TRAITEMENT
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    echo "<pre>POST reçu:</pre>";
-    
-    // Force le traitement même sans action=login
-    $email = trim($_POST['email'] ?? '');
-    $password = trim($_POST['password'] ?? '');
-    $role = $_POST['role'] ?? '';
-    
-    // Debug avant traitement
-    error_log("Tentative de connexion: $email / $role");
-    
-    try {
-        $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ? AND type = ?");
-        $stmt->execute([$email, $role]);
-        
-        if ($user = $stmt->fetch()) {
-            if ($password === $user['password']) {
-                $_SESSION['user'] = $user;
-                header("Location: /carRental/views/auth/success.php");
-                exit();
-            } else {
-                $_SESSION['error'] = "Mot de passe incorrect";
-            }
-        } else {
-            $_SESSION['error'] = "Compte introuvable";
-        }
-    } catch (PDOException $e) {
-        $_SESSION['error'] = "Erreur DB: " . $e->getMessage();
+function getUsername($pdo, $email){
+    try{
+        $stmt = $pdo->prepare("SELECT name FROM users WHERE email = ?");
+        $stmt->execute([$email]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $user['name'];
+    }catch (Exception $e){
+        "<script> console.log(" . json_encode($e) . ");</script>";
+        return false;
     }
-    
-    header("Location: /carRental/views/auth/auth.php");
-    exit();
+}
+function getPhoneNumber($pdo, $email){
+    try{
+        $stmt = $pdo->prepare("SELECT phoneNumber FROM users WHERE email = ?");
+        $stmt->execute([$email]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $user['phoneNumber'];
+    }catch (Exception $e){
+        "<script> console.log(" . json_encode($e) . ");</script>";
+        return false;
+    }
 }
 
-// Si on arrive ici, afficher le debug
-die("FIN DU SCRIPT - Aucune action traitée");
+
+if (!isset($pdo)){
+    die("ERREUR: Connexion DB échouée. Vérifiez database.php");
+}else{
+    // connxion avec la base du donner est verifier
+    $role = $_POST['role'];
+    $action = $_POST['action'];
+/*
+    echo "<script>console.log(" . json_encode($role) . ");</script>";
+    echo "<script>console.log(" . json_encode($action) . ");</script>";
+*/
+    //handeling client rediraction if hi exist in the data base
+    if ($action == 'login'){
+        $email = $_POST['logInEmail'];
+        $password = $_POST['logInPassword'];
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ? AND type = ? AND password = ?");
+        $stmt->execute([$email, $role, $password]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($user){
+            // directing the user to the client dash board and openning a setion
+            session_start();
+            // getting user info from the data base (user name, ....)
+            
+            $username = getUsername($pdo, $email);
+            $phoneNumber = getPhoneNumber($pdo, $email);
+            if (!$username){
+                "<script>console.log('Ooops somthing went wrong while retriving username from the database');</script>";
+                // redirect to an error page
+            }else{
+                $_SESSION['logged_in'] = true;
+                $_SESSION['user_name'] = $username; // From your DB
+                $_SESSION['user_email'] = $email;
+                $_SESSION['phoneNumber'] = $phoneNumber;
+                $_SESSION['role'] = $role;
+                header('Location: /carRental/index.php');
+                exit(); 
+                
+            }
+            
+        }else{
+            echo "<script>console.log('user not found');</script>";
+            // how can i redirect the user to login page again with an error message
+        }
+    }else{
+        if ($role == 'client'){
+            echo "<script>console.log('creating an account for a user');</script>";
+            // check if the email is already used by someone else
+            $email = $_POST['SignUpEmail'];
+            $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
+            $stmt->execute([$email]);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            if($user){
+                // direction the user to login page again with an error message
+                header('Location: /carRental/views/auth/auth.php');
+                echo "<script>console.log('email already used');</script>";
+                exit();
+            }else{
+                // create an account for the useer and opening a session
+                $name = $_POST['SignUpName'];
+                $phoneNumber = $_POST['SignUpPhoneNumber'];
+                $password = $_POST['SignUpPassword'];
+                $type = 'client';
+                $stmt = $pdo->prepare("INSERT INTO users (name, phoneNumber, email, password, type) VALUES (?, ?, ?, ?, ?)");
+                $stmt->execute([$name, $phoneNumber, $email, $password, $type]);
+                session_start();
+                $_SESSION['logged_in'] = true;
+                $_SESSION['user_name'] = $name;
+                $_SESSION['user_email'] = $email;
+                $_SESSION['phoneNumber'] = $phoneNumber;
+                $_SESSION['role'] = $role;
+                header('Location: /carRental/index.php');
+                exit();
+            }
+        }else{
+            echo "<script>console.log('agency owner can not create an account');</script>";
+        }
+    }
+}
+
 
 ?>

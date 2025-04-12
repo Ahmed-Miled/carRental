@@ -1,0 +1,181 @@
+/* Dashboard Container */
+.dashboard-container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 992px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* Dashboard Cards */
+.dashboard-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1.5rem;
+}
+
+.dashboard-card h2 {
+    font-size: 1.25rem;
+    margin-bottom: 1.25rem;
+    color: #2d3748; /* Dark gray-green */
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.dashboard-card h2 i {
+    color: #28a745; /* Primary green */
+}
+#warning-icon{
+    color: #e53e3e;
+}
+
+/* Rental History */
+.rental-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.rental-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.rental-item:hover {
+    background-color: #f0fff4; /* Very light green */
+    transform: translateY(-2px);
+    border-color: #c6f6d5;
+}
+
+.rental-item img {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid #e2e8f0;
+}
+
+.rental-details {
+    flex: 1;
+}
+
+.rental-details h4 {
+    margin: 0;
+    font-size: 1rem;
+    color: #2d3748; /* Dark gray-green */
+}
+
+.rental-meta {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: #4a5568; /* Medium gray-green */
+    flex-wrap: wrap;
+}
+
+.rental-meta span {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* Status Badges */
+.badge {
+    padding: 0.25em 0.6em;
+    border-radius: 10px;
+    font-size: 0.75em;
+    font-weight: 600;
+}
+
+.bg-success {
+    background-color: #38a169 !important; /* Green for completed */
+}
+
+.bg-warning {
+    background-color: #d69e2e !important; /* Amber for pending */
+}
+
+.bg-danger {
+    background-color: #e53e3e !important; /* Red for cancelled */
+}
+
+/* No History Found */
+.alert-info {
+    background-color: #f0fff4; /* Light green background */
+    border-color: #c6f6d5;
+    color: #2f855a; /* Dark green text */
+}
+
+/* Danger Zone */
+.danger-zone {
+    border-left: 4px solid #e53e3e; /* Keeping red for danger */
+}
+
+.danger-zone .alert-warning {
+    background-color: #fffaf0;
+    border-color: #feebc8;
+    color: #dd6b20;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-primary:hover {
+    background-color: #238c3d;
+    border-color: #217834;
+}
+
+.btn-outline-danger {
+    color: #e53e3e;
+    border-color: #e53e3e;
+}
+
+.btn-outline-danger:hover {
+    background-color: #e53e3e;
+    color: white;
+}
+
+/* Modal Header */
+.modal-header.bg-danger {
+    background-color: #e53e3e !important; /* Keeping red for destructive actions */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    
+    
+    
+    .rental-meta {
+        gap: 0.5rem;
+    }
+}

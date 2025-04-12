@@ -1,0 +1,251 @@
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--white);
+  box-shadow: var(--shadow-sm);
+}
+
+.navv {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md);
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: var(--space-md);
+}
+
+.navv .nom {
+  color: var(--primary-color);
+  font-size: var(--font-xl);
+  text-decoration: none;
+  font-weight: bold;
+  order: 1;
+}
+
+.search-container {
+  flex: 1;
+  min-width: 250px;
+  max-width: 600px;
+  margin: 0 var(--space-sm);
+  order: 3;
+  width: 100%;
+}
+
+.search-form {
+  display: flex;
+  gap: var(--space-xs);
+  align-items: center;
+}
+
+.search-field {
+  flex: 2;
+  display: flex;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.search-field input {
+  flex: 1;
+  padding: 8px 15px;
+  width: 100%;
+  border: none;
+  outline: none;
+}
+
+.search-field button {
+  padding: 0 12px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.search-field button:hover {
+  background: #218838;
+}
+
+/* Style the select element */
+.sort-select {
+  flex: 1;
+  min-width: 120px;
+  padding: 8px 25px 8px 8px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  background: white url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") no-repeat right 8px center;
+  background-size: 16px;
+  cursor: pointer;
+  appearance: none;
+  color: var(--text-color);
+  font-size: var(--font-sm);
+  transition: all 0.3s ease;
+}
+
+/* Style the dropdown options box - Works in Chrome/Firefox */
+.sort-select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.2);
+}
+
+/* Style for the dropdown options panel */
+.sort-select option {
+  background: white;
+  color: var(--text-color);
+  padding: 8px 12px;
+  font-size: var(--font-sm);
+}
+
+/* Hover style for options - Limited browser support */
+.sort-select option:hover {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+}
+
+/* Style the dropdown arrow in Firefox */
+@-moz-document url-prefix() {
+  .sort-select {
+    padding-right: 25px;
+    background-image: none;
+    -moz-appearance: menulist;
+  }
+}
+
+/* Special styling for WebKit browsers */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  .sort-select {
+    padding-right: 25px;
+  }
+  
+  /* Style the dropdown box itself in WebKit */
+  .sort-select option {
+    background-color: white;
+    color: var(--text-color);
+    font-size: var(--font-sm);
+    padding: 8px 12px;
+  }
+  
+  /* Style the dropdown hover in WebKit */
+  .sort-select option:hover,
+  .sort-select option:checked,
+  .sort-select option:focus {
+    background-color: var(--primary-color) !important;
+    color: white !important;
+  }
+}
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: var(--space-md);
+  padding: 0;
+  margin: 0;
+  order: 2;
+}
+
+.nav-links li a {
+  color: var(--text-color);
+  text-decoration: none;
+  font-size: var(--font-base);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.nav-links li a:hover {
+  color: var(--primary-color);
+  background-color: var(--light-gray);
+}
+
+.nav-links li a.connexion {
+  color: var(--white);
+  background-color: var(--primary-color);
+  padding: var(--space-xs) var(--space-md);
+  font-weight: 500;
+}
+
+.nav-links li a.connexion:hover {
+  background-color: #218838;
+}
+
+.nav-links li a.active {
+  color: var(--primary-color);
+  font-weight: 500;
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-sm);
+  order: 4;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 25px;
+  height: 2px;
+  background: var(--text-color);
+  margin: 5px 0;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 992px) {
+  .search-form {
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+  
+  .search-field,
+  .sort-select {
+    width: 100%;
+  }
+}
+@media (max-width: 837px){
+  .navv{
+      flex-direction: column;
+  }
+}
+@media (max-width: 644px) {
+  .navv {
+      flex-direction: column;
+      align-items: self-start;
+      gap: var(--space-sm);
+  }
+  .menu-toggle {
+    display: block;
+  }
+  
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    order: 5;
+    padding: var(--space-sm) 0;
+  }
+  
+  .nav-links.active {
+    display: flex;
+  }
+  
+  .search-container {
+    order: 3;
+    margin: var(--space-sm) 0;
+  }
+}
+@media (max-width: 576px) {
+  .search-container {
+    width: 100%;
+    margin: var(--space-sm) 0;
+  }
+  
+  .nom {
+    margin-right: auto;
+  }
+}

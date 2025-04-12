@@ -1,0 +1,45 @@
+/* Vehicle Modal Styles */
+#vehicleModal .modal-dialog {
+    max-width: 800px;
+  }
+  
+  #vehicleModal .modal-body {
+    padding: 20px;
+  }
+  
+  #vehicleModal .features-list {
+    columns: 2;
+    -webkit-columns: 2;
+    -moz-columns: 2;
+    list-style-type: none;
+    padding-left: 0;
+  }
+  
+  #vehicleModal .features-list li {
+    padding: 5px 0;
+    position: relative;
+    padding-left: 25px;
+  }
+  
+  #vehicleModal .features-list li:before {
+    content: "✓";
+    color: #28a745;
+    position: absolute;
+    left: 0;
+  }
+  
+  .price-badge {
+    background: #f8f9fa;
+    padding: 8px 15px;
+    border-radius: 20px;
+    display: inline-block;
+    font-weight: bold;
+    color: #28a745;
+    border: 1px solid #dee2e6;
+  }
+  
+  @media (max-width: 768px) {
+    #vehicleModal .features-list {
+      columns: 1;
+    }
+  }

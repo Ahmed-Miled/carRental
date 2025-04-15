@@ -133,7 +133,9 @@ require 'views/includes/header.php';
     </div>
   </div>
 
-  <button class="btn btn-more" title="Voir plus" role="button">Voir plus de véhicules</button>
+  <!--<button class="btn btn-more" title="Voir plus" role="button">Voir plus de véhicules</button>-->
+  <a href="views/recherchevehicules.php" class="btn btn-more" title="Voir plus">Voir plus de vélos</a>
+  
 </section>
 
 <!-- Vehicle Details Modal -->
@@ -198,7 +200,8 @@ require 'views/includes/header.php';
     </div>  
   </div>
 
-  <button class="btn btn-more" title="Voir plus" role="button">Voir plus de vélos</button>
+  <!--<button class="btn btn-more" title="Voir plus" role="button">Voir plus de vélos</button>-->
+  <a href="views/recherchevehicules.php" class="btn btn-more" title="Voir plus">Voir plus de vélos</a>
 </section>
 
 <div class="client-testimonials">

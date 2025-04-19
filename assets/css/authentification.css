@@ -1,0 +1,514 @@
+:root {
+  /* --- Colors --- */
+  /* !!! IMPORTANT: Replace these placeholder colors with your actual theme colors !!! */
+  
+  --border-color: #e5e7eb; /* Example: Light Gray */
+
+  /* --- Transitions --- */
+  --transition: all 0.3s ease;
+
+  /* --- Layout --- */
+  --border-radius-sm: 4px;
+  --border-radius-md: 0.75rem; /* 12px */
+  --border-radius-lg: 1rem;    /* 16px */
+  --border-radius-xl: 1.5rem;  /* 24px */
+}
+
+/* === Basic Utilities === */
+.hidden {
+  display: none !important; /* Use !important cautiously, but okay for simple toggles */
+}
+.active {
+  display: block; /* Or flex/grid depending on context, block is fine for forms here */
+}
+
+/* === Button Styles === */
+.btn-primary {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.85rem 1.75rem; /* Slightly larger padding */
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600; /* Make button text slightly bolder */
+  width: 100%;
+  transition: var(--transition);
+  text-align: center;
+}
+
+.btn-primary:hover {
+    
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* === Auth Page Layout === */
+.auth-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); /* Add a subtle background gradient */
+}
+
+.auth-container {
+  background: rgba(255, 255, 255, 0.98); /* Slightly less transparent */
+  border-radius: var(--border-radius-xl);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px); /* Safari support */
+  width: 100%;
+  max-width: 1400px; /* Adjusted max-width if needed */
+  min-height: 700px;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+
+/* === Sections: Role Selection & Auth Forms === */
+.role-selection, .auth-forms {
+  padding: 4rem;
+  flex: 1; /* Make sections flexible */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.role-selection {
+  border-right: 1px solid var(--border-color);
+  /* Remove border-radius here, apply to parent */
+}
+
+.section-title {
+  font-size: 2.5rem;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem; /* Increased margin */
+  font-weight: 700;
+  text-align: center;
+}
+
+.section-subtitle {
+  color: var(--text-secondary);
+  margin-bottom: 3.5rem; /* Increased margin */
+  font-size: 1.1rem;
+  text-align: center;
+  max-width: 500px; /* Limit width for readability */
+}
+
+/* === Role Selection Specifics === */
+.role-options {
+  display: grid;
+  gap: 2rem;
+  width: 100%;
+  max-width: 500px; /* Constrain width of options */
+}
+
+.role-card {
+  background: white;
+  border-radius: var(--border-radius-lg);
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  text-decoration: none; /* Remove underline from link */
+  color: inherit; /* Inherit text color */
+}
+
+.role-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.role-icon {
+  flex-shrink: 0; /* Prevent icon from shrinking */
+  width: 70px;   /* Slightly smaller icon container */
+  height: 70px;
+  border-radius: var(--border-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem; /* Slightly smaller icon */
+  margin-right: 1.5rem; /* Adjusted margin */
+  transition: var(--transition);
+}
+
+.role-icon.client { background: rgba(37, 99, 235, 0.1); color: var(--primary-color); }
+.role-icon.agency { background: rgba(34, 197, 94, 0.1); color: var(--success-color); }
+
+.role-content {
+  flex: 1; /* Make content take remaining space */
+  min-width: 0; /* Allow content to shrink if needed */
+}
+
+.role-content h3 {
+  font-size: 1.4rem; /* Slightly adjusted size */
+  margin-bottom: 0.4rem;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.role-content p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.role-hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease; /* Only transition opacity */
+  pointer-events: none; /* Prevent interaction when hidden */
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.role-card:hover .role-hover {
+  opacity: 1;
+  pointer-events: auto; /* Allow interaction when visible */
+}
+
+.role-hover span i.fas.fa-arrow-right {
+  margin-left: 0.75rem; /* Added space for the arrow icon */
+  transition: transform 0.3s ease;
+}
+
+.role-card:hover .role-hover span i.fas.fa-arrow-right {
+  transform: translateX(5px); /* Subtle hover animation for arrow */
+}
+
+
+/* === Auth Forms Specifics === */
+
+
+.form-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.auth-logo {
+  height: 55px; /* Adjusted size */
+  margin-bottom: 1.5rem;
+}
+
+.form-title {
+  font-size: 2rem;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.auth-form {
+  width: 100%;
+  animation: switchFade 0.5s ease-in-out; /* Add fade effect on form switch */
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.form-group.floating label {
+  position: absolute;
+  left: 3rem; /* Aligned with padding + icon width */
+  top: 1rem; /* Adjusted initial position */
+  transform: translateY(0);
+  color: var(--text-secondary);
+  transition: var(--transition);
+  pointer-events: none;
+  background-color: white; /* Cover the input border when floated */
+  padding: 0 0.25rem;
+  font-size: 1rem;
+}
+
+.form-group.floating input {
+  padding: 1rem 1rem 1rem 3rem; /* top right bottom left */
+  border: 1px solid var(--border-color); /* Thinner border */
+  border-radius: var(--border-radius-md);
+  font-size: 1rem;
+  transition: var(--transition);
+  width: 100%;
+  box-sizing: border-box; /* Include padding and border in element's total width/height */
+}
+
+.form-group.floating input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2); /* Focus indicator */
+  outline: none;
+}
+
+/* Label float animation */
+.form-group.floating input:focus ~ label,
+.form-group.floating input:not(:placeholder-shown) ~ label {
+  top: -0.6rem; /* Move label above the input field */
+  left: 0.8rem; /* Adjust horizontal position */
+  font-size: 0.8rem; /* Smaller font size */
+  color: var(--primary-color);
+}
+
+.input-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
+  z-index: 1; /* Ensure icon is above input background */
+}
+
+.form-group.floating input:focus ~ .input-icon {
+  color: var(--primary-color); /* Change icon color on focus */
+}
+
+.password-toggle {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0.5rem; /* Increase clickable area */
+  line-height: 1; /* Prevent button size from affecting layout */
+}
+
+.password-toggle:hover {
+    color: var(--primary-color);
+}
+
+
+
+.error-message {
+  background: rgba(239, 68, 68, 0.1); /* Lighter background */
+  color: var(--error-color); /* Darker text for contrast */
+  padding: 0.8rem 1.2rem;
+  border-radius: var(--border-radius-md);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  border: 1px solid rgba(239, 68, 68, 0.3); /* Subtle border */
+}
+
+.error-message i { /* Style an icon if you add one */
+  font-size: 1.1rem;
+}
+
+.error-message:before {
+  content: "\f071"; /* Font Awesome warning icon */
+  font-family: "Font Awesome 6 Free"; /* Ensure correct font family */
+  font-weight: 900;
+  font-size: 1.1rem;
+}
+
+/* === Form Options (Remember Me, Forgot Password) === */
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1.5rem 0;
+  flex-wrap: wrap; /* Allow wrapping on small screens */
+  gap: 0.5rem; /* Add gap for wrapped items */
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+  user-select: none; /* Prevent text selection */
+}
+
+.remember-me:hover {
+  color: var(--primary-color);
+}
+
+.remember-me input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--border-color); /* Slightly thinner border */
+  border-radius: var(--border-radius-sm);
+  margin-right: 0.75rem;
+  position: relative;
+  transition: var(--transition);
+  background-color: white; /* Ensure background */
+}
+
+.remember-me:hover .checkmark {
+  border-color: var(--primary-color); /* Indicate hover */
+}
+
+.remember-me input:checked ~ .checkmark {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+  left: 5px;
+  top: 2px;
+  width: 4px;
+  height: 8px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.remember-me input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.forgot-password {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: var(--transition);
+}
+
+.forgot-password:hover {
+  color: var(--primary-color);
+  text-decoration: underline;
+}
+
+/* === Auth Switch Link === */
+.auth-switch {
+  text-align: center;
+  margin: 2.5rem 0 1rem; /* Adjusted margins */
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+.auth-switch a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+  position: relative;
+  transition: var(--transition);
+  margin-left: 0.5rem;
+}
+
+.auth-switch a:hover {
+  text-decoration: underline; /* Simple underline on hover */
+}
+
+/* === Animations === */
+@keyframes switchFade {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* === Media Queries for Responsiveness === */
+@media (max-width: 1024px) {
+  .auth-container {
+    flex-direction: column;
+    min-height: auto;
+    max-width: 600px; /* Adjust max-width for stacked layout */
+    height: auto;
+  }
+  .role-selection, .auth-forms {
+    padding: 3rem 2rem; /* Reduce padding */
+    flex-basis: auto; /* Reset flex-basis */
+    max-width: none; /* Remove max-width constraints within container */
+  }
+  .role-selection {
+    border-right: none; /* Remove vertical border */
+    border-bottom: 1px solid var(--border-color); /* Add horizontal border */
+  }
+  .role-options {
+    max-width: 400px; /* Adjust max width */
+  }
+}
+
+@media (max-width: 768px) {
+  .auth-wrapper {
+      padding: 1rem; /* Reduce wrapper padding */
+  }
+  .auth-container {
+      margin-top: 2rem; /* Add some top margin */
+      margin-bottom: 2rem;
+  }
+  .role-selection, .auth-forms {
+      padding: 2.5rem 1.5rem; /* Further reduce padding */
+  }
+  .section-title { font-size: 2rem; }
+  .section-subtitle { font-size: 1rem; margin-bottom: 2.5rem; }
+  .form-title { font-size: 1.8rem; }
+  .role-options { gap: 1.5rem; }
+  .role-card { padding: 1.5rem; }
+  .role-icon { width: 60px; height: 60px; font-size: 2rem; margin-right: 1rem; }
+  .role-content h3 { font-size: 1.2rem; }
+  .role-content p { font-size: 0.9rem; }
+}
+
+@media (max-width: 480px) {
+  .role-card {
+    flex-direction: column;
+    text-align: center;
+  }
+  .role-icon {
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+  .form-options {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .forgot-password {
+    align-self: flex-start; /* Align left in column layout */
+    margin-top: 0.5rem;
+  }
+  .auth-switch {
+    font-size: 0.9rem;
+    padding-top: 1rem;
+    margin-top: 2rem;
+  }
+  .auth-switch a {
+    display: inline; /* Keep inline */
+    margin-left: 0.3rem;
+  }
+  .btn-primary {
+      padding: 0.75rem 1.5rem; /* Adjust button padding */
+  }
+  .form-group.floating label {
+      left: 2.8rem; /* Adjust label position slightly */
+  }
+  .form-group.floating input {
+      padding: 1rem 1rem 1rem 2.8rem;
+  }
+  .input-icon {
+      left: 0.8rem; /* Adjust icon position */
+  }
+}

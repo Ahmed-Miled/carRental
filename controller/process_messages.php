@@ -10,7 +10,6 @@ require_once __DIR__ . '/../config/paths.php';
 // Now use the constant
 require_once ROOT_DIR . '/config/database.php';
 
-session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 

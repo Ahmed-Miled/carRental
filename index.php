@@ -1,4 +1,5 @@
 <?php 
+define('ROOT_PATH', __DIR__);
 require 'views/includes/header.php';
 ?>
 

@@ -1,6 +1,15 @@
 <?php
 
-require_once '../config/database.php';
+//require_once '../config/database.php'; athi te5dem
+//require_once __DIR__ . '/../config/database.php';
+//require_once ROOT_PATH . '/config/database.php';
+
+// Always load paths first
+require_once __DIR__ . '/../config/paths.php';
+
+// Now use the constant
+require_once ROOT_DIR . '/config/database.php';
+
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -70,4 +79,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 }
 
+function getMessages($pdo) {
+    try {
+        $statement = $pdo->prepare("SELECT * FROM message ORDER BY created_at DESC");
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        error_log('Database error: ' . $e->getMessage());
+        return [];
+    }
+}
 ?>

@@ -60,6 +60,7 @@ require_once __DIR__ . '/../../config/database.php';
         <!-- Login Form --> 
         <form method="POST" action="/carRental/controller/traitemant.php" class="auth-form <?= $isLogin ? '' : 'hidden' ?>">
           <input type="hidden" name="action" value="login">
+          
           <input type="hidden" name="role" value="<?= htmlspecialchars($role) ?>">
           
           <h2>Connexion <?= $role === 'client' ? 'Client' : 'Propriétaire' ?></h2>

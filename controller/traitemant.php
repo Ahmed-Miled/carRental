@@ -12,6 +12,17 @@ function getUsername($pdo, $email){
         return false;
     }
 }
+function getUerId($pdo, $email){
+    try{
+        $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
+        $stmt->execute([$email]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $user['id'];
+    }catch (Exception $e){
+        "<script> console.log(" . json_encode($e) . ");</script>";
+        return false;
+    }
+}
 function getPhoneNumber($pdo, $email){
     try{
         $stmt = $pdo->prepare("SELECT phoneNumber FROM users WHERE email = ?");
@@ -36,6 +47,7 @@ if (!isset($pdo)){
     if ($action == 'login'){
         $email = $_POST['logInEmail'];
         $password = $_POST['logInPassword'];
+        $user_id = getUsername($pdo, $email);
 
         $emailStatment = $pdo->prepare("SELECT * FROM users WHERE email = ? AND type = ?");
         $emailStatment->execute([$email, $role]);
@@ -62,7 +74,8 @@ if (!isset($pdo)){
                 $_SESSION['user_email'] = $email;
                 $_SESSION['phoneNumber'] = $phoneNumber;
                 $_SESSION['role'] = $role;
-                
+                $_SESSION['user_id'] = $user_id;
+                echo "<script>console.log('connected');</script>";
                 header('Location: /carRental/index.php');
                 exit(); 
             }

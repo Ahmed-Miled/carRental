@@ -1,12 +1,15 @@
 <?php 
+
 require __DIR__ . '/../includes/header.php';
-/*
+require __DIR__ . '/../../config/database.php';
+
+
 // Check if user is logged in
 if (!isset($_SESSION['logged_in'])) {
-    header('Location: /carRental/views/auth/auth.php');
+    header('Location: /carRental/views/auth/logout.php');
     exit();
 }
-
+/*
 // Database connection
 require __DIR__ . '/../../config/database.php';
 $db = new Database();
@@ -18,17 +21,28 @@ $stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
 $stmt->execute([$user_id]);
 $user = $stmt->fetch();
 
+
+
+function getUserId($pdo, $email){
+    try{
+        $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
+        $stmt->execute([$email]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $user['id'];
+    }catch (Exception $e){
+        "<script> console.log(" . json_encode($e) . ");</script>";
+        return false;
+    }
+}*/
 // Fetch rental history
 $rental_stmt = $pdo->prepare("
-    SELECT r.*, v.model, v.brand, v.image 
-    FROM rentals r
-    JOIN vehicles v ON r.vehicle_id = v.id
-    WHERE r.user_id = ?
-    ORDER BY r.rental_date DESC
+    SELECT * FROM reservations 
+    WHERE user_id = ?;
 ");
-$rental_stmt->execute([$user_id]);
+$i=1;
+$rental_stmt->execute([$i]);
 $rentals = $rental_stmt->fetchAll();
-*/
+echo "<script>console.log('connected');</script>";
 ?>
 
 <link rel="stylesheet" href="/carRental/assets/css/dashboard.css">
@@ -87,7 +101,7 @@ $rentals = $rental_stmt->fetchAll();
                                 <div class="rental-details">
                                     <h4><?php echo htmlspecialchars($rental['brand'].' '.$rental['model']); ?></h4>
                                     <div class="rental-meta">
-                                        <span><i class="fas fa-calendar-alt"></i> <?php echo date('M j, Y', strtotime($rental['rental_date'])); ?></span>
+                                        <span><i class="fas fa-calendar-alt"></i> <?php echo $rental['start_date']; ?></span>
                                         <span><i class="fas fa-dollar-sign"></i> <?php echo number_format($rental['total_cost'], 2); ?></span>
                                         <span class="badge bg-<?php 
                                             echo $rental['status'] === 'completed' ? 'success' : 

@@ -51,7 +51,7 @@ body {
 }
 
 .nav-item a {
-    color: white;
+    color: #F1EFEC;
     text-decoration: none;
     display: block;
 }
@@ -82,6 +82,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 1.5rem 2rem;
+    color: #030303;
     background: #ffffff;
     border-radius: 16px 16px 0 0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
@@ -321,7 +322,7 @@ body {
 .message-card {
     background: white;
     border-radius: 12px;
-    border: 1px solid #f1f5f9;
+    border: 1px solid #c5fbc4;
     margin: 1.5rem;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -451,3 +452,44 @@ body {
     color: #cbd5e1;
     margin-bottom: 1.5rem;
 }
+
+/* Status Cards */
+.status-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin: 2rem;
+}
+
+.status-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.card-icon {
+    font-size: 2rem;
+}
+
+.quick-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.stat-item {
+    text-align: center;
+    padding: 1rem;
+}
+
+
+
+

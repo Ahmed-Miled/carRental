@@ -55,6 +55,36 @@ try {
     die("Database error: " . $e->getMessage());
 }
 
+
+// Get active bookings count
+$activeBookingsStmt = $pdo->prepare("
+    SELECT COUNT(*) 
+    FROM reservations 
+    WHERE status = 'active' 
+      AND end_date > NOW()
+");
+$activeBookingsStmt->execute();
+$activeBookings = $activeBookingsStmt->fetchColumn();
+
+// Get truly available cars count
+try {
+    $availableCarsStmt = $pdo->prepare("
+        SELECT COUNT(*) 
+        FROM cars 
+        WHERE status = 'available' 
+        AND id NOT IN (
+            SELECT car_id 
+            FROM reservations 
+            WHERE status = 'active' 
+            AND NOW() BETWEEN start_date AND end_date
+        )
+    ");
+    $availableCarsStmt->execute();
+    $availableCarsCount = $availableCarsStmt->fetchColumn();
+} catch (PDOException $e) {
+    $availableCarsCount = 0; // Fallback value
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -75,8 +105,8 @@ try {
         <nav class="admin-sidebar">
             <h2 class="admin-title">Admin Panel</h2>
             <ul class="admin-nav">
-            <li class="nav-item" data-target="status"><a href="#">Status</a></li>
-                <li class="nav-item active" data-target="users"><a href="#">Users</a></li>
+                <li class="nav-item active" data-target="status"><a href="#">Status</a></li>
+                <li class="nav-item" data-target="users"><a href="#">Users</a></li>
                 <li class="nav-item" data-target="agencies"><a href="#">Agencies</a></li>
                 <li class="nav-item" data-target="cars"><a href="#">Available Cars</a></li>
                 <li class="nav-item" data-target="messages"><a href="#">Messages</a></li>
@@ -85,8 +115,76 @@ try {
         </nav>
         <!-- Main Content -->
         <main class="admin-main">
+
+            <section class="content-section active" id="status">
+                <div class="section-header">
+                    <h3>Quick Status Overview</h3>
+                </div>
+
+                <div class="status-cards">
+                    <!-- Total Users Card -->
+                    <div class="status-card">
+                        <div class="card-icon">👥</div>
+                        <div class="card-content">
+                            <h4>Total Users</h4>
+                            <p><?= count($clients) + count($agencies) ?></p>
+                        </div>
+                    </div>
+
+                    <!-- Active Bookings Card -->
+                    <div class="status-card">
+                        <div class="card-icon">🚗</div>
+                        <div class="card-content">
+                            <h4>Active Bookings</h4>
+                            <p><?= $activeBookings ?> Ongoing</p>
+                        </div>
+                    </div>
+                    
+
+                    <!-- Recent Activity Card -->
+                    <div class="status-card">
+                        <div class="card-icon">📅</div>
+                        <div class="card-content">
+                            <h4>Recent Activity</h4>
+                            <ul class="activity-list">
+                                <li><?= count($cars) ?> cars added</li>
+                                <li><?=  count($messages) ?> messages received</li>
+                                <li>2 new signups</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- System Status Card -->
+                    <div class="status-card">
+                        <div class="card-icon">✅</div>
+                        <div class="card-content">
+                            <h4>System Status</h4>
+                            <p class="text-success">All Systems Operational</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Simple Statistics -->
+                <div class="quick-stats">
+                    <div class="stat-item">
+                        <h5>Daily Signups</h5>
+                        <p>0 users today</p>
+                    </div>
+                    <div class="stat-item">
+                        <h5>Messages</h5>
+                        <p><?= count($messages) ?> unread</p>
+                    </div>
+                    <div class="stat-item">
+                        <h5>Available Cars</h5>
+                        <p><?= $availableCarsCount ?> listed</p>
+                    </div>
+                </div>
+                
+            </section>
+
+
             <!-- Users Section -->
-            <section class="content-section active" id="users">
+            <section class="content-section" id="users">
                 <div class="section-header">
                     <div class="header-group">
                         <h3>Manage Users</h3>
@@ -123,20 +221,17 @@ try {
 
             <!-- Agencies Section -->
             <section class="content-section" id="agencies">
-                
-            <div class="section-header">
-                <div class="header-group">
-                    <h3>Manage Agencies</h3>
-                    <div class="section-actions">
-                    <span class="stat-badge new-messages">
-                        <?= count($agencies) ?> Total
-                    </span>
+                <div class="section-header">
+                    <div class="header-group">
+                        <h3>Manage Agencies</h3>
+                        <div class="section-actions">
+                        <span class="stat-badge new-messages">
+                            <?= count($agencies) ?> Total
+                        </span>
+                    </div>
+                    </div>
+                    <button class="btn-add">+ Add Agency</button>
                 </div>
-                </div>
-                <button class="btn-add">+ Add Agency</button>
-            </div>
-
-                        
 
                 <!-- Add Agency Form -->
                 <form class="add-agency-form" action="addAgency.php" method="POST">
@@ -149,8 +244,6 @@ try {
                         <button type="submit" class="btn-save">Save Agency</button>
                     </div>
                 </form>
-                
-                
             
                 <!--Agencies List -->
                 <div class="agencies-list">
@@ -177,16 +270,16 @@ try {
             <!-- Cars Section -->
             <section class="content-section" id="cars">
                 
-            <div class="section-header">
-                <div class="header-group">
-                    <h3>Customer Messages</h3>
+                <div class="section-header">
+                    <div class="header-group">
+                        <h3>Customer Messages</h3>
+                    </div>
+                     <div class="section-actions">
+                        <span class="stat-badge new-messages">
+                            <?= count($cars) ?> Total
+                        </span>
+                    </div>
                 </div>
-                 <div class="section-actions">
-                    <span class="stat-badge new-messages">
-                        <?= count($cars) ?> Total
-                    </span>
-                </div>
-            </div>
             
 
                 <div class="cars-grid">
@@ -210,87 +303,85 @@ try {
             </section>
             
              <!-- Messages Section -->
-<section class="content-section" id="messages">
+            <section class="content-section" id="messages">
+                <div class="section-header">
+                    <div class="header-group">
+                        <h3>Customer Messages</h3>
+                    </div>
+                    <div class="section-actions">
+                        <span class="stat-badge new-messages">
+                            <?= count($messages) ?> Total
+                        </span>
+                    </div>
+                </div>
 
-    <div class="section-header">
-        <div class="header-group">
-            <h3>Customer Messages</h3>
-        </div>
-        <div class="section-actions">
-                <span class="stat-badge new-messages">
-                    <?= count($messages) ?> Total
-                </span>
-        </div>
-    </div>
-    
-    <div class="messages-list">
-        <?php foreach ($messages as $message): ?>
-        <div class="message-card <?= strtotime($message['created_at']) > time() - 86400 ? 'new-message' : '' ?>">
-            <div class="message-header">
-                <div class="sender-info">
-                    <div class="email-badge">
-                        <div class="contact-details">
-                            <span class="detail-label">From:</span>
-                            <span class="message-email"><?= htmlspecialchars($message['email']) ?></span>
+                <div class="messages-list">
+                    <?php foreach ($messages as $message): ?>
+                    <div class="message-card">
+                        <div class="message-header">
+                            <div class="sender-info">
+                                <div class="email-badge">
+                                    <div class="contact-details">
+                                        <span class="detail-label">From:</span>
+                                        <span class="message-email"><?= htmlspecialchars($message['email']) ?></span>
+                                    </div>
+                                </div>
+                                <div class="message-timeline">
+                                    <span class="timeline-badge">
+                                        <?= date('M j, Y', strtotime($message['created_at'])) ?>
+                                    </span>
+                                    <span class="timeline-time">
+                                        <?= date('H:i', strtotime($message['created_at'])) ?>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="subject-wrapper">
+                                <h4 class="message-subject">
+                                    <span class="subject-label">Subject:</span>
+                                    <?= htmlspecialchars($message['object']) ?>
+                                </h4>
+                            </div>
+                        </div>
+                    
+                        <div class="message-content-card">
+                            <div class="content-header">
+                                <span class="content-label">Message Content:</span>
+                            </div>
+                            <div class="message-content scrollable-content">
+                                <?= nl2br(htmlspecialchars($message['content'])) ?>
+                            </div>
+                        </div>
+                    
+                        <div class="message-actions">
+                            <form action="delete.php" method="POST" class="delete-form">
+                                <input type="hidden" name="type" value="message">
+                                <input type="hidden" name="id" value="<?= $message['id'] ?>">
+                                <button type="submit" class="btn-delete">
+                                    <span class="delete-label">Archive Message</span>
+                                    <div class="delete-hover-effect"></div>
+                                </button>
+                            </form>
                         </div>
                     </div>
-                    <div class="message-timeline">
-                        <span class="timeline-badge">
-                            <?= date('M j, Y', strtotime($message['created_at'])) ?>
-                        </span>
-                        <span class="timeline-time">
-                            <?= date('H:i', strtotime($message['created_at'])) ?>
-                        </span>
-                    </div>
+                    <?php endforeach; ?>
+                    
+                    <?php if (empty($messages)): ?>
+                        <div class="no-messages">
+                            <div class="empty-state">
+                                <h4>No Messages Yet</h4>
+                                <p>Your inbox is currently empty. Check back later!</p>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                 </div>
-                
-                <div class="subject-wrapper">
-                    <h4 class="message-subject">
-                        <span class="subject-label">Subject:</span>
-                        <?= htmlspecialchars($message['object']) ?>
-                    </h4>
-                </div>
-            </div>
+            </section>
 
-            <div class="message-content-card">
-                <div class="content-header">
-                    <span class="content-label">Message Content:</span>
-                </div>
-                <div class="message-content scrollable-content">
-                    <?= nl2br(htmlspecialchars($message['content'])) ?>
-                </div>
-            </div>
 
-            <div class="message-actions">
-                <form action="delete.php" method="POST" class="delete-form">
-                    <input type="hidden" name="type" value="message">
-                    <input type="hidden" name="id" value="<?= $message['id'] ?>">
-                    <button type="submit" class="btn-delete">
-                        <span class="delete-label">Archive Message</span>
-                        <div class="delete-hover-effect"></div>
-                    </button>
-                </form>
-            </div>
-        </div>
-        <?php endforeach; ?>
-        
-        <?php if (empty($messages)): ?>
-            <div class="no-messages">
-                <div class="empty-state">
-                    <h4>No Messages Yet</h4>
-                    <p>Your inbox is currently empty. Check back later!</p>
-                </div>
-            </div>
-        <?php endif; ?>
-    </div>
-</section>
         </main>
     </div>
+
     <script src="/carRental/controller/scripts/admin.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    
-</script>
 </body>
 </html>
 

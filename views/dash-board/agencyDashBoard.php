@@ -1,32 +1,31 @@
 <?php 
 require __DIR__ . '/../includes/header.php';
-/*
+
 // Check if agency is logged in
-if (!isset($_SESSION['logged_in']) || $_SESSION['user_type'] !== 'agency') {
+if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'agency') {
     header('Location: /carRental/views/auth/authentification.php');
     exit();
 }
 
 // Database connection
 require __DIR__ . '/../../config/database.php';
-$db = new Database();
-$pdo = $db->connect();
 
 // Fetch agency information
 $agency_id = $_SESSION['user_id'];
-$stmt = $pdo->prepare("SELECT * FROM agencies WHERE id = ?");
+$stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
 $stmt->execute([$agency_id]);
 $agency = $stmt->fetch();
 
 // Fetch agency's vehicles
 $vehicles_stmt = $pdo->prepare("
-    SELECT * FROM vehicles 
+    SELECT * FROM cars 
     WHERE agency_id = ?
     ORDER BY created_at DESC
 ");
+
 $vehicles_stmt->execute([$agency_id]);
 $vehicles = $vehicles_stmt->fetchAll();
-
+/*
 // Fetch rental requests
 $rentals_stmt = $pdo->prepare("
     SELECT r.*, v.model, v.brand, u.name as client_name
@@ -41,7 +40,7 @@ $rentals = $rentals_stmt->fetchAll();
 */
 ?>
 
-<link rel="stylesheet" href="/carRental/assets/css/dashboard.css">
+<link rel="stylesheet" href="/carRental/assets/css/agencyDashBoard.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <div class="dashboard-container">
@@ -79,7 +78,7 @@ $rentals = $rentals_stmt->fetchAll();
                         <div class="mb-3">
                             <label class="form-label">Phone</label>
                             <input type="tel" class="form-control" name="phone" 
-                                   value="<?php echo htmlspecialchars($agency['phone']); ?>">
+                                   value="<?php echo htmlspecialchars($agency['phoneNumber']); ?>">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Address</label>
@@ -152,14 +151,14 @@ $rentals = $rentals_stmt->fetchAll();
                         <?php foreach ($vehicles as $vehicle): ?>
                             <div class="vehicle-item">
                                 <div class="vehicle-image">
-                                    <img src="/carRental/assets/uploads/vehicles/<?php echo htmlspecialchars($vehicle['image'] ?: 'default-vehicle.jpg'); ?>" 
-                                         alt="<?php echo htmlspecialchars($vehicle['brand'].' '.$vehicle['model']); ?>">
+                                    <img src="/carRental/assets/img/<?php echo htmlspecialchars($vehicle['image'] ?: 'default-vehicle.jpg'); ?>" 
+                                         alt="<?php echo htmlspecialchars($vehicle['model']); ?>">
                                 </div>
                                 <div class="vehicle-details">
-                                    <h4><?php echo htmlspecialchars($vehicle['brand'].' '.$vehicle['model'].' ('.$vehicle['year'].')'); ?></h4>
+                                    <h4><?php echo htmlspecialchars($vehicle['model'].' ('.$vehicle['year'].')'); ?></h4>
                                     <div class="vehicle-meta">
                                         <span><i class="fas fa-tag"></i> <?php echo ucfirst($vehicle['type']); ?></span>
-                                        <span><i class="fas fa-dollar-sign"></i> <?php echo number_format($vehicle['daily_rate'], 2); ?>/day</span>
+                                        <span><i class="fas fa-dollar-sign"></i> <?php echo number_format($vehicle['price_per_day'], 2); ?>/day</span>
                                         <span class="badge bg-<?php echo $vehicle['available'] ? 'success' : 'danger'; ?>">
                                             <?php echo $vehicle['available'] ? 'Available' : 'Rented'; ?>
                                         </span>

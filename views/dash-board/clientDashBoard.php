@@ -36,16 +36,17 @@ function getUserId($pdo, $email){
 }*/
 // Fetch rental history
 $rental_stmt = $pdo->prepare("
-    SELECT * FROM reservations 
-    WHERE user_id = ?;
+    SELECT * FROM reservations r, cars  
+    WHERE r.user_id = ? AND r.car_id = cars.id;
 ");
 $i=1;
 $rental_stmt->execute([$i]);
 $rentals = $rental_stmt->fetchAll();
-echo "<script>console.log('connected');</script>";
+echo "<script>console.log(" . json_encode($rentals) . ");</script>";
+
 ?>
 
-<link rel="stylesheet" href="/carRental/assets/css/dashboard.css">
+<link rel="stylesheet" href="/carRental/assets/css/clientDashBoard.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <div class="dashboard-container">
@@ -96,7 +97,7 @@ echo "<script>console.log('connected');</script>";
                     <div class="rental-list">
                         <?php foreach ($rentals as $rental): ?>
                             <div class="rental-item">
-                                <img src="/carRental/assets/uploads/vehicles/<?php echo htmlspecialchars($rental['image']); ?>" 
+                                <img src="/carRental/assets/img/<?php echo htmlspecialchars($rental['image']); ?>" 
                                      alt="<?php echo htmlspecialchars($rental['brand'].' '.$rental['model']); ?>">
                                 <div class="rental-details">
                                     <h4><?php echo htmlspecialchars($rental['brand'].' '.$rental['model']); ?></h4>

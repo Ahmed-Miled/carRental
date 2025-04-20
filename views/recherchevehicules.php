@@ -3,7 +3,7 @@
 require __DIR__ . '/includes/header.php';
 require __DIR__ . '/../models/vehicule.php';
 require __DIR__ . '/../config/database.php';
-$vehicules = getVehicule($pdo);
+$vehicules = getVehicules($pdo);
 ?>
 
 <head>
@@ -15,24 +15,7 @@ $vehicules = getVehicule($pdo);
 <div class="container">
     <h1>TROUVEZ LE PRIX</h1>
     <h2>D'UNE VOITURE</h2>
-    
-    <div class="form-grid">
-      <select>
-        <option>Marque</option>
-        <option>Audi</option>
-        <option>Bmw</option>
-        <option>Jaguar</option>
-        <option>Mercedes-Benz</option>
-        <option>Jeep</option>
-        <option>Toyota</option>
-        <option>Nissan</option>
-        <option>Seat</option>
-        <option>Golf</option>
-      </select>
-    </div>
 
-    <div class="carrosserie-section">
-    <div class="carrosserie-label">CARROSSERIE :</div>
     
     <div class="carrosserie-icons">
     <div class="icon-row">
@@ -83,54 +66,6 @@ $vehicules = getVehicule($pdo);
 </div>
 </div>
 
-    <div class="form-grid">
-      <select>
-        <option>Voiture populaire</option>
-        <option>..</option>
-      </select>
-      <select>
-        <option>Nombre de places</option>
-        <option>1</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5</option>
-        <option>6</option>
-        <option>7</option>
-        <option>8</option>
-      </select>
-      <select>
-        <option>Nombre de portes</option>
-        <option>2</option>
-        <option>4</option>
-        <option>6</option>
-      </select>
-      <select>
-        <option>Nombre de cylindres</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5</option>
-        <option>6</option>
-        <option>7</option>
-        <option>8</option>
-      </select>
-      <select>
-        <option>Énergie</option>
-        <option>Essence</option>
-        <option>Diesel</option>
-        <option>Hybride</option>
-        <option>Hybride Rechargeable</option>
-        <option>Hybride Léger</option>
-        <option>Electrique</option>
-      </select>
-      <select>
-        <option>Boîte</option>
-        <option>Manuelle</option>
-        <option>Automatique</option>
-        <option>Pilotée</option>
-      </select>
-    </div>
     <button class="rech">Rechercher</button>
 
     <!-- affichage dynamique -->

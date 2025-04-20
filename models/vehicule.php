@@ -1,11 +1,20 @@
 <?php
-function getVehicule($pdo){
+function getVehicules($pdo){
     echo "<script>console.log('get vehicule have been called')</script>";
     $stmt = $pdo->prepare("SELECT * FROM cars");
     $stmt->execute();
     $vehicules = $stmt->fetchAll(PDO::FETCH_ASSOC);
     return $vehicules;
 }
+
+function getVehicule($pdo, $vehicule_id){
+    echo "<script>console.log('get vehicule have been called')</script>";
+    $stmt = $pdo->prepare("SELECT * FROM cars WHERE id = ?");
+    $stmt->execute([$vehicule_id]);
+    $vehicule = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $vehicule;
+}
+
 function getAgencyName($pdo, $id){
     $stmt = $pdo->prepare("SELECT * FROM agency WHERE id = ?");
     $stmt->execute([$id]);

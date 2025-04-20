@@ -1,9 +1,11 @@
 <?php
-// --- Simulation : Récupérer l'ID du véhicule depuis l'URL ---
-// Dans une vraie application, validez et nettoyez cet ID !
-$vehicule_id = $_GET['id'] ?? null; // Récupère l'ID de l'URL (?id=123)
+require __DIR__ . '/../config/database.php';
+require __DIR__ . '/../models/vehicule.php';
 session_start();
+
+$vehicule_id = $_GET['id'] ?? null; // Récupère l'ID de l'URL (?id=123)
 $role = $_SESSION['role'] ?? null;
+
 
 
 if($role == null){
@@ -26,6 +28,15 @@ $vehicule = null;
 if ($vehicule_id) {
     // VOTRE CODE ICI : Interrogez votre base de données pour trouver le véhicule
     // Exemple de structure de données attendue :
+    $vehicule = getVehicule($pdo, $vehicule_id);
+    if (!$vehicule) {
+        echo "<script>console.log('haja wrong  na9ess');</script>";
+        $_SESSION['error_message'] = "vehicule non trouvé.";
+        $_SESSION['error_type'] = 'introuvable'; 
+        header('Location: /carRental/views/error.php');
+        exit();
+    }
+    /*
     $vehicule = [
         'id' => $vehicule_id,
         'marque' => 'VOLKSWAGEN', // Exemple
@@ -35,8 +46,9 @@ if ($vehicule_id) {
         'description_courte' => 'Essence, Automatique, 5 portes', // Exemple
         // Ajoutez d'autres champs pertinents : transmission, carburant, places, etc.
     ];
+    */
 }
-
+/*
 // Si le véhicule n'est pas trouvé, redirigez ou affichez une erreur
 if (!$vehicule) {
     // Vous pouvez rediriger vers une page d'erreur ou la liste des véhicules
@@ -45,12 +57,13 @@ if (!$vehicule) {
     // Ou afficher un message directement (moins propre)
     die("Erreur : Véhicule non trouvé.");
 }
-
+*/
 // --- Inclusion de l'en-tête ---
 require __DIR__ . '/includes/header.php';
 ?>
 
 <head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="/carRental/assets/css/reservation.css">
 </head>
 
@@ -72,12 +85,14 @@ require __DIR__ . '/includes/header.php';
                 </div>
                 <div class="vehicle-info">
                     <h3><?= htmlspecialchars($vehicule['marque']) ?> <?= htmlspecialchars($vehicule['model']) ?></h3>
-                    <p><?= htmlspecialchars($vehicule['description_courte'] ?? 'Description non disponible') ?></p>
-                    <p class="price-highlight">Prix : <?= htmlspecialchars(number_format((float)($vehicule['prixParJour'] ?? 0), 2, ',', ' ')) ?> DT / Jour</p>
-                    <!-- Ajoutez d'autres détails si nécessaire -->
+                    <p class="price-highlight">Prix : <?= htmlspecialchars(number_format((float)($vehicule['price_per_day'] ?? 0), 2, ',', ' ')) ?> DT / Jour</p>
+
                     <ul>
-                        <!-- Exemple: <li><i class="fas fa-gas-pump"></i> Carburant: Essence</li> -->
-                        <!-- Exemple: <li><i class="fas fa-users"></i> Places: 5</li> -->
+                        <li><i class="fas fa-tachometer-alt"></i>Kilometrage: <?= htmlspecialchars($vehicule['kilometrage'] ?? 'non disponible 0') ?>Km</li>
+                        <li><i class="fas fa-gas-pump"></i> Carburant: <?= htmlspecialchars($vehicule['carburant'] ?? 'non disponible') ?></li>
+                        <li><i class="fas fa-users"></i> Places: <?= htmlspecialchars($vehicule['nbr_place'] ?? 'non disponible') ?></li>
+                        <li><i class="fas fa-gear"></i> Boite de vitesse: <?= htmlspecialchars($vehicule['boite_vitesse'] ?? 'non disponible') ?></li>
+                        <li><i class="fas fa-cogs"></i> cylindres: <?= htmlspecialchars($vehicule['nbr_cylindres'] ?? 'non disponible') ?></li>
                     </ul>
                 </div>
             </div>
@@ -87,12 +102,11 @@ require __DIR__ . '/includes/header.php';
         <section class="reservation-form-section">
             <h2>Complétez votre réservation</h2>
 
-            <!-- Vous ajouterez votre logique de traitement ici (action="traitement_reservation.php") -->
-            <form action="votre_script_de_traitement.php" method="POST" id="reservationForm">
+            <form action="/carRental/controller/traitemant_reservation.php" method="POST" id="reservationForm">
 
                 <!-- Important : Inclure l'ID du véhicule pour le traitement -->
                 <input type="hidden" name="vehicule_id" value="<?= htmlspecialchars($vehicule['id']) ?>">
-
+                <input type="hidden" name="status" value="<?= htmlspecialchars($vehicule['status']) ?>">
                 <fieldset>
                     <legend>Dates de location</legend>
                     <div class="form-row">
@@ -116,25 +130,30 @@ require __DIR__ . '/includes/header.php';
                 </fieldset>
 
                 <fieldset>
-                    <legend>Informations personnelles</legend>
+                    <legend>Choisissez les lieux</legend>
                      <!-- Si l'utilisateur est connecté, vous pouvez pré-remplir ces champs -->
-                    <div class="form-group">
-                        <label for="nom_complet">Nom complet <span class="required">*</span></label>
-                        <input type="text" id="nom_complet" name="nom_complet" placeholder="Votre nom et prénom" required
-                               value="<?= '' // Pré-remplir si connecté ?>">
+                     <div class="form-group">
+                        <label for="lieu_prise">Lieu de prise en charge <span class="required">*</span></label>
+                        <select id="lieu_prise" name="lieu_prise" required>
+                            <option value="" disabled selected>-- Choisissez un lieu --</option>
+                            <option value="agence_aeroport_tun">Agence Aéroport Tunis-Carthage</option>
+                            <option value="agence_aeroport_monastir">Agence Aéroport Monastir Habib-Bourguibae</option>
+                            <option value="agence_centre_ville_tunisie">Agence Centre-Ville Tunis</option>
+                            <option value="agence_sousse">Agence Sousse</option>
+                            <option value="agence_sfax">Agence Sfax</option>
+                        </select>
                     </div>
-                     <div class="form-row">
-                        <div class="form-group">
-                            <label for="email">Adresse Email <span class="required">*</span></label>
-                            <input type="email" id="email" name="email" placeholder="exemple@domaine.com" required
-                                value="<?= '' // Pré-remplir si connecté ?>">
-                        </div>
-                        <div class="form-group">
-                            <label for="telephone">Numéro de téléphone <span class="required">*</span></label>
-                            <input type="tel" id="telephone" name="telephone" placeholder="Ex: 22 123 456" required
-                                pattern="[0-9]{8,}" title="Numéro de téléphone (8 chiffres minimum)"
-                                value="<?= '' // Pré-remplir si connecté ?>">
-                        </div>
+
+                     <div class="form-group">
+                        <label for="lieu_restitution">Lieu de restitution <span class="required">*</span></label>
+                        <select id="lieu_restitution" name="lieu_restitution" required>
+                            <option value="" disabled selected>-- Choisissez un lieu --</option>
+                            <option value="agence_aeroport_tunisie">Agence Aéroport Tunis-Carthage</option>
+                            <option value="agence_aeroport_monastir">Agence Aéroport Monastir Habib-Bourguibae</option>
+                            <option value="agence_centre_ville_tunisie">Agence Centre-Ville Tunis</option>
+                            <option value="agence_sousse">Agence Sousse</option>
+                            <option value="agence_sfax">Agence Sfax</option>
+                        </select>
                     </div>
                 </fieldset>
 
@@ -153,7 +172,6 @@ require __DIR__ . '/includes/header.php';
 
                  <!-- Zone pour afficher les messages d'erreur ou de succès (via PHP/JS) -->
                  <div id="form-messages" class="form-messages" style="margin-top: 20px;">
-                    <!-- Les messages apparaîtront ici -->
                  </div>
 
             </form>
@@ -177,7 +195,7 @@ require __DIR__ . '/includes/footer.php';
         const dateDebutInput = document.getElementById('date_debut');
         const dateFinInput = document.getElementById('date_fin');
         const costSummaryDiv = document.getElementById('cost-summary');
-        const dailyRate = <?= (float)($vehicule['prixParJour'] ?? 0) ?>; // Taux journalier du véhicule
+        const dailyRate = <?= (float)($vehicule['price_per_day'] ?? 0) ?>; // Taux journalier du véhicule
 
         // Fonction pour mettre à jour la date minimum de fin
         function updateMinEndDate() {
@@ -204,7 +222,7 @@ require __DIR__ . '/includes/footer.php';
                      // Calculer la différence en jours (en millisecondes)
                      const diffTime = Math.abs(end - start);
                      // Ajouter 1 jour car la location inclut le jour de début et de fin
-                     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+                     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) ;
 
                     const totalCost = diffDays * dailyRate;
 

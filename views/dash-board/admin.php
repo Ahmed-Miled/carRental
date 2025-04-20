@@ -3,15 +3,15 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1); // Turn off in production, log errors instead
 
-/*
 
-if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
-    // Redirect to login page if not authenticated
-    header("Location: /carRental/views/auth/authentification.php"); // Adjust login path if needed
+/*
+if (!isset($_SESSION['admin_logged_in'])) {
+
+    header('Location: /carRental/views/auth/authentification.php');
     exit();
 }
+
 */
-// (Remove the comments above once your login system is in place and sets the session variable)
 
 
 // Include necessary configuration and functions
@@ -168,7 +168,8 @@ function getStatusBadgeClass($status) {
                 </li>
                 <!-- Logout Link -->
                 <li class="nav-item logout-item">
-                    <a href="/carRental/views/auth/logout.php"> <!-- Ensure logout path is correct -->
+                    
+                    <a href="/carRental/views/auth/logout.php"> 
                         <i class="nav-icon fas fa-sign-out-alt"></i> Log Out
                     </a>
                 </li>
@@ -315,25 +316,31 @@ function getStatusBadgeClass($status) {
                 </div>
                  <div class="section-content">
                     <!-- Add Agency Form (Initially Hidden, controlled by admin.js) -->
-                    <form class="add-agency-form" id="add-agency-form" action="/carRental/controller/add_agency_handler.php" method="POST" style="display: none;"> <!-- Ensure action path is correct -->
-                        <h4>New Agency Details</h4>
+                    <form class="add-agency-form" id="add-agency-form" action="/carRental/controller/traitemant.php" method="POST" style="display: none;"> <!-- Ensure action path is correct -->
+                    <input type="hidden" name="action" value="signup">
+                    <input type="hidden" name="role" value="admin">    
+                    <h4>New Agency Details</h4>
                         <!-- Form Grid for layout -->
                         <div class="form-grid">
                             <div class="form-group">
-                                <label for="agency-name">Agency Name</label>
-                                <input type="text" id="agency-name" name="name" placeholder="Enter Agency Name" required>
+                                <label for="user_name">Agency Name</label>
+                                <input type="text" id="user_name" name="user_name" placeholder="Enter Agency Name" required>
                             </div>
                             <div class="form-group">
-                                <label for="agency-email">Email</label>
-                                <input type="email" id="agency-email" name="email" placeholder="Enter Email Address" required>
+                                <label for="phoneNumber">Phone Number</label>
+                                <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Enter Phone Number" required>
                             </div>
                             <div class="form-group">
-                                <label for="agency-phone">Phone Number</label>
-                                <input type="tel" id="agency-phone" name="phone" placeholder="Enter Phone Number" required>
+                                <label for="user_address">Adresse</label>
+                                <input type="text" id="user_address" name="user_address" placeholder="Enter agency Address" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="user_email">Email</label>
+                                <input type="email" id="user_email" name="user_email" placeholder="Enter Email Address" required>
                             </div>
                              <div class="form-group">
-                                <label for="agency-password">Password</label>
-                                <input type="password" id="agency-password" name="password" placeholder="Create a Password" required>
+                                <label for="user_password">Password</label>
+                                <input type="password" id="user_password" name="user_password" placeholder="Create a Password" required>
                             </div>
                         </div>
                         <!-- Form Actions (Cancel/Save) -->
@@ -390,8 +397,6 @@ function getStatusBadgeClass($status) {
                         <span class="stat-badge info-badge">
                             <i class="fas fa-car-side"></i> <?= count($cars) ?> Total Cars
                         </span>
-                         <!-- Link to a dedicated "Add Car" page/form -->
-                         <a href="/carRental/views/admin/add_car.php" class="btn btn-add"><i class="fas fa-plus"></i> Add Car</a> <!-- Ensure path is correct -->
                     </div>
                 </div>
                  <div class="section-content">

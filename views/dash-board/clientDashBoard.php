@@ -10,31 +10,7 @@ if (!isset($_SESSION['logged_in'])) {
     exit();
 }
 
-/*
-// Database connection
-require __DIR__ . '/../../config/database.php';
-$db = new Database();
-$pdo = $db->connect();
 
-// Fetch user information
-$user_id = $_SESSION['user_id'];
-$stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
-$stmt->execute([$user_id]);
-$user = $stmt->fetch();
-
-
-
-function getUserId($pdo, $email){
-    try{
-        $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
-        $stmt->execute([$email]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $user['id'];
-    }catch (Exception $e){
-        "<script> console.log(" . json_encode($e) . ");</script>";
-        return false;
-    }
-}*/
 // Fetch rental history
 $rental_stmt = $pdo->prepare("
     SELECT * FROM reservations r, cars  
@@ -43,14 +19,6 @@ $rental_stmt = $pdo->prepare("
 $i=1;
 $rental_stmt->execute([$i]);
 $rentals = $rental_stmt->fetchAll();
-echo "<script>console.log(" . json_encode($rentals) . ");</script>";
-echo "<script>console.log(" . json_encode($_SESSION['logged_in']) . ");</script>";
-echo "<script>console.log(" . json_encode($_SESSION['role']) . ");</script>";
-echo "<script>console.log(" . json_encode($_SESSION['user_id']) . ");</script>";
-echo "<script>console.log(" . json_encode($_SESSION['user_name'] ) . ");</script>";
-echo "<script>console.log(" . json_encode($_SESSION['user_email']) . ");</script>";
-echo "<script>console.log(" . json_encode($_SESSION['phoneNumber'] ) . ");</script>";
-echo "<script>console.log(" . json_encode($_SESSION['created_at'] ) . ");</script>";
 ?>
 
 <link rel="stylesheet" href="/carRental/assets/css/clientDashBoard.css">
@@ -78,12 +46,12 @@ echo "<script>console.log(" . json_encode($_SESSION['created_at'] ) . ");</scrip
                         <label class="form-label">Username</label>
                         <input type="text" class="form-control" name="username" 
                                value="<?php echo htmlspecialchars($_SESSION['user_name']); ?>">
-                    </div><!--
+                    </div>
                     <div class="mb-3">
                         <label class="form-label">Email</label>
-                        <input type="email" class="form-control" name="email" 
-                               value="<?php /*echo htmlspecialchars($_SESSION['user_email']); */ ?>">
-                    </div>-->
+                        <input type="email" class="form-control" name="email" disabled
+                               value="<?php echo htmlspecialchars($_SESSION['user_email']); ?>">
+                    </div>
                     <div class="mb-3">
                         <label class="form-label">Phone</label>
                         <input type="tel" class="form-control" name="phone" 

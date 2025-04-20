@@ -26,27 +26,26 @@ function getTable($role){
 
 function emailExists($pdo, $email, $role){
     $table = getTable($role);
-    try{
-        $stmt = $pdo->prepare("SELECT * FROM $table WHERE email = ?");
-        $stmt->execute([$email]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $user['email'];
-        
-    }catch(PDOException $e){
-        echo "Error: " . $e->getMessage();
-    }
+    $stmt = $pdo->prepare("SELECT * FROM $table WHERE email = ?");
+    $stmt->execute([$email]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    return $user['email'];
+   
 }
 
-function  createClientAccount($pdo, $fullName, $email, $password, $phoneNumber, $role){
-    echo "<script> console.log('create client tnadat');</script>";
-    $table = getTable($role);
+function  createClientAccount($pdo, $fullName, $email, $password, $phoneNumber, $address, $role){
 
-    try{
+    $table = getTable($role);
+    if ($address == null ){
+
         $stmt = $pdo->prepare("INSERT INTO $table (fullName, email, password, phoneNumber) VALUES (?, ?, ?, ?)");
         $stmt->execute([$fullName, $email, $password, $phoneNumber]);
-    }catch(PDOException $e){    
-        echo "Error: " . $e->getMessage();
-        return false;
+        return true;
+    }else{
+        $stmt = $pdo->prepare("INSERT INTO agency (fullName, email, password, phoneNumber, address) VALUES (?, ?, ?, ?, ?)");
+        $stmt->execute([$fullName, $email, $password, $phoneNumber, $address]);
+        return true;
     }
 }
 

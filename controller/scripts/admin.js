@@ -7,6 +7,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Navigation
     document.querySelectorAll('.nav-item').forEach(item => {
         item.addEventListener('click', function(e) {
+            // thabet kan log out essay
+            if (this.closest('.logout-item')) {
+                // If it's the logout link, DO NOTHING here, let the default action proceed
+                return;
+            }
             e.preventDefault();
             console.log('Clicked:', this.dataset.target);
             

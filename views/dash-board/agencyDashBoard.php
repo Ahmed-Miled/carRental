@@ -9,13 +9,20 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'agency') {
 
 // Database connection
 require __DIR__ . '/../../config/database.php';
-
+/*
 // Fetch agency information
 $agency_id = $_SESSION['user_id'];
 $stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
 $stmt->execute([$agency_id]);
 $agency = $stmt->fetch();
+*/
 
+$agency['name'] = $_SESSION['user_name'];
+$agency['email'] = $_SESSION['user_email'];
+$agency['phoneNumber'] = $_SESSION['phoneNumber'];
+$agency['address'] = $_SESSION['address'];
+$agency['created_at'] = $_SESSION['created_at'];
+/*
 // Fetch agency's vehicles
 $vehicles_stmt = $pdo->prepare("
     SELECT * FROM cars 
@@ -25,6 +32,8 @@ $vehicles_stmt = $pdo->prepare("
 
 $vehicles_stmt->execute([$agency_id]);
 $vehicles = $vehicles_stmt->fetchAll();
+*/
+
 /*
 // Fetch rental requests
 $rentals_stmt = $pdo->prepare("

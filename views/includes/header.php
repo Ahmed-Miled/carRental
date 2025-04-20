@@ -39,15 +39,6 @@
             <span>🔍</span>
           </button>
         </div>
-        
-        <select name="sort" class="sort-select">
-          <option value="default">Trier par</option>
-          <option value="price_asc">Prix (bas → haut)</option>
-          <option value="price_asc">Prix (bas → haut)</option>
-          <option value="price_desc">Prix (haut → bas)</option>
-          <option value="voiture">Voitures seulement</option>
-          <option value="velo">Vélos seulement</option>
-        </select>
       </form>
     </div>
   
@@ -65,10 +56,6 @@
       <li><a href="/carRental/index.php"  title="Accueil" >Accueil</a></li>
       <li><a href="/carRental/views/contact.php" title="Contact">Contact</a></li>
       <li><a href="#page-bottom" title="À propos" >À propos</a></li>
-      <?php /*
-      <li><a class="connexion" href="#" data-bs-toggle="modal" data-bs-target="#loginModal" title="Connexion">Connexion</a></li>
-      */?>
-
       <?php if (!$logged_in): ?>
         <li><a class="connexion" href="/carRental/views/auth/authentification.php" title="Connexion">Connexion</a></li>
          
@@ -78,15 +65,3 @@
   </nav>
   
 </header>
-<?php
-/*
-
-session_start();
-$_SESSION = array();
-session_destroy();
-
-// Redirect to login page
-header("Location: /carRental/");
-exit();
-*/
-?>

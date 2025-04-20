@@ -9,6 +9,7 @@ if (!isset($_SESSION['logged_in'])) {
     header('Location: /carRental/views/auth/logout.php');
     exit();
 }
+
 /*
 // Database connection
 require __DIR__ . '/../../config/database.php';
@@ -43,7 +44,13 @@ $i=1;
 $rental_stmt->execute([$i]);
 $rentals = $rental_stmt->fetchAll();
 echo "<script>console.log(" . json_encode($rentals) . ");</script>";
-
+echo "<script>console.log(" . json_encode($_SESSION['logged_in']) . ");</script>";
+echo "<script>console.log(" . json_encode($_SESSION['role']) . ");</script>";
+echo "<script>console.log(" . json_encode($_SESSION['user_id']) . ");</script>";
+echo "<script>console.log(" . json_encode($_SESSION['user_name'] ) . ");</script>";
+echo "<script>console.log(" . json_encode($_SESSION['user_email']) . ");</script>";
+echo "<script>console.log(" . json_encode($_SESSION['phoneNumber'] ) . ");</script>";
+echo "<script>console.log(" . json_encode($_SESSION['created_at'] ) . ");</script>";
 ?>
 
 <link rel="stylesheet" href="/carRental/assets/css/clientDashBoard.css">

@@ -27,12 +27,10 @@ header {
 }
 
 .search-container {
-  flex: 1;
   min-width: 250px;
   max-width: 600px;
   margin: 0 var(--space-sm);
   order: 3;
-  width: 100%;
 }
 
 .search-form {
@@ -52,7 +50,7 @@ header {
 .search-field input {
   flex: 1;
   padding: 8px 15px;
-  width: 100%;
+  width: 50%;
   border: none;
   outline: none;
 }
@@ -70,42 +68,6 @@ header {
   background: #218838;
 }
 
-/* Style the select element */
-.sort-select {
-  flex: 1;
-  min-width: 120px;
-  padding: 8px 25px 8px 8px;
-  border: 1px solid #ddd;
-  border-radius: 20px;
-  background: white url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") no-repeat right 8px center;
-  background-size: 16px;
-  cursor: pointer;
-  appearance: none;
-  color: var(--text-color);
-  font-size: var(--font-sm);
-  transition: all 0.3s ease;
-}
-
-/* Style the dropdown options box - Works in Chrome/Firefox */
-.sort-select:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.2);
-}
-
-/* Style for the dropdown options panel */
-.sort-select option {
-  background: white;
-  color: var(--text-color);
-  padding: 8px 12px;
-  font-size: var(--font-sm);
-}
-
-/* Hover style for options - Limited browser support */
-.sort-select option:hover {
-  background-color: var(--primary-color) !important;
-  color: white !important;
-}
 
 /* Style the dropdown arrow in Firefox */
 @-moz-document url-prefix() {

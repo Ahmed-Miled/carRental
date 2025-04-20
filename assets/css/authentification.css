@@ -473,6 +473,7 @@
 }
 
 @media (max-width: 480px) {
+  
   .role-card {
     flex-direction: column;
     text-align: center;

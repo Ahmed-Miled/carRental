@@ -3,12 +3,11 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1); // Turn off in production, log errors instead
 
-session_start(); // Start the session
-
 /*
+
 if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
     // Redirect to login page if not authenticated
-    header("Location: /carRental/views/auth/authentification.php?role=admin"); // Adjust login path if needed
+    header("Location: /carRental/views/auth/authentification.php"); // Adjust login path if needed
     exit();
 }
 */

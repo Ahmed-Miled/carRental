@@ -18,10 +18,11 @@ if (!isset($_SESSION['admin_logged_in'])) {
 require_once __DIR__ . '/../../config/paths.php'; // Defines ROOT_DIR
 require_once ROOT_DIR . '/config/database.php'; // Establishes $pdo connection
 require_once ROOT_DIR . '/controller/process_messages.php'; // Function to get messages
+require_once __DIR__ . '/../../models/admin.php';
 
 // --- Variable Initialization ---
-$clients = [];
-$agencies = [];
+$clients = getClients($pdo);
+$agencies = getAgencys($pdo);
 $cars = [];
 $messages = [];
 $activeBookings = 0;
@@ -30,15 +31,6 @@ $dbError = null; // To store potential database error messages
 
 // --- Fetch Data from Database ---
 try {
-    // Get all clients
-    $clientStmt = $pdo->prepare("SELECT id, name, email, phoneNumber FROM users WHERE type = 'client' ORDER BY created_at DESC");
-    $clientStmt->execute();
-    $clients = $clientStmt->fetchAll(PDO::FETCH_ASSOC);
-
-    // Get all agencies
-    $agencyStmt = $pdo->prepare("SELECT id, name, email, phoneNumber FROM users WHERE type = 'agency' ORDER BY created_at DESC");
-    $agencyStmt->execute();
-    $agencies = $agencyStmt->fetchAll(PDO::FETCH_ASSOC);
 
     // Get all cars with agency info
     $carStmt = $pdo->prepare("
@@ -205,8 +197,8 @@ function getStatusBadgeClass($status) {
                             <div class="card-icon"><i class="fas fa-users"></i></div>
                             <div class="card-content">
                                 <h4>Total Users</h4>
-                                <p class="card-value"><?= count($clients) + count($agencies) ?></p>
-                                <span class="card-subtext">(<?= count($clients) ?> Clients, <?= count($agencies) ?> Agencies)</span>
+                                <p class="card-value"><?= getUsersCount($pdo, 'all') ?></p>
+                                <span class="card-subtext">(<?= getUsersCount($pdo, 'client') ?> Clients, <?= getUsersCount($pdo, 'agency') ?> Agencies)</span>
                             </div>
                         </div>
                         <!-- Card for Active Bookings -->
@@ -256,7 +248,7 @@ function getStatusBadgeClass($status) {
                      <div class="section-actions">
                         <!-- Stat Badge for total count -->
                         <span class="stat-badge info-badge"> 
-                            <i class="fas fa-user-check"></i> <?= count($clients) ?> Total Clients
+                            <i class="fas fa-user-check"></i> <?= getUsersCount($pdo, 'client') ?> Total Clients
                         </span>
                     </div>
                 </div>
@@ -278,7 +270,7 @@ function getStatusBadgeClass($status) {
                                 <tbody>
                                     <?php foreach ($clients as $user): ?>
                                     <tr>
-                                        <td><?= htmlspecialchars($user['name']) ?></td>
+                                        <td><?= htmlspecialchars($user['fullName']) ?></td>
                                         <td><?= htmlspecialchars($user['email']) ?></td>
                                         <td><?= htmlspecialchars($user['phoneNumber']) ?></td>
                                         <!-- Action Cell for buttons -->
@@ -308,7 +300,7 @@ function getStatusBadgeClass($status) {
                     <h3><i class="fas fa-building"></i> Manage Agencies</h3>
                     <div class="section-actions">
                         <span class="stat-badge info-badge">
-                           <i class="fas fa-building-user"></i> <?= count($agencies) ?> Total Agencies
+                           <i class="fas fa-building-user"></i> <?= getUsersCount($pdo, 'agency') ?> Total Agencies
                         </span>
                         <!-- Add Agency Button -->
                         <button class="btn btn-add" id="add-agency-btn"><i class="fas fa-plus"></i> Add Agency</button>
@@ -361,15 +353,17 @@ function getStatusBadgeClass($status) {
                                         <th>Name</th>
                                         <th>Email</th>
                                         <th>Phone Number</th>
+                                        <th>Address</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php foreach ($agencies as $agency): ?>
                                     <tr>
-                                        <td><?= htmlspecialchars($agency['name']) ?></td>
+                                        <td><?= htmlspecialchars($agency['fullName']) ?></td>
                                         <td><?= htmlspecialchars($agency['email']) ?></td>
                                         <td><?= htmlspecialchars($agency['phoneNumber']) ?></td>
+                                        <td><?= htmlspecialchars($agency['address']) ?></td>
                                          <td class="action-cell">
                                              <!-- Delete Form -->
                                             <form action="/carRental/controller/delete_handler.php" method="POST" class="delete-form" onsubmit="return confirm('Are you sure you want to delete this agency? This may also affect associated cars and bookings.');">
@@ -473,7 +467,7 @@ function getStatusBadgeClass($status) {
                                         <div class="contact-details">
                                             <span class="detail-label">From:</span>
                                             <span class="message-email">
-                                                <i class="fas fa-at"></i> <?= htmlspecialchars($message['email'] ?? 'N/A') ?>
+                                                <?= htmlspecialchars($message['email'] ?? 'N/A') ?>
                                             </span>
                                             <?php if (!empty($message['name'])): ?>
                                             <span class="message-sender-name">

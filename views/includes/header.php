@@ -54,6 +54,9 @@
         <li><a href="/carRental/views/dash-board/agencyDashBoard.php" >compte</a></li>
       <?php endif; ?>
       <li><a href="/carRental/index.php"  title="Accueil" >Accueil</a></li>
+      <?php if ($role !== 'agency'): ?>
+      <li><a href="/carRental/views/recherchevehicules.php" title="Véhicules">Véhicules</a></li>
+      <?php endif; ?>
       <li><a href="/carRental/views/contact.php" title="Contact">Contact</a></li>
       <li><a href="#page-bottom" title="À propos" >À propos</a></li>
       <?php if (!$logged_in): ?>

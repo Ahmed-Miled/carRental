@@ -1,6 +1,9 @@
 <?php 
 //require __DIR__ . '../views/includes/header.php';
 require __DIR__ . '/includes/header.php';
+require __DIR__ . '/../models/vehicule.php';
+require __DIR__ . '/../config/database.php';
+$vehicules = getVehicule($pdo);
 ?>
 
 <head>
@@ -84,7 +87,7 @@ require __DIR__ . '/includes/header.php';
       <select>
         <option>Voiture populaire</option>
         <option>..</option>
-        </select>
+      </select>
       <select>
         <option>Nombre de places</option>
         <option>1</option>
@@ -95,13 +98,13 @@ require __DIR__ . '/includes/header.php';
         <option>6</option>
         <option>7</option>
         <option>8</option>
-    </select>
+      </select>
       <select>
         <option>Nombre de portes</option>
         <option>2</option>
         <option>4</option>
         <option>6</option>
-    </select>
+      </select>
       <select>
         <option>Nombre de cylindres</option>
         <option>2</option>
@@ -111,7 +114,7 @@ require __DIR__ . '/includes/header.php';
         <option>6</option>
         <option>7</option>
         <option>8</option>
-    </select>
+      </select>
       <select>
         <option>Énergie</option>
         <option>Essence</option>
@@ -120,106 +123,76 @@ require __DIR__ . '/includes/header.php';
         <option>Hybride Rechargeable</option>
         <option>Hybride Léger</option>
         <option>Electrique</option>
-    </select>
+      </select>
       <select>
         <option>Boîte</option>
         <option>Manuelle</option>
         <option>Automatique</option>
         <option>Pilotée</option>
-    </select>
+      </select>
     </div>
     <button class="rech">Rechercher</button>
 
-    <!-- Nouvelle section pour l'affichage du véhicule -->
-    <div class="vehicule">
-      <!--SUV -->
-      <img src="../assets/img/BMW_Série_1.jpg" alt="bmw">
-      <div class="vehicule-contenu">
-        <div class="titre">VOLKSWAGEN Golf VII Golf SW 1.5 eTSI OPF 150 DSG7 R-Line 5p</div>
-        <div class="details">Essence · 13 000 km · 2024 · Montauban (82)</div>
-        <div class="prix">120 DT/Jour</div>
-        <div class="concessionnaire">PR AUTOMOBILES</div>
-        <a href="#" class="boutton" title="Voir plus">Réserver</a>
-      </div>
-    </div>
+    <!-- affichage dynamique -->
 
-    <div class="vehicule">
-      <!--BERLINE -->
-      <img src="../assets/img/location-de-voiture-berline.jpg" alt="skoda">
-      <div class="vehicule-contenu">
-        <div class="titre">Škoda Octavia de 4e génération (Octavia IV)</div>
-        <div class="details">Essence · 83 590 km · 2015 · Mérignac (33)</div>
-        <div class="prix">60 DT/Jour</div>
-        <div class="concessionnaire">VOLVO - SIPA AUTOMOBILES</div>
-        <a href="#" class="boutton" title="Voir plus">Réserver</a>
-      </div>
-    </div>
-    <!--COUPE -->
-    <div class="vehicule">
-      <img src="../assets/img/image.jpg" alt="maserati">
-      <div class="vehicule-contenu">
-        <div class="titre">Maserati GranTurismo 2023</div>
-        <div class="details">Essence · 7 049 km · 2024 · Montauban (82)</div>
-        <div class="prix">1000 DT/Jour</div>
-        <div class="concessionnaire">PR AUTOMOBILES</div>
-        <a href="#" class="boutton" title="Voir plus">Réserver</a>
-      </div>
-    </div>
-    <div class="vehicule">
-      <!--UTILITAIRE -->
-      <img src="../assets/img/image2.avif" alt="peugeot">
-      <div class="vehicule-contenu">
-        <div class="titre">PEUGEOT E-EXPERT</div>
-        <div class="details">Essence · 7 049 km · 2024 · Montauban (82)</div>
-        <div class="prix">50 DT/Jour</div>
-        <div class="concessionnaire">PR AUTOMOBILES</div>
-        <a href="#" class="boutton" title="Voir plus">Réserver</a>
-      </div>
-    </div>
-    <div class="vehicule">
-      <!--HOLLANDAIS -->
-      <img src="../assets/img/velo.webp" alt="birdie">
-      <div class="vehicule-contenu">
-        <div class="titre">Vélo léger Birdie</div>
-        <div class="details">7 049 km · 2024 · Montauban (82)</div>
-        <div class="prix">10 DT/Jour</div>
-        <div class="concessionnaire">PR AUTOMOBILES</div>
-        <a href="#" class="boutton" title="Voir plus">Réserver</a>
-      </div>
-    </div>
-    <div class="vehicule">
-      <!--TOUT CHEMIN -->
-      <img src="../assets/img/tout-chemin1.avif" alt="HAIBIKE">
-      <div class="vehicule-contenu">
-        <div class="titre">HAIBIKE</div>
-        <div class="details">2024 · Montauban (82)</div>
-        <div class="prix">35 DT/Jour</div>
-        <div class="concessionnaire">PR AUTOMOBILES</div>
-        <a href="#" class="boutton" title="Voir plus">Réserver</a>
-      </div>
-    </div>
-    <div class="vehicule">
-      <!--ROUTE -->
-      <img src="../assets/img/patria.jpg" alt="patria">
-      <div class="vehicule-contenu">
-        <div class="titre">Vélo Gravel Tribos 27,5" GRX 2 X 11 vitesses</div>
-        <div class="details">2024 · Montauban (82)</div>
-        <div class="prix">40 DT/Jour</div>
-        <div class="concessionnaire">PR AUTOMOBILES</div>
-        <a href="#" class="boutton" title="Voir plus">Réserver</a>
-      </div>
-    </div>
-    <div class="vehicule">
-      <!--ELECTRIQUE -->
-      <img src="../assets/img/moustache.jpg" alt="moustache">
-      <div class="vehicule-contenu">
-        <div class="titre">MOUSTACHE 28 DE OCT0BRE 2021</div>
-        <div class="details">2024 · Montauban (82)</div>
-        <div class="prix">50 DT/Jour</div>
-        <div class="concessionnaire">PR AUTOMOBILES</div>
-        <a href="#" class="boutton" title="Voir plus">Réserver</a>
-      </div>
-    </div>
+
+    <?php 
+    if (isset($vehicules) && is_array($vehicules) && !empty($vehicules)):
+    
+        foreach ($vehicules as $vehicule):
+            // --- Provide default values in case keys are missing ---
+            $marque = $vehicule['marque'] ?? 'Marque inconnue';
+            $model = $vehicule['model'] ?? 'Modèle inconnu';
+            $year = $vehicule['year'] ?? 'anne inconnue';
+            $prixParJour = $vehicule['price_per_day'] ?? 0;
+            $agencId = $vehicule['agency_id'] ?? null;
+            $imageFilename = $vehicule['image'] ?? 'default_car.png'; 
+            $vehiculeId = $vehicule['id'] ?? '#'; 
+            $kilometrage = $vehicule['kilometrage'] ?? 0;
+
+            $agencyName = getAgencyName($pdo, $agencId);
+            
+            // --- Determine Agency display text ---
+            $agencyDisplayText = 'Agence inconnue'; 
+            if (!empty($agencyName)) {
+                $agencyDisplayText = $agencyName; 
+            } elseif (!empty($agencId)) {
+                $agencyDisplayText = 'Agence ID: ' . $agencId; 
+            }
+          
+            
+            $imagePath = '../assets/img/' . $imageFilename;
+            $formattedPrice = number_format((float)$prixParJour, 2, ',', ' ') . ' DT/Jour'; // Format with 2 decimals, comma separator
+          
+    ?>
+        <div class="vehicule">
+            <!-- Dynamic Image Source and Alt Text -->
+            <img src="<?= htmlspecialchars($imagePath) ?>" alt="<?= htmlspecialchars($marque . ' ' . $model) ?>" onerror="this.onerror=null; this.src='../assets/img/default_car.png';">
+            <!-- Add onerror fallback for broken image links -->
+          
+            <div class="vehicule-contenu">
+                
+                <div class="titre"><?= htmlspecialchars($marque) ?> <?= htmlspecialchars($model) ?></div>
+          
+                <div class="year"><?= htmlspecialchars($year) ?></div>
+          
+                <div class="details"> <?= htmlspecialchars ($kilometrage) ?>Km</div>
+
+                <div class="prix"><?= htmlspecialchars($formattedPrice) ?></div>
+          
+                <div class="concessionnaire"><?= htmlspecialchars($agencyDisplayText) ?></div>
+          
+                <a href="/carRental/views/reservation.php?id=<?= htmlspecialchars($vehiculeId) ?>" class="boutton" title="Réserver <?= htmlspecialchars($marque . ' ' . $model) ?>">Réserver</a>
+                <!-- Adjust href="reservation.php..." to your actual reservation page -->
+            </div>
+        </div>
+    <?php
+        endforeach; // End the loop for each vehicle
+    else: // If $vehicules is not set, not an array, or empty
+    ?>
+        <p>Aucun véhicule disponible pour le moment.</p> <!-- Or any other message -->
+    <?php endif; ?>
+
   
 </div>
 

@@ -14,16 +14,13 @@ if($role == null){
     $_SESSION['error_message'] = "Veuillez vous connecter";
     $_SESSION['error_type'] = 'authentification'; 
     
-    header('Location: /carRental/views/error.php');
+    header('Location: /carRental/views/feedback.php');
     exit();
 
 }else{
     echo "<script>console.log('good to go');</script>";
 }
 
-// --- Simulation : Récupérer les détails du véhicule depuis la base de données ---
-// Vous remplacerez ceci par votre propre logique de base de données
-// pour obtenir les infos du véhicule basé sur $vehicule_id.
 $vehicule = null;
 if ($vehicule_id) {
     // VOTRE CODE ICI : Interrogez votre base de données pour trouver le véhicule
@@ -33,32 +30,12 @@ if ($vehicule_id) {
         echo "<script>console.log('haja wrong  na9ess');</script>";
         $_SESSION['error_message'] = "vehicule non trouvé.";
         $_SESSION['error_type'] = 'introuvable'; 
-        header('Location: /carRental/views/error.php');
+        header('Location: /carRental/views/feedback.php');
         exit();
     }
-    /*
-    $vehicule = [
-        'id' => $vehicule_id,
-        'marque' => 'VOLKSWAGEN', // Exemple
-        'model' => 'Golf VII SW 1.5 eTSI', // Exemple
-        'image' => 'offer1.png', // Nom du fichier image (exemple)
-        'prixParJour' => 120, // Exemple
-        'description_courte' => 'Essence, Automatique, 5 portes', // Exemple
-        // Ajoutez d'autres champs pertinents : transmission, carburant, places, etc.
-    ];
-    */
+    
 }
-/*
-// Si le véhicule n'est pas trouvé, redirigez ou affichez une erreur
-if (!$vehicule) {
-    // Vous pouvez rediriger vers une page d'erreur ou la liste des véhicules
-    // header('Location: liste_vehicules.php?error=notfound');
-    // exit;
-    // Ou afficher un message directement (moins propre)
-    die("Erreur : Véhicule non trouvé.");
-}
-*/
-// --- Inclusion de l'en-tête ---
+
 require __DIR__ . '/includes/header.php';
 ?>
 
@@ -172,6 +149,7 @@ require __DIR__ . '/includes/header.php';
 
                  <!-- Zone pour afficher les messages d'erreur ou de succès (via PHP/JS) -->
                  <div id="form-messages" class="form-messages" style="margin-top: 20px;">
+                    qr
                  </div>
 
             </form>

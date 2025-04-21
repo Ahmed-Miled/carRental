@@ -27,7 +27,7 @@ if (!isset($pdo)){
             
             $_SESSION['error_message'] = "email incorrect. Veuillez essayer une autre fois.";
             $_SESSION['error_type'] = 'authentification';
-            header('Location: /carRental/views/error.php');
+            header('Location: /carRental/views/feedback.php');
             exit();
         }elseif ($client['password'] == $password && $client['email'] == $ad && $client['email'] == $email) {
             // handeling admin
@@ -69,7 +69,7 @@ if (!isset($pdo)){
             
         $_SESSION['error_message'] = "Mots de passe. Veuillez essayer une autre fois.";
         $_SESSION['error_type'] = 'authentification';
-        header('Location: /carRental/views/error.php');
+        header('Location: /carRental/views/feedback.php');
         exit();
 
         }
@@ -81,7 +81,7 @@ if (!isset($pdo)){
         if (emailExists($pdo, $email, $role) != null){
             $_SESSION['error_message'] = "Email deja existant";
             $_SESSION['error_type'] = 'signup';
-            header('Location: /carRental/views/error.php');
+            header('Location: /carRental/views/feedback.php');
             exit();
         }else{
             echo "<script>console.log('email mch mawjoud t3adena lel else');</script>";
@@ -106,7 +106,7 @@ if (!isset($pdo)){
             
                 $_SESSION['error_message'] = "inscription echoué pour un error inconnu";
                 $_SESSION['error_type'] = 'signup';
-                header('Location: /carRental/views/error.php');
+                header('Location: /carRental/views/feedback.php');
                 exit();
                  
             }
@@ -121,7 +121,7 @@ if (!isset($pdo)){
 
             $_SESSION['error_message'] = "Email deja existant";
             $_SESSION['error_type'] = 'signup';
-            header('Location: /carRental/views/error.php');
+            header('Location: /carRental/views/feedback.php');
             exit();
         } else{
             $password = $_POST['user_password'];
@@ -138,7 +138,7 @@ if (!isset($pdo)){
             
                 $_SESSION['error_message'] = "inscription du agency echoué pour une error inconnu";
                 $_SESSION['error_type'] = 'signup';
-                header('Location: /carRental/views/error.php');
+                header('Location: /carRental/views/feedback.php');
                 exit();
                  
             }
@@ -148,7 +148,7 @@ if (!isset($pdo)){
         
         $_SESSION['error_message'] = "Action non autoriser";
         $_SESSION['error_type'] = 'authentification';
-        header('Location: /carRental/views/error.php');
+        header('Location: /carRental/views/feedback.php');
         exit();
     }
 }

@@ -18,7 +18,7 @@ $vehicules = getVehicules($pdo);
 
     
     <div class="carrosserie-icons">
-    <div class="icon-row">
+        <div class="icon-row">
         <label class="icon-item">
             <input type="checkbox" name="carrosserie" value="berline" style="display: none;">
             <img src="../assets/img/berline.png" alt="Berline">

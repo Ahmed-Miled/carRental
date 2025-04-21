@@ -27,6 +27,28 @@ h2 {
     margin: 10px auto;
     position: relative;
 }
+
+select {
+    padding: 12px 14px;
+    border-radius: 6px;
+    border: none;
+    margin: 10px;
+    width: 250px;
+    font-size: 16px;
+    border: 1px solid black;
+}
+
+.carrosserie-section {
+    margin-top: 30px;
+}
+
+.carrosserie-label {
+    font-weight: 700;
+    font-size: 18px;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
 .carrosserie-icons {
     display: flex;
     flex-wrap: wrap;
@@ -64,6 +86,16 @@ h2 {
         font-size: 14px;
     }
 
+    select {
+        width: 100%;
+        margin: 5px 0;
+        font-size: 14px;
+    }
+
+    /*.carrosserie-icons {
+        gap: 15px;
+    }*/
+
     .carrosserie-icons div {
         flex: 1 1 80px;
         font-size: 12px;
@@ -73,6 +105,9 @@ h2 {
         width: 50px;
     }
 
+    .form-grid {
+        gap: 10px;
+    }
 }
 .carrosserie-icons {
     text-align: center;
@@ -190,7 +225,7 @@ h2 {
         font-size: 16px;
     }
     
-    .details {
+    .details, .concessionnaire {
         font-size: 13px;
     }
     
@@ -211,7 +246,7 @@ h2 {
     .prix {
         font-size: 16px;
     }
-}
+}form
 .titre {
     font-weight: bold;
     color: #0066cc;
@@ -225,6 +260,10 @@ h2 {
     font-weight: bold;
     color: #cc0000;
     font-size: 20px;
+}
+.concessionnaire {
+    font-style: italic;
+    color: #555;
 }
 .boutton {
     display: inline-block;

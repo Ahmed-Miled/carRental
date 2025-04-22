@@ -72,8 +72,8 @@
 }
 
 .vehicle-image {
-    width: 120px;
-    height: 80px;
+    width: 50%;
+    height: 50%;
     flex-shrink: 0;
 }
 

@@ -71,19 +71,6 @@ function updateClient($pdo, $username, $phoneNumber, $email){
     $stmt->execute([$username, $phoneNumber, $email]);
 }
 
-function getRedntalHistory($pdo, $email){
-    $stmt = $pdo->prepare("SELECT * FROM reservations WHERE client_email = ?");
-    $stmt->execute([$email]);
-    $reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    //return $reservations;
-    $cars = $pdo->prepare("SELECT * FROM cars WHERE id = ?");
-    $cars->execute([$reservations['car_id']]);
-    $cars = $cars->fetchAll(PDO::FETCH_ASSOC);
-    echo "<script>console.log('get rental history have been called')</script>";
-    echo "<script>console.log(".json_encode($cars).")</script>";
-    return $cars;
-}
-
 function getRentalHistory($pdo, $email){
     $stmt = $pdo->prepare("SELECT * FROM reservations WHERE client_email = ?");
     $stmt->execute([$email]);
@@ -100,13 +87,13 @@ function getRentalHistory($pdo, $email){
             //  merge car + reservation info
             
             $car['start_date'] = date('Y-m-d', strtotime($reservation['start_date']));
+            //$car['car_id'] = $reservation['car_id'];
 
             $cars[] = $car;
         }
     }
 
     echo "<script>console.log('get rental history has been called')</script>";
-    echo "<script>console.log(" . json_encode($cars) . ")</script>";
     
     return $cars;
 }
@@ -148,5 +135,7 @@ function deleteClientAccount($pdo, $id){
 
     return true;
 }
+
+
 
 ?>

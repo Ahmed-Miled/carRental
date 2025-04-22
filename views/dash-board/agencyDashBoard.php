@@ -194,10 +194,12 @@ $rentals = $rentals_stmt->fetchAll();
                                 <div class="vehicle-details">
                                     <h4><?php echo htmlspecialchars($vehicle['model'].' ('.$vehicle['year'].')'.' id : '.$vehicle['id']); ?></h4>
                                     <div class="vehicle-meta">
+                                        <!--
                                         <span><i class="fas fa-tag"></i> <?php echo ucfirst($vehicle['type']); ?></span>
+                                        -->
                                         <span><i class="fas fa-dollar-sign"></i> <?php echo number_format($vehicle['price_per_day'], 2); ?>/day</span>
-                                        <span class="badge bg-<?php echo $vehicle['available'] ? 'success' : 'danger'; ?>">
-                                            <?php echo $vehicle['available'] ? 'Available' : 'Rented'; ?>
+                                        <span class="badge bg-<?php echo $vehicle['status'] ? 'success' : 'danger'; ?>">
+                                            <?php echo $vehicle['status'] ? 'available' : 'Rented'; ?>
                                         </span>
                                     </div>
                                     <div class="vehicle-actions">

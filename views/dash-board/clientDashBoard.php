@@ -11,23 +11,15 @@ if (!isset($_SESSION['logged_in'])) {
     exit();
 }
 
-// Fetch rental history
-/*
-$rental_stmt = $pdo->prepare("
-SELECT * FROM reservations r, cars  
-WHERE r.user_id = ? AND r.car_id = cars.id;
-");
-$i=1;
-$rental_stmt->execute([$i]);
-$rentals = $rental_stmt->fetchAll();
-*/
-
 $rentals = getRentalHistory($pdo, $_SESSION['user_email']);
+
+echo "<script>console.log(" . json_encode($rentals) . ");</script>";
 
 ?>
 
-<link rel="stylesheet" href="/carRental/assets/css/clientDashBoard.css">
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="/carRental/assets/css/clientDashBoard.css">
 
 <div class="dashboard-container">
     <!-- Removed the sidebar since we have the main nav -->
@@ -76,6 +68,7 @@ $rentals = getRentalHistory($pdo, $_SESSION['user_email']);
                     <div class="alert alert-info">No rental history found.</div>
                 <?php else: ?>
                     <div class="rental-list">
+                       
                         <?php foreach ($rentals as $rental): ?>
                             <div class="rental-item">
                                 <img src="/carRental/assets/img/<?php echo htmlspecialchars($rental['image']); ?>" 
@@ -91,10 +84,20 @@ $rentals = getRentalHistory($pdo, $_SESSION['user_email']);
                                         ?>">
                                             <?php echo ucfirst($rental['status']); ?>
                                         </span>
+                                        <span>
+                                            <form action="/carRental/controller/manage_rental.php" method="post" class="stop-rental-form">
+                                                <input type="hidden" name="action" value="stop_rental">
+                                                
+                                                <input type="hidden" name="rental_id" value="<?php echo htmlspecialchars($rental['id']); // Use the reservation ID ?>">
+                                                <button type="submit" class="btn btn-sm btn-warning" title="Marquer cette location comme terminée">
+                                                    <i class="fas fa-hand-paper"></i> Arrêter Location
+                                                </button>
+                                            </form>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
-                        <?php endforeach; ?>
+                         <?php endforeach;  ?>
                     </div>
                 <?php endif; ?>
             </div>
@@ -141,6 +144,24 @@ $rentals = getRentalHistory($pdo, $_SESSION['user_email']);
     </div>
 </div>
 
+<!-- Add some CSS for layout -->
+<style>
+
+.rental-actions {
+    margin-top: auto; /* Push actions to the bottom */
+    padding-top: 10px; /* Space above actions */
+    display: flex;
+    gap: 10px; /* Space between action buttons/forms */
+}
+.stop-rental-form, .pending-actions form {
+     margin-bottom: 0; /* Remove default form margin */
+}
+/* Optional: Adjust button sizes/styles if needed */
+.btn-sm {
+     padding: 0.25rem 0.5rem;
+     font-size: 0.875rem;
+}
+</style>
 <?php 
 require __DIR__ . '/../includes/footer.php';  
 ?>

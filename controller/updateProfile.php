@@ -36,32 +36,33 @@ if (!isset($_SESSION['logged_in'])) {
 }
 
 // Get form data
-$username = $_POST['username'] ?? null;
+$username = $_POST['name'] ?? null;
 $phoneNumber = $_POST['phone'] ?? null;
+$address = $_POST['address'] ?? null;
 $email = $_SESSION['user_email']; // Using email from session
 
-// Simple validation
-if (empty($username) || empty($phoneNumber) ) {
-    die(json_encode(['status' => 'error', 'message' => 'All fields are required']));
-}
+echo "<script>console.log(" . json_encode($username) .");</script>";
+echo "<script>console.log(" . json_encode($phoneNumber) .");</script>";
+echo "<script>console.log(" . json_encode($address) .");</script>";
+echo "<script>console.log(" . json_encode($email) .");</script>";
 
-try {
+
     // Update user info
-    $stmt = $pdo->prepare("UPDATE users SET name = ?, phoneNumber = ? WHERE email = ?");
-    $stmt->execute([$username, $phoneNumber, $email]);
+    $stmt = $pdo->prepare("UPDATE agency SET fullName = ?, phoneNumber = ?, address = ? WHERE email = ?");
+    $stmt->execute([$username, $phoneNumber, $address, $email]);
     
+
+
+
     // Update session data
     $_SESSION['user_name'] = $username;
     $_SESSION['phoneNumber'] = $phoneNumber;
+    $_SESSION['address'] = $address;
+    $_SESSION['phoneNumber'] = $phoneNumber;
+
     
-    header("Location: /carRental/views/dash-board/clientDashBoard.php");
+    header("Location: /carRental/views/dash-board/agencyDashBoard.php");
     exit();
     
-} catch (PDOException $e) {
-    // Log the actual error for debugging
-    error_log("Update error: " . $e->getMessage());
-    
-    // Return user-friendly error
-    die(json_encode(['status' => 'error', 'message' => 'Update failed']));
-}
+
 ?>

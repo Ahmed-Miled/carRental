@@ -63,7 +63,7 @@ $rentals = $rentals_stmt->fetchAll();
                     </h2>
                 </div>
                 <div id="agency-info" class="card-body collapse">
-                    <form action="/carRental/controllers/updateAgencyProfile.php" method="POST">
+                    <form action="/carRental/controller/updateProfile.php" method="POST">
                         <div class="mb-3">
                             <label class="form-label">Agency Name</label>
                             <input type="text" class="form-control" name="name" 
@@ -100,122 +100,80 @@ $rentals = $rentals_stmt->fetchAll();
                         <i class="fas fa-chevron-down toggle-icon float-end"></i>
                     </h2>
                 </div>
-                <!--
+
                 <div id="add-vehicle" class="card-body collapse">
-                    <form action="/carRental/controller/addVehicle.php" method="POST">
+                    <form action="/carRental/controller/addVehicle.php" method="POST" enctype="multipart/form-data">
+
+                        <input type="hidden" name="agency_id" value="<?= $agency['id'] ?>">
                         <div class="mb-3">
-                            <label class="form-label">Vehicle Type</label>
-                            <select class="form-select" name="type" required>
-                                <option value="car">Car</option>
-                                <option value="bike">Bike</option>
-                            </select>
+                            <label class="form-label">Marque</label>
+                            <input type="text" class="form-control" name="marque" required>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Brand</label>
-                            <input type="text" class="form-control" name="brand" required>
-                        </div>
+
                         <div class="mb-3">
                             <label class="form-label">Model</label>
                             <input type="text" class="form-control" name="model" required>
                         </div>
+
                         <div class="mb-3">
-                            <label class="form-label">Year</label>
+                            <label class="form-label">Kilometrage</label>
+                            <input type="number" class="form-control" name="kilometrage" min="0" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Année</label>
                             <input type="number" class="form-control" name="year" min="1900" max="<?php echo date('Y')+1; ?>" required>
                         </div>
+
                         <div class="mb-3">
-                            <label class="form-label">Daily Rate ($)</label>
-                            <input type="number" class="form-control" name="daily_rate" step="0.01" min="0" required>
+                            <label class="form-label">Prix Par Jour ($)</label>
+                            <input type="number" class="form-control" name="price_per_day" step="0.01" min="0" required>
                         </div>
+
                         <div class="mb-3">
                             <label class="form-label">Vehicle Image</label>
-                            <input type="file" class="form-control" name="image" accept="image/*">
+                            <select class="form-select" name="image" required>
+                                <option value="offer1.png">Kia rio</option>
+                                <option value="offer2.png">dacia sandro</option>
+                                <option value="offer3.png">Seat ibiza</option>
+                                <option value="offer4.png">I20</option>
+                                <option value="BMW_Série_1.jpg">Bmw serie 1</option>
+
+                            </select>
                         </div>
+
                         <div class="mb-3">
-                            <label class="form-label">Description</label>
-                            <textarea class="form-control" name="description" rows="3"></textarea>
+                            <label class="form-label">Fuel Type (Carburant)</label>
+                            <select class="form-select" name="carburant" required>
+                                <option value="essence">Essance</option>
+                                <option value="diesel">Diesel</option>
+                                <option value="hybride">Hybrid</option>
+                            </select>
                         </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Number of Seats (nbr_place)</label>
+                            <input type="number" class="form-control" name="nbr_place" min="1" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Nombre des cylinders</label>
+                            <input type="number" class="form-control" name="nbr_cylindres" min="1" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Boite vitesse</label>
+                            <select class="form-select" name="boite_vitesse" required>
+                                <option value="manuelle">Manuelle</option>
+                                <option value="automatique">Automatique</option>
+                            </select>
+                        </div>
+
                         <button type="submit" class="btn btn-success">
-                            <i class="fas fa-plus-circle"></i> Add Vehicle
+                            <i class="fas fa-plus-circle"></i> Ajoute Vehicle
                         </button>
                     </form>
                 </div>
-                -->
-
-                <div id="add-vehicle" class="card-body collapse">
-    <form action="/carRental/controller/addVehicle.php" method="POST" enctype="multipart/form-data">
-        
-        <input type="hidden" name="agency_id" value="<?= $agency['id'] ?>">
-        <div class="mb-3">
-            <label class="form-label">Marque</label>
-            <input type="text" class="form-control" name="marque" required>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Model</label>
-            <input type="text" class="form-control" name="model" required>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Kilometrage</label>
-            <input type="number" class="form-control" name="kilometrage" min="0" required>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Année</label>
-            <input type="number" class="form-control" name="year" min="1900" max="<?php echo date('Y')+1; ?>" required>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Prix Par Jour ($)</label>
-            <input type="number" class="form-control" name="price_per_day" step="0.01" min="0" required>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Vehicle Image</label>
-            <select class="form-select" name="image" required>
-                <option value="offer1.png">Kia rio</option>
-                <option value="offer2.png">dacia sandro</option>
-                <option value="offer3.png">Seat ibiza</option>
-                <option value="offer4.png">I20</option>
-                <option value="BMW_Série_1.jpg">Bmw serie 1</option>
-                
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Fuel Type (Carburant)</label>
-            <select class="form-select" name="carburant" required>
-                <option value="essence">Essance</option>
-                <option value="diesel">Diesel</option>
-                <option value="hybride">Hybrid</option>
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Number of Seats (nbr_place)</label>
-            <input type="number" class="form-control" name="nbr_place" min="1" required>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Nombre des cylinders</label>
-            <input type="number" class="form-control" name="nbr_cylindres" min="1" required>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Boite vitesse</label>
-            <select class="form-select" name="boite_vitesse" required>
-                <option value="manuelle">Manuelle</option>
-                <option value="automatique">Automatique</option>
-            </select>
-        </div>
-
-        <button type="submit" class="btn btn-success">
-            <i class="fas fa-plus-circle"></i> Ajoute Vehicle
-        </button>
-    </form>
-</div>
-
-
             </div>
 
             <!-- Vehicle Inventory -->

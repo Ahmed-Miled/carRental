@@ -10,8 +10,8 @@ $vehicules = getVehicules($pdo);
     <title>Recherche Vehicule</title>
     <link rel="stylesheet" href="/carRental/assets/css/recherchevoiture.css">
 </head>
-<body>
 
+<div class="rechercheContainer">
 <div class="container">
     <h1>TROUVEZ LE PRIX</h1>
     <h2>D'UNE VOITURE</h2>
@@ -85,7 +85,7 @@ $vehicules = getVehicules($pdo);
             $vehiculeId = $vehicule['id'] ?? '#'; 
             $kilometrage = $vehicule['kilometrage'] ?? 0;
 
-            $agencyName = getAgencyName($pdo, $agencId);
+            $agencyName = getAgencyName($pdo, $agency_id);
             
             // --- Determine Agency display text ---
             $agencyDisplayText = 'Agence inconnue'; 
@@ -130,7 +130,7 @@ $vehicules = getVehicules($pdo);
 
   
 </div>
-
+</div>
 <?php 
 require __DIR__ . '/includes/footer.php';
 ?>

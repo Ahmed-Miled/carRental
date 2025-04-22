@@ -2,6 +2,7 @@
 
 require __DIR__ . '/../includes/header.php';
 require __DIR__ . '/../../config/database.php';
+require __DIR__ . '/../../models/client.php';
 
 
 // Check if user is logged in
@@ -10,15 +11,19 @@ if (!isset($_SESSION['logged_in'])) {
     exit();
 }
 
-
 // Fetch rental history
+/*
 $rental_stmt = $pdo->prepare("
-    SELECT * FROM reservations r, cars  
-    WHERE r.user_id = ? AND r.car_id = cars.id;
+SELECT * FROM reservations r, cars  
+WHERE r.user_id = ? AND r.car_id = cars.id;
 ");
 $i=1;
 $rental_stmt->execute([$i]);
 $rentals = $rental_stmt->fetchAll();
+*/
+
+$rentals = getRentalHistory($pdo, $_SESSION['user_email']);
+
 ?>
 
 <link rel="stylesheet" href="/carRental/assets/css/clientDashBoard.css">
@@ -42,6 +47,7 @@ $rentals = $rental_stmt->fetchAll();
             <div class="dashboard-card">
                 <h2><i class="fas fa-user-circle"></i> Profile Information</h2>
                 <form action="/carRental/controller/updateProfile.php" method="POST">
+                    <input type="hidden" name="action" value="updateClient">
                     <div class="mb-3">
                         <label class="form-label">Username</label>
                         <input type="text" class="form-control" name="username" 
@@ -73,14 +79,14 @@ $rentals = $rental_stmt->fetchAll();
                         <?php foreach ($rentals as $rental): ?>
                             <div class="rental-item">
                                 <img src="/carRental/assets/img/<?php echo htmlspecialchars($rental['image']); ?>" 
-                                     alt="<?php echo htmlspecialchars($rental['brand'].' '.$rental['model']); ?>">
+                                     alt="<?php echo htmlspecialchars($rental['marque'].' '.$rental['model']); ?>">
                                 <div class="rental-details">
-                                    <h4><?php echo htmlspecialchars($rental['brand'].' '.$rental['model']); ?></h4>
+                                    <h4><?php echo htmlspecialchars($rental['marque'].' '.$rental['model']); ?></h4>
                                     <div class="rental-meta">
                                         <span><i class="fas fa-calendar-alt"></i> <?php echo $rental['start_date']; ?></span>
-                                        <span><i class="fas fa-dollar-sign"></i> <?php echo number_format($rental['total_cost'], 2); ?></span>
+                                        <span><i class="fas fa-dollar-sign"></i> <?php echo number_format($rental['price_per_day'], 2); ?></span>
                                         <span class="badge bg-<?php 
-                                            echo $rental['status'] === 'completed' ? 'success' : 
+                                            echo $rental['status'] === 'available' ? 'success' : 
                                                  ($rental['status'] === 'pending' ? 'warning' : 'danger'); 
                                         ?>">
                                             <?php echo ucfirst($rental['status']); ?>
@@ -118,7 +124,8 @@ $rentals = $rental_stmt->fetchAll();
             </div>
             <div class="modal-body">
                 <p>This will permanently delete your account and all associated data. This action cannot be undone.</p>
-                <form id="deleteForm" action="/carRental/controllers/deleteAccount.php" method="POST">
+                <form id="deleteForm" action="/carRental/controller/updateProfile.php" method="POST">
+                    <input type="hidden" name="action" value="deleteClientAccount">
                     <div class="mb-3">
                         <label class="form-label">Enter your password to confirm:</label>
                         <input type="password" class="form-control" name="password" required>

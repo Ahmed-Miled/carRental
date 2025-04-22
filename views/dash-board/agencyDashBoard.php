@@ -64,6 +64,7 @@ $rentals = $rentals_stmt->fetchAll();
                 </div>
                 <div id="agency-info" class="card-body collapse">
                     <form action="/carRental/controller/updateProfile.php" method="POST">
+                        <input type="hidden" name="action" value="updateAgency" >
                         <div class="mb-3">
                             <label class="form-label">Agency Name</label>
                             <input type="text" class="form-control" name="name" 

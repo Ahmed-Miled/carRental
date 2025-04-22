@@ -16,6 +16,7 @@ function getVehicule($pdo, $vehicule_id){
 }
 
 function getAgencyName($pdo, $id){
+    
     $stmt = $pdo->prepare("SELECT * FROM agency WHERE id = ?");
     $stmt->execute([$id]);
     $agency = $stmt->fetch(PDO::FETCH_ASSOC);

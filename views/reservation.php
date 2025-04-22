@@ -80,7 +80,7 @@ require __DIR__ . '/includes/header.php';
         <!-- Section : Formulaire de Réservation -->
         <section class="reservation-form-section">
             <h2>Complétez votre réservation</h2>
-<?= $agency_id = $_GET['agency_id'] ?? null; ?>
+            <?= $agency_id = $_GET['agency_id'] ?? null; ?>
             <form action="/carRental/controller/traitemant_reservation.php" method="POST" id="reservationForm">
 
                 <!-- Important : Inclure l'ID du véhicule pour le traitement -->

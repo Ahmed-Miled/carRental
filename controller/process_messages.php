@@ -56,7 +56,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo "<script>console.log('heelow world');</script>";
             // Set success message
             $_SESSION['success'] = true;
-            header('Location: /carRental/views/contact.php');
+            $_SESSION['success_message'] = 'Message sent successfully!';
+            header('Location: /carRental/views/feedback.php');
             exit();
         } catch (Exception $e) {
             $errors['database'] = 'Error saving message: ' . $e->getMessage();

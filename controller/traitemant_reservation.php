@@ -13,6 +13,7 @@ if (!isset($pdo)){
         $user_email = isset($_SESSION['user_email']) ? trim($_SESSION['user_email']) : null;
         $phoneNumber = isset($_SESSION['phoneNumber']) ? trim($_SESSION['phoneNumber']) : null;
 
+        $agency_id = isset($_POST['agency_id']) ? trim($_POST['agency_id']) : null;
         $vehicule_id = isset($_POST['vehicule_id']) ? trim($_POST['vehicule_id']) : null;
         $date_debut = isset($_POST['date_debut']) ? trim($_POST['date_debut']) : null;
         $date_fin = isset($_POST['date_fin']) ? trim($_POST['date_fin']) : null;
@@ -20,8 +21,7 @@ if (!isset($pdo)){
         $lieu_restitution = isset($_POST['lieu_restitution']) ? trim($_POST['lieu_restitution']) : null;
         $status = isset($_POST['status']) ? trim($_POST['status']) : null;
         
-        
-        if (ajouteReservation($pdo, $user_name, $user_email, $phoneNumber, $vehicule_id, $date_debut, $date_fin, $lieu_prise_en_charge, $lieu_restitution, $status)){
+        if (ajouteDemande($pdo, $agency_id, $user_name, $user_email, $phoneNumber, $vehicule_id, $date_debut, $date_fin, $lieu_prise_en_charge, $lieu_restitution, $status)){
             $_SESSION['success_message'] = "Votre reservation a bien ete ajoute.";
             $_SESSION['success_type'] = 'reservation';
 
@@ -35,8 +35,9 @@ if (!isset($pdo)){
             echo "<script>console.log('reservation non ajoute');</script>";
             $_SESSION['error_message'] = "impossible d'effectue cette reservation";
             $_SESSION['error_type'] = 'reservation';
-            header("Location: /carRental/views/views/feedback.php");
-            exit();
+            header("Location: /carRental/views/feedback.php");
+            echo "<script>console.log(" . json_encode($agency_id) . ");</script>";
+            //exit();
         }
         
     }else{

@@ -1,7 +1,7 @@
 /* Agency Dashboard Styles */
 .dashboard-container {
     padding: 2rem;
-    max-width: 1400px;
+    max-width: 1700px;
     margin: 0 auto;
 }
 
@@ -203,4 +203,9 @@ textarea.form-control {
         display: block;
         overflow-x: auto;
     }
+}
+form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1em;
 }

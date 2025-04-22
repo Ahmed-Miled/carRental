@@ -3,6 +3,8 @@ require __DIR__ . '/../config/database.php';
 require __DIR__ . '/../models/vehicule.php';
 session_start();
 
+$agency_id = $_GET['agency_id'] ?? null;
+//$agency_id = isset($_GET['agency_id']) ? trim($_GET['agency_id']) : null;
 $vehicule_id = $_GET['id'] ?? null; // Récupère l'ID de l'URL (?id=123)
 $role = $_SESSION['role'] ?? null;
 
@@ -78,11 +80,14 @@ require __DIR__ . '/includes/header.php';
         <!-- Section : Formulaire de Réservation -->
         <section class="reservation-form-section">
             <h2>Complétez votre réservation</h2>
-
+<?= $agency_id = $_GET['agency_id'] ?? null; ?>
             <form action="/carRental/controller/traitemant_reservation.php" method="POST" id="reservationForm">
 
                 <!-- Important : Inclure l'ID du véhicule pour le traitement -->
                 <input type="hidden" name="vehicule_id" value="<?= htmlspecialchars($vehicule['id']) ?>">
+                <input type="hidden" name="agency_id" value="<?= htmlspecialchars($agency_id) ?>">
+                
+
                 <input type="hidden" name="status" value="<?= htmlspecialchars($vehicule['status']) ?>">
                 <fieldset>
                     <legend>Dates de location</legend>
@@ -149,7 +154,6 @@ require __DIR__ . '/includes/header.php';
 
                  <!-- Zone pour afficher les messages d'erreur ou de succès (via PHP/JS) -->
                  <div id="form-messages" class="form-messages" style="margin-top: 20px;">
-                    qr
                  </div>
 
             </form>

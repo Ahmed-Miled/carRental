@@ -80,7 +80,7 @@ $vehicules = getVehicules($pdo);
             $model = $vehicule['model'] ?? 'Modèle inconnu';
             $year = $vehicule['year'] ?? 'anne inconnue';
             $prixParJour = $vehicule['price_per_day'] ?? 0;
-            $agencId = $vehicule['agency_id'] ?? null;
+            $agency_id = $vehicule['agency_id'] ?? null;
             $imageFilename = $vehicule['image'] ?? 'default_car.png'; 
             $vehiculeId = $vehicule['id'] ?? '#'; 
             $kilometrage = $vehicule['kilometrage'] ?? 0;
@@ -104,7 +104,7 @@ $vehicules = getVehicules($pdo);
             <!-- Dynamic Image Source and Alt Text -->
             <img src="<?= htmlspecialchars($imagePath) ?>" alt="<?= htmlspecialchars($marque . ' ' . $model) ?>" onerror="this.onerror=null; this.src='../assets/img/default_car.png';">
             <!-- Add onerror fallback for broken image links -->
-          
+            
             <div class="vehicule-contenu">
                 
                 <div class="titre"><?= htmlspecialchars($marque) ?> <?= htmlspecialchars($model) ?></div>
@@ -117,7 +117,7 @@ $vehicules = getVehicules($pdo);
           
                 <div class="concessionnaire"><?= htmlspecialchars($agencyDisplayText) ?></div>
           
-                <a href="/carRental/views/reservation.php?id=<?= htmlspecialchars($vehiculeId) ?>" class="boutton" title="Réserver <?= htmlspecialchars($marque . ' ' . $model) ?>">Réserver</a>
+                <a href="/carRental/views/reservation.php?id=<?= htmlspecialchars($vehiculeId) ?>&agency_id=<?= htmlspecialchars($agency_id) ?>" class="boutton" title="Réserver <?= htmlspecialchars($marque . ' ' . $model) ?>">Réserver</a>
                 <!-- Adjust href="reservation.php..." to your actual reservation page -->
             </div>
         </div>

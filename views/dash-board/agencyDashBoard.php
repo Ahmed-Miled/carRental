@@ -9,30 +9,20 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['role'] !== 'agency') {
 
 // Database connection
 require __DIR__ . '/../../config/database.php';
-/*
-// Fetch agency information
-$agency_id = $_SESSION['user_id'];
-$stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
-$stmt->execute([$agency_id]);
-$agency = $stmt->fetch();
-*/
+require_once __DIR__ . '/../../models/vehicule.php';
+require __DIR__ . '/../../controller/process_rental_request.php';
 
+
+$agency['id'] = $_SESSION['user_id'];
 $agency['name'] = $_SESSION['user_name'];
 $agency['email'] = $_SESSION['user_email'];
 $agency['phoneNumber'] = $_SESSION['phoneNumber'];
 $agency['address'] = $_SESSION['address'];
 $agency['created_at'] = $_SESSION['created_at'];
-/*
-// Fetch agency's vehicles
-$vehicles_stmt = $pdo->prepare("
-    SELECT * FROM cars 
-    WHERE agency_id = ?
-    ORDER BY created_at DESC
-");
 
-$vehicles_stmt->execute([$agency_id]);
-$vehicles = $vehicles_stmt->fetchAll();
-*/
+$rentals = getRentalRequests($pdo, $agency['id']);
+$vehiclesInventory = getAgencyVehicles($pdo, $agency['id']);
+
 
 /*
 // Fetch rental requests
@@ -110,8 +100,9 @@ $rentals = $rentals_stmt->fetchAll();
                         <i class="fas fa-chevron-down toggle-icon float-end"></i>
                     </h2>
                 </div>
+                <!--
                 <div id="add-vehicle" class="card-body collapse">
-                    <form action="/carRental/controllers/addVehicle.php" method="POST">
+                    <form action="/carRental/controller/addVehicle.php" method="POST">
                         <div class="mb-3">
                             <label class="form-label">Vehicle Type</label>
                             <select class="form-select" name="type" required>
@@ -148,23 +139,100 @@ $rentals = $rentals_stmt->fetchAll();
                         </button>
                     </form>
                 </div>
+                -->
+
+                <div id="add-vehicle" class="card-body collapse">
+    <form action="/carRental/controller/addVehicle.php" method="POST" enctype="multipart/form-data">
+        
+        <input type="hidden" name="agency_id" value="<?= $agency['id'] ?>">
+        <div class="mb-3">
+            <label class="form-label">Marque</label>
+            <input type="text" class="form-control" name="marque" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Model</label>
+            <input type="text" class="form-control" name="model" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Kilometrage</label>
+            <input type="number" class="form-control" name="kilometrage" min="0" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Année</label>
+            <input type="number" class="form-control" name="year" min="1900" max="<?php echo date('Y')+1; ?>" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Prix Par Jour ($)</label>
+            <input type="number" class="form-control" name="price_per_day" step="0.01" min="0" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Vehicle Image</label>
+            <select class="form-select" name="image" required>
+                <option value="offer1.png">Kia rio</option>
+                <option value="offer2.png">dacia sandro</option>
+                <option value="offer3.png">Seat ibiza</option>
+                <option value="offer4.png">I20</option>
+                <option value="BMW_Série_1.jpg">Bmw serie 1</option>
+                
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Fuel Type (Carburant)</label>
+            <select class="form-select" name="carburant" required>
+                <option value="essence">Essance</option>
+                <option value="diesel">Diesel</option>
+                <option value="hybride">Hybrid</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Number of Seats (nbr_place)</label>
+            <input type="number" class="form-control" name="nbr_place" min="1" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Nombre des cylinders</label>
+            <input type="number" class="form-control" name="nbr_cylindres" min="1" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Boite vitesse</label>
+            <select class="form-select" name="boite_vitesse" required>
+                <option value="manuelle">Manuelle</option>
+                <option value="automatique">Automatique</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-success">
+            <i class="fas fa-plus-circle"></i> Ajoute Vehicle
+        </button>
+    </form>
+</div>
+
+
             </div>
 
             <!-- Vehicle Inventory -->
             <div class="dashboard-card">
                 <h2><i class="fas fa-warehouse"></i> Vehicle Inventory</h2>
-                <?php if (empty($vehicles)): ?>
+                <?php if (empty($vehiclesInventory)): ?>
                     <div class="alert alert-info">No vehicles in inventory.</div>
                 <?php else: ?>
                     <div class="vehicle-list">
-                        <?php foreach ($vehicles as $vehicle): ?>
+                        <?php foreach ($vehiclesInventory as $vehicle): ?>
                             <div class="vehicle-item">
                                 <div class="vehicle-image">
                                     <img src="/carRental/assets/img/<?php echo htmlspecialchars($vehicle['image'] ?: 'default-vehicle.jpg'); ?>" 
                                          alt="<?php echo htmlspecialchars($vehicle['model']); ?>">
                                 </div>
                                 <div class="vehicle-details">
-                                    <h4><?php echo htmlspecialchars($vehicle['model'].' ('.$vehicle['year'].')'); ?></h4>
+                                    <h4><?php echo htmlspecialchars($vehicle['model'].' ('.$vehicle['year'].')'.' id : '.$vehicle['id']); ?></h4>
                                     <div class="vehicle-meta">
                                         <span><i class="fas fa-tag"></i> <?php echo ucfirst($vehicle['type']); ?></span>
                                         <span><i class="fas fa-dollar-sign"></i> <?php echo number_format($vehicle['price_per_day'], 2); ?>/day</span>
@@ -201,7 +269,7 @@ $rentals = $rentals_stmt->fetchAll();
                                 <thead>
                                     <tr>
                                         <th>Client</th>
-                                        <th>Vehicle</th>
+                                        <th>Vehicle id</th>
                                         <th>Dates</th>
                                         <th>Total</th>
                                         <th>Status</th>
@@ -211,11 +279,11 @@ $rentals = $rentals_stmt->fetchAll();
                                 <tbody>
                                     <?php foreach ($rentals as $rental): ?>
                                         <tr>
-                                            <td><?php echo htmlspecialchars($rental['client_name']); ?></td>
-                                            <td><?php echo htmlspecialchars($rental['brand'].' '.$rental['model']); ?></td>
+                                            <td><?php echo htmlspecialchars($rental['clientName']); ?></td>
+                                            <td><?php echo htmlspecialchars($rental['vehicule_id']); ?></td>
                                             <td>
-                                                <?php echo date('M j', strtotime($rental['rental_date'])); ?> - 
-                                                <?php echo date('M j, Y', strtotime($rental['return_date'])); ?>
+                                                <?php echo date('M j', strtotime($rental['start_date'])); ?> - 
+                                                <?php echo date('M j, Y', strtotime($rental['end_date'])); ?>
                                             </td>
                                             <td>$<?php echo number_format($rental['total_cost'], 2); ?></td>
                                             <td>
@@ -228,14 +296,24 @@ $rentals = $rentals_stmt->fetchAll();
                                             </td>
                                             <td>
                                                 <?php if ($rental['status'] === 'pending'): ?>
-                                                    <button class="btn btn-sm btn-success approve-rental" 
-                                                            data-id="<?php echo $rental['id']; ?>">
-                                                        Approve
-                                                    </button>
-                                                    <button class="btn btn-sm btn-danger reject-rental" 
-                                                            data-id="<?php echo $rental['id']; ?>">
-                                                        Reject
-                                                    </button>
+                                                    <form action="/carRental/controller/process_rental_request.php" method="post">
+                                                        <input type="hidden" name="action" value="approve">
+                                                        <input type="hidden" name="numDemande" value="<?= $rental['id'] ?>">
+                                                        <input type="hidden" name="vehicule_id" value="<?= $rental['vehicule_id'] ?>">
+                                                        <button class="btn btn-sm btn-success approve-rental" 
+                                                                data-id="<?php echo $rental['id']; ?>">
+                                                            Approve
+                                                        </button>
+                                                    </form>
+                                                    <form action="/carRental/controller/process_rental_request.php" method="post">
+                                                        <input type="hidden" name="action" value="reject">
+                                                        <input type="hidden" name="numDemande" value="<?= $rental['id'] ?>">
+
+                                                        <button class="btn btn-sm btn-danger reject-rental" 
+                                                                data-id="<?php echo $rental['id']; ?>">
+                                                            Reject
+                                                        </button>
+                                                    </form>
                                                 <?php endif; ?>
                                             </td>
                                         </tr>

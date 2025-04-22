@@ -102,7 +102,8 @@ $rentals = $rentals_stmt->fetchAll();
                 </div>
 
                 <div id="add-vehicle" class="card-body collapse">
-                    <form action="/carRental/controller/addVehicle.php" method="POST" enctype="multipart/form-data">
+                    <form action="/carRental/controller/manipuleVehicle.php" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="action" value="add">
 
                         <input type="hidden" name="agency_id" value="<?= $agency['id'] ?>">
                         <div class="mb-3">
@@ -199,14 +200,22 @@ $rentals = $rentals_stmt->fetchAll();
                                         </span>
                                     </div>
                                     <div class="vehicle-actions">
-                                        <button class="btn btn-sm btn-outline-primary edit-vehicle" 
-                                                data-id="<?php echo $vehicle['id']; ?>">
-                                            <i class="fas fa-edit"></i> Edit
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-danger delete-vehicle" 
-                                                data-id="<?php echo $vehicle['id']; ?>">
-                                            <i class="fas fa-trash-alt"></i> Delete
-                                        </button>
+                                        
+                                            <button class="btn btn-sm btn-outline-primary edit-vehicle" 
+                                                    data-id="<?php echo $vehicle['id']; ?>">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </button>
+                                        
+                                        
+                                        <form action="/carRental/controller/manipuleVehicle.php" method="post">
+                                            <input type="hidden" name="action" value="delete">
+                                            <input type="hidden" name="car_id" value="<?= $vehicle['id']; ?>">
+                                            <input type="hidden" name="agency_id" value="<?= $agency['id']; ?>">
+                                            <button class="btn btn-sm btn-outline-danger delete-vehicle" 
+                                                    data-id="<?php echo $vehicle['id']; ?>">
+                                                <i class="fas fa-trash-alt"></i> Delete
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -297,31 +306,6 @@ $rentals = $rentals_stmt->fetchAll();
     </div>
 </div>
 
-<!-- Delete Account Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title">Confirm Account Deletion</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>This will permanently delete your agency account and all associated data. This action cannot be undone.</p>
-                <form id="deleteForm" action="/carRental/controllers/deleteAgencyAccount.php" method="POST">
-                    <div class="mb-3">
-                        <label class="form-label">Enter your password to confirm:</label>
-                        <input type="password" class="form-control" name="password" required>
-                        <input type="hidden" name="agency_id" value="<?php echo $agency_id; ?>">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" form="deleteForm" class="btn btn-danger">Delete Account</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- Edit Vehicle Modal -->
 <div class="modal fade" id="editVehicleModal" tabindex="-1" aria-hidden="true">
@@ -341,7 +325,7 @@ $rentals = $rentals_stmt->fetchAll();
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // This runs when the page finishes loading
-
+    
     // 1. Toggle Sections
     document.querySelectorAll('.toggle-section').forEach(function(element) {
         element.addEventListener('click', function() {
@@ -365,21 +349,23 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
+    
 
     // 2. Edit Vehicle Button
     document.querySelectorAll('.edit-vehicle').forEach(function(button) {
         button.addEventListener('click', function() {
             const vehicleId = this.dataset.id;
-            fetch(`/carRental/controllers/getVehicle.php?id=${vehicleId}`)
-                .then(response => response.text())
-                .then(html => {
-                    document.querySelector('#editVehicleModal .modal-body').innerHTML = html;
-                    new bootstrap.Modal(document.getElementById('editVehicleModal')).show();
-                });
+            fetch(`/carRental/controller/manipuleVehicle.php?action=getCar&id=${vehicleId}`)
+            .then(response => response.text())
+            .then(html => {
+                document.querySelector('#editVehicleModal .modal-body').innerHTML = html;
+                new bootstrap.Modal(document.getElementById('editVehicleModal')).show();
+            });
         });
     });
 
     // 3. Delete Vehicle Button
+    /*
     document.querySelectorAll('.delete-vehicle').forEach(function(button) {
         button.addEventListener('click', function() {
             if (confirm('Are you sure?')) {
@@ -402,7 +388,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-
+    */
     // 4. Rental Status Buttons
     function updateRentalStatus(status) {
         return function() {

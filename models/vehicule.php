@@ -42,6 +42,40 @@ function  ajouteVehicle($pdo, $marque, $model, $Kilometrage, $annee, $prix, $ima
     echo "<script>console.log('ajoute car insert have been called and inserted')</script>";
 }
 
+
+function getCar($pdo, $id) {
+    $stmt = $pdo->prepare("SELECT * FROM cars WHERE id = ?");
+    $stmt->execute([$id]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+function editVehicle($pdo, $id, $price){
+    $stmt = $pdo->prepare("UPDATE cars SET price_per_day = ? WHERE id = ?");
+    $stmt->execute([$price, $id]);
+}
+ 
+
+
+function  deleteVehicle($pdo, $car_id, $agency_id){
+    $car = (int)$car_id;
+    $agency = (int)$agency_id;
+    try{
+        $stmt = $pdo->prepare("DELETE FROM cars WHERE id = ? AND agency_id = ?");
+        $stmt->execute([$car, $agency]);
+        header("Location: /carRental/views/dash-board/agencyDashBoard.php");
+        exit();
+    }catch(Exception $e){
+        echo $e->getMessage();
+        
+        $_SESSION['error_message'] = "Action non autoriser, voiture en cours de location";
+        $_SESSION['error_type'] = 'already Rented';
+        header("Location: /carRental/views/feedback.php");
+        exit();
+    }
+    
+    
+}
+
 ?>
 
 

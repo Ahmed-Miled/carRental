@@ -274,13 +274,14 @@ echo "<script>console.log(" . json_encode($cars) . ");</script>";
                                         <td><?= htmlspecialchars($user['fullName']) ?></td>
                                         <td><?= htmlspecialchars($user['email']) ?></td>
                                         <td><?= htmlspecialchars($user['phoneNumber']) ?></td>
-                                        <!-- Action Cell for buttons -->
+                                        
                                         <td class="action-cell">
-                                            <!-- Delete Form -->
-                                            <form action="/carRental/controller/delete_handler.php" method="POST" class="delete-form" onsubmit="return confirm('Are you sure you want to delete this client? This action cannot be undone.');">
+                                            
+                                            <form action="/carRental/controller/process_messages.php" method="POST" class="delete-form" onsubmit="return confirm('Are you sure you want to delete this client? This action cannot be undone.');">
                                                 <input type="hidden" name="type" value="user">
-                                                <input type="hidden" name="id" value="<?= $user['id'] ?>">
-                                                <!-- Button with specific classes from admin.css -->
+                                                <input type="hidden" name="action" value="deletClient">
+                                                <input type="hidden" name="client_id" value="<?= $user['id'] ?>">
+                                                
                                                 <button type="submit" class="btn btn-delete">
                                                     <i class="fas fa-trash-alt"></i> Delete
                                                 </button>
@@ -367,9 +368,10 @@ echo "<script>console.log(" . json_encode($cars) . ");</script>";
                                         <td><?= htmlspecialchars($agency['address']) ?></td>
                                          <td class="action-cell">
                                              <!-- Delete Form -->
-                                            <form action="/carRental/controller/delete_handler.php" method="POST" class="delete-form" onsubmit="return confirm('Are you sure you want to delete this agency? This may also affect associated cars and bookings.');">
+                                            <form action="/carRental/controller/process_messages.php" method="POST" class="delete-form" onsubmit="return confirm('Are you sure you want to delete this agency? This may also affect associated cars and bookings.');">
                                                 <input type="hidden" name="type" value="agency">
-                                                <input type="hidden" name="id" value="<?= $agency['id'] ?>">
+                                                <input type="hidden" name="action" value="deletAgency">
+                                                <input type="hidden" name="agency_id" value="<?= $agency['id'] ?>">
                                                 <button type="submit" class="btn btn-delete">
                                                     <i class="fas fa-trash-alt"></i> Delete
                                                 </button>

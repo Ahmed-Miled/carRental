@@ -149,7 +149,7 @@ require __DIR__ . '/includes/header.php';
                 </fieldset>
 
                 <div class="form-actions">
-                    <button type="submit" class="btn btn-primary btn-reserve">Confirmer la réservation</button>
+                    <button type="submit" class="btn btn-success btn-reserve">Confirmer la réservation</button>
                     <a href="liste_vehicules.php" class="btn btn-secondary">Annuler</a> <!-- Lien vers la page précédente -->
                 </div>
 

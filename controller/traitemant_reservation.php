@@ -1,7 +1,7 @@
 <?php
 require_once '../config/database.php';
 require_once '../models/reservation.php';
-
+session_start();
 
 if (!isset($pdo)){
     die("ERREUR: Connexion DB échouée. Vérifiez database.php");

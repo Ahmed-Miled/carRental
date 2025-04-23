@@ -22,6 +22,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             deleteMessage($pdo, $_POST['message_id']);
             header("Location: /carRental/views/dash-board/admin.php");
             exit();
+        }elseif($_POST['action'] == "deletClient"){
+            deleteClient($pdo, $_POST['client_id']);
+            header("Location: /carRental/views/dash-board/admin.php");
+            exit();
+        }elseif($_POST['action'] == "deletAgency"){
+            deleteAgency($pdo, $_POST['agency_id']);
+            header("Location: /carRental/views/dash-board/admin.php");
+            exit();
         }
     }
 

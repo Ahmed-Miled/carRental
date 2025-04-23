@@ -33,7 +33,7 @@ function getUsersCount($pdo, $type){
 }
 function getClients($pdo){
     echo "<script>console.log('get client have been called')</script>";
-    $stmt = $pdo->prepare("SELECT * FROM clients");
+    $stmt = $pdo->prepare("SELECT * FROM clients WHERE fullName != '' ");
     $stmt->execute();
     $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
     echo "<script>console.log('get client have been called')</script>";
@@ -42,7 +42,7 @@ function getClients($pdo){
 }
 function getAgencys($pdo){
     echo "<script>console.log('get agency have been called')</script>";
-    $stmt = $pdo->prepare("SELECT * FROM agency");
+    $stmt = $pdo->prepare("SELECT * FROM agency WHERE fullName != ''");
     $stmt->execute();
     $clients = $stmt->fetchAll(PDO::FETCH_ASSOC);
     echo "<script>console.log('get agency have been called')</script>";
@@ -52,6 +52,16 @@ function getAgencys($pdo){
 
 function deleteMessage($pdo, $id){
     $stmt = $pdo->prepare("DELETE FROM message WHERE id = ?");
+    $stmt->execute([$id]);
+}
+
+function deleteClient($pdo, $id){
+    $stmt = $pdo->prepare("DELETE FROM clients WHERE id = ?");
+    $stmt->execute([$id]);
+}
+
+function deleteAgency($pdo, $id){
+    $stmt = $pdo->prepare("DELETE FROM agency WHERE id = ?");
     $stmt->execute([$id]);
 }
 

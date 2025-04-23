@@ -10,5 +10,5 @@
         <label>Price</label>
         <input type="number" class="form-control" name="price" value="<?= htmlspecialchars($car['price']) ?>">
     </div>
-    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <button type="submit" class="btn btn-success">Save Changes</button>
 </form>

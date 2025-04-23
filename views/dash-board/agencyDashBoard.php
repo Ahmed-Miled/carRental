@@ -89,7 +89,7 @@ $rentals = $rentals_stmt->fetchAll();
                             <input type="text" class="form-control" name="address" 
                                    value="<?php echo htmlspecialchars($agency['address']); ?>">
                         </div>
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-success">
                             <i class="fas fa-save"></i> Update Profile
                         </button>
                     </form>
@@ -212,7 +212,7 @@ $rentals = $rentals_stmt->fetchAll();
                                     </div>
                                     <div class="vehicle-actions">
                                         
-                                            <button class="btn btn-sm btn-outline-primary edit-vehicle" 
+                                            <button class="btn btn-sm btn-outline-success edit-vehicle" 
                                                     data-id="<?php echo $vehicle['id']; ?>">
                                                 <i class="fas fa-edit"></i> Edit
                                             </button>
@@ -323,7 +323,7 @@ $rentals = $rentals_stmt->fetchAll();
 <div class="modal fade" id="editVehicleModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
+            <div class="modal-header bg-success text-white">
                 <h5 class="modal-title">Edit Vehicle</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>

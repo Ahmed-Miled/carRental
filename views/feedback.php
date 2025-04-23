@@ -97,7 +97,7 @@ if (isset($_SESSION['error_message']) || isset($_GET['error'])) {
     }
      /* Optionnel: type de succès spécifique */
      .feedback-container.success.reservation-success {
-        /* border-left: 5px solid #155724; */
+         border-left: 5px solid #155724; 
      }
 
 

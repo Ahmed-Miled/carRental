@@ -150,6 +150,10 @@ td.azerty form {
 /* Danger Zone */
 .danger-zone {
     border-left: 4px solid #e53e3e;
+    border-top: none;
+}
+i.fas.fa-exclamation-triangle{
+    color: #e53e3e;
 }
 
 .danger-zone .alert-warning {

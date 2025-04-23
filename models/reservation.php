@@ -7,7 +7,7 @@ function setStatus($pdo, $status, $id){
     echo "<script>console.log('status have been updated');</script>";
 }
 
-function ajouteDemande($pdo, $agency_id, $user_name, $user_email, $phoneNumber, $vehicule_id, $date_debut, $date_fin, $lieu_prise_en_charge, $lieu_restitution, $status){
+function ajouteDemande($pdo, $agency_id, $user_name, $user_email, $phoneNumber, $vehicule_id, $date_debut, $date_fin, $lieu_prise_en_charge, $lieu_restitution, $status, $prix_total){
     echo "<script>console.log('ajoute reservation have been called')</script>";
     if ($status == null){
         echo "<script>console.log('status du voiture est  null');</script>";
@@ -16,8 +16,8 @@ function ajouteDemande($pdo, $agency_id, $user_name, $user_email, $phoneNumber, 
             
             $status = 'pending';
             //update cars
-            $stmt = $pdo->prepare("INSERT INTO demande (agency_id, vehicule_id	, start_date, end_date, lieu_prise_en_charge, lieu_rest, clientName, clientEmail, phoneNumber, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->execute([$agency_id, $vehicule_id, $date_debut, $date_fin, $lieu_prise_en_charge, $lieu_restitution, $user_name, $user_email, $phoneNumber, $status]);
+            $stmt = $pdo->prepare("INSERT INTO demande (agency_id, vehicule_id	, start_date, end_date, lieu_prise_en_charge, lieu_rest, clientName, clientEmail, phoneNumber, status, prix_total) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$agency_id, $vehicule_id, $date_debut, $date_fin, $lieu_prise_en_charge, $lieu_restitution, $user_name, $user_email, $phoneNumber, $status, $prix_total]);
             setStatus($pdo, $status, $vehicule_id);
             echo "<script>console.log('requette have been executed');</script>";
             return true;
@@ -94,14 +94,14 @@ function deleteDemande($pdo, $id){
 
 
 
-function stopRental($pdo, $id, $car_id){
+function stopRental($pdo, $car_id, $reservation_id){
     echo "<script>console.log('stop rental have been called')</script>";
-    echo "<script>console.log('rental: " . $id  . "');</script>";
-    /*
+    echo "<script>console.log('car : " . $car_id  . "');</script>";
+    
     $stmt = $pdo->prepare("DELETE FROM reservations WHERE id = ?");
-    $stmt->execute([$id]);
+    $stmt->execute([$reservation_id]);
     setStatus($pdo, "available", $car_id);
-    */
+    
 }
 
 

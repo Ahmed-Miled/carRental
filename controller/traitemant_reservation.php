@@ -20,8 +20,9 @@ if (!isset($pdo)){
         $lieu_prise_en_charge = isset($_POST['lieu_prise']) ? trim($_POST['lieu_prise']) : null;
         $lieu_restitution = isset($_POST['lieu_restitution']) ? trim($_POST['lieu_restitution']) : null;
         $status = isset($_POST['status']) ? trim($_POST['status']) : null;
+        $prix_total = isset($_POST['prix_total']) ? trim($_POST['prix_total']) : 0;
         
-        if (ajouteDemande($pdo, $agency_id, $user_name, $user_email, $phoneNumber, $vehicule_id, $date_debut, $date_fin, $lieu_prise_en_charge, $lieu_restitution, $status)){
+        if (ajouteDemande($pdo, $agency_id, $user_name, $user_email, $phoneNumber, $vehicule_id, $date_debut, $date_fin, $lieu_prise_en_charge, $lieu_restitution, $status, $prix_total)){
             $_SESSION['success_message'] = "Votre reservation a bien ete ajoute.";
             $_SESSION['success_type'] = 'reservation';
 

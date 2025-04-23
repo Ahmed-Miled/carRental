@@ -36,12 +36,27 @@ function getAgencyVehicles($pdo, $agency_id){
     $vehicles = $stmt->fetchAll(PDO::FETCH_ASSOC);
     return $vehicles;
 }
+
 function  ajouteVehicle($pdo, $marque, $model, $Kilometrage, $annee, $prix, $image, $nbr_place, $nbr_cylindres, $boite_vitesse, $carburant, $status, $id_agence){
     echo "<script>console.log(' ajoute car is called')</script>";
+    echo "<script>console.log(" . json_encode($id_agence) . ")</script>";
+    echo "<script>console.log(" . json_encode($marque) . ")</script>";
+    echo "<script>console.log(" . json_encode($model) . ")</script>";
+    echo "<script>console.log(" . json_encode($Kilometrage) . ")</script>";
+    echo "<script>console.log(" . json_encode($image) . ")</script>";
+    echo "<script>console.log(" . json_encode($prix) . ")</script>";
+    echo "<script>console.log(" . json_encode($status) . ")</script>";
+    echo "<script>console.log(" . json_encode($annee) . ")</script>";
+    echo "<script>console.log(" . json_encode($carburant) . ")</script>";
+    echo "<script>console.log(" . json_encode($nbr_place) . ")</script>";
+    echo "<script>console.log(" . json_encode($nbr_cylindres) . ")</script>";
+    echo "<script>console.log(" . json_encode($boite_vitesse) . ")</script>";
     $stmt = $pdo->prepare("INSERT INTO cars (agency_id, marque, model, kilometrage, image, price_per_day, status, year, carburant, nbr_place, nbr_cylindres, boite_vitesse) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->execute([$id_agence, $marque, $model, $Kilometrage, $image, $prix, $status, $annee, $carburant, $nbr_place, $nbr_cylindres, $boite_vitesse]);
     echo "<script>console.log('ajoute car insert have been called and inserted')</script>";
+    
 }
+
 
 
 function getCar($pdo, $id) {

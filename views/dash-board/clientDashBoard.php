@@ -87,8 +87,8 @@ echo "<script>console.log(" . json_encode($rentals) . ");</script>";
                                         <span>
                                             <form action="/carRental/controller/manage_rental.php" method="post" class="stop-rental-form">
                                                 <input type="hidden" name="action" value="stop_rental">
-                                                
-                                                <input type="hidden" name="rental_id" value="<?php echo htmlspecialchars($rental['id']); // Use the reservation ID ?>">
+                                                <input type="hidden" name="reservation_id" value="<?php echo htmlspecialchars($rental['reservation_id']); // Use the reservation ID ?>">
+                                                <input type="hidden" name="car_id" value="<?php echo htmlspecialchars($rental['id']); // Use the reservation ID ?>">
                                                 <button type="submit" class="btn btn-sm btn-warning" title="Marquer cette location comme terminée">
                                                     <i class="fas fa-hand-paper"></i> Arrêter Location
                                                 </button>

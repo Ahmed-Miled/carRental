@@ -86,6 +86,7 @@ require __DIR__ . '/includes/header.php';
                 <!-- Important : Inclure l'ID du véhicule pour le traitement -->
                 <input type="hidden" name="vehicule_id" value="<?= htmlspecialchars($vehicule['id']) ?>">
                 <input type="hidden" name="agency_id" value="<?= htmlspecialchars($agency_id) ?>">
+                <input type="hidden" id="prix_total" name="prix_total" >
                 
 
                 <input type="hidden" name="status" value="<?= htmlspecialchars($vehicule['status']) ?>">
@@ -178,6 +179,7 @@ require __DIR__ . '/includes/footer.php';
         const dateFinInput = document.getElementById('date_fin');
         const costSummaryDiv = document.getElementById('cost-summary');
         const dailyRate = <?= (float)($vehicule['price_per_day'] ?? 0) ?>; // Taux journalier du véhicule
+        const hiddenInput = document.getElementById('prix_total');
 
         // Fonction pour mettre à jour la date minimum de fin
         function updateMinEndDate() {
@@ -209,8 +211,9 @@ require __DIR__ . '/includes/footer.php';
                     const totalCost = diffDays * dailyRate;
 
                      // Afficher le coût formaté
-                     costSummaryDiv.textContent = `Coût estimé (${diffDays} jour${diffDays > 1 ? 's' : ''}) : ${totalCost.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' }).replace('EUR', 'DT')}`; // Adaptez la devise si besoin
-                } else {
+                    costSummaryDiv.textContent = `Coût estimé (${diffDays} jour${diffDays > 1 ? 's' : ''}) : ${totalCost.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' }).replace('EUR', 'DT')}`; // Adaptez la devise si besoin
+                    hiddenInput.value = totalCost;
+                    } else {
                      costSummaryDiv.textContent = 'Coût estimé : (dates invalides)';
                 }
             } else {

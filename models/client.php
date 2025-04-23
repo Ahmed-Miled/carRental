@@ -88,11 +88,15 @@ function getRentalHistory($pdo, $email){
             
             $car['start_date'] = date('Y-m-d', strtotime($reservation['start_date']));
             //$car['car_id'] = $reservation['car_id'];
+            $car['reservation_id'] = $reservation['id'];
 
             $cars[] = $car;
         }
     }
-
+    // le table cars have : id agency_id marque model kilometrage image price_per_day status year carburant nbr_place nbr_cylindres boite_vitesse
+    // le table reservation have : id start_date end_date status car_id client_email created_at
+    // and in the cars i want it hev the value of the reservation id 
+    // if that possible how ?
     echo "<script>console.log('get rental history has been called')</script>";
     
     return $cars;

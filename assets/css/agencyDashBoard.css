@@ -20,9 +20,16 @@
     gap: 1.5rem;
 }
 
+td.azerty form {
+    display: block;
+}
+.azerty{
+    display: flex;
+    gap: 1em;
+}
 @media (min-width: 1200px) {
     .dashboard-grid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1.3fr;
     }
 }
 

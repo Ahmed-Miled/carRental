@@ -22,6 +22,10 @@ $agency['created_at'] = $_SESSION['created_at'];
 
 $rentals = getRentalRequests($pdo, $agency['id']);
 $vehiclesInventory = getAgencyVehicles($pdo, $agency['id']);
+echo "<script>console.log('rental request');</script>";
+echo "<script>console.log(" . json_encode($rentals) . ");</script>";
+echo "<script>console.log('vh inventory');</script>";
+echo "<script>console.log(" . json_encode($vehiclesInventory) . ");</script>";
 
 
 /*
@@ -198,9 +202,13 @@ $rentals = $rentals_stmt->fetchAll();
                                         <span><i class="fas fa-tag"></i> <?php echo ucfirst($vehicle['type']); ?></span>
                                         -->
                                         <span><i class="fas fa-dollar-sign"></i> <?php echo number_format($vehicle['price_per_day'], 2); ?>/day</span>
-                                        <span class="badge bg-<?php echo $vehicle['status'] ? 'success' : 'danger'; ?>">
-                                            <?php echo $vehicle['status'] ? 'available' : 'Rented'; ?>
-                                        </span>
+                                        
+                                        <span class="badge bg-<?php 
+                                                    echo $vehicle['status'] === 'available' ? 'success' : 
+                                                         ($vehicle['status'] === 'pending' ? 'warning' : 'danger'); 
+                                                ?>">
+                                                    <?php echo ucfirst($vehicle['status']);  ?>
+                                                </span>
                                     </div>
                                     <div class="vehicle-actions">
                                         
@@ -255,16 +263,17 @@ $rentals = $rentals_stmt->fetchAll();
                                                 <?php echo date('M j', strtotime($rental['start_date'])); ?> - 
                                                 <?php echo date('M j, Y', strtotime($rental['end_date'])); ?>
                                             </td>
-                                            <td>$<?php echo number_format($rental['total_cost'], 2); ?></td>
+                                            <td><?php echo $rental['prix_total']; ?> DT</td>
                                             <td>
                                                 <span class="badge bg-<?php 
                                                     echo $rental['status'] === 'approved' ? 'success' : 
                                                          ($rental['status'] === 'pending' ? 'warning' : 'danger'); 
                                                 ?>">
-                                                    <?php echo ucfirst($rental['status']); ?>
+                                                    <?php echo ucfirst($rental['status']);  ?>
                                                 </span>
+                                    
                                             </td>
-                                            <td>
+                                            <td class="azerty">
                                                 <?php if ($rental['status'] === 'pending'): ?>
                                                     <form action="/carRental/controller/process_rental_request.php" method="post">
                                                         <input type="hidden" name="action" value="approve">
@@ -278,7 +287,7 @@ $rentals = $rentals_stmt->fetchAll();
                                                     <form action="/carRental/controller/process_rental_request.php" method="post">
                                                         <input type="hidden" name="action" value="reject">
                                                         <input type="hidden" name="numDemande" value="<?= $rental['id'] ?>">
-
+                                                        <input type="hidden" name="vehicule_id" value="<?= $rental['vehicule_id'] ?>">
                                                         <button class="btn btn-sm btn-danger reject-rental" 
                                                                 data-id="<?php echo $rental['id']; ?>">
                                                             Reject

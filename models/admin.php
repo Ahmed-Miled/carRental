@@ -50,4 +50,9 @@ function getAgencys($pdo){
     return $clients;
 }
 
+function deleteMessage($pdo, $id){
+    $stmt = $pdo->prepare("DELETE FROM message WHERE id = ?");
+    $stmt->execute([$id]);
+}
+
 ?>

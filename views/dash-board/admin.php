@@ -34,9 +34,8 @@ try {
 
     // Get all cars with agency info
     $carStmt = $pdo->prepare("
-        SELECT c.id, c.model, c.image, c.price_per_day, c.status, c.agency_id, u.name AS agency_name
-        FROM cars c
-        JOIN users u ON c.agency_id = u.id
+        SELECT * 
+        FROM cars c, agency a WHERE c.agency_id = a.id
         ORDER BY c.created_at DESC
     ");
     $carStmt->execute();
@@ -92,6 +91,8 @@ function getStatusBadgeClass($status) {
         default: return 'status-badge-secondary'; // Defined in admin.css
     }
 }
+
+echo "<script>console.log(" . json_encode($cars) . ");</script>";
 
 ?>
 <!DOCTYPE html>
@@ -414,7 +415,7 @@ function getStatusBadgeClass($status) {
                                 <!-- Car Information -->
                                 <div class="car-info">
                                     <h4><?= htmlspecialchars($car['model']) ?></h4>
-                                    <p class="car-agency"><i class="fas fa-building"></i> Agency: <?= htmlspecialchars($car['agency_name']) ?></p>
+                                    <p class="car-agency"><i class="fas fa-building"></i> Agency: <?= htmlspecialchars($car['fullName']) ?></p>
                                     <p class="car-price"><i class="fas fa-dollar-sign"></i> <?= htmlspecialchars(number_format((float)$car['price_per_day'], 2)) ?> / day</p> <!-- Format price -->
                                 </div>
                                 <!-- Car Actions -->
@@ -459,11 +460,11 @@ function getStatusBadgeClass($status) {
                         <?php elseif (!empty($messages)): ?>
                             <?php foreach ($messages as $message): ?>
                             <!-- Individual Message Card -->
-                            <div class="message-card <?= (isset($message['is_read']) && !$message['is_read']) ? 'new-message' : '' ?>"> <!-- Add 'new-message' class if unread -->
-                                <!-- Message Header -->
+                            <div class="message-card <?= (isset($message['is_read']) && !$message['is_read']) ? 'new-message' : '' ?>"> 
+                                
                                 <div class="message-header">
-                                    <div class="sender-info"> <!-- Flex container for sender/time -->
-                                        <!-- Contact Details -->
+                                    <div class="sender-info"> 
+                                        
                                         <div class="contact-details">
                                             <span class="detail-label">From:</span>
                                             <span class="message-email">
@@ -475,7 +476,7 @@ function getStatusBadgeClass($status) {
                                             </span>
                                             <?php endif; ?>
                                         </div>
-                                        <!-- Message Timeline -->
+                                        
                                          <div class="message-timeline">
                                             <span class="timeline-badge">
                                                 <i class="fas fa-calendar-alt"></i> <?= isset($message['created_at']) ? date('M j, Y', strtotime($message['created_at'])) : 'N/A' ?>
@@ -484,42 +485,41 @@ function getStatusBadgeClass($status) {
                                                 <i class="fas fa-clock"></i> <?= isset($message['created_at']) ? date('H:i', strtotime($message['created_at'])) : '' ?>
                                             </span>
                                         </div>
-                                    </div> <!-- End sender-info -->
-                                </div> <!-- End message-header -->
-                                <!-- Message Subject -->
+                                    </div> 
+                                </div> 
+                                
                                 <div class="message-subject-line">
                                      <span class="subject-label">Subject:</span>
                                      <span class="message-subject"><?= htmlspecialchars($message['object'] ?? 'No Subject') ?></span>
                                 </div>
-                                <!-- Message Content -->
+                                
                                 <div class="message-content-card">
                                     <div class="message-content scrollable-content"> <!-- Scrollable content -->
                                         <?= nl2br(htmlspecialchars($message['content'] ?? 'No Content')) ?>
                                     </div>
                                 </div>
-                                <!-- Message Actions -->
+                                
                                 <div class="message-actions">
                                     <!-- Delete Form -->
-                                    <form action="/carRental/controller/delete.php" method="POST" class="delete-form" onsubmit="return confirm('Are you sure you want to delete this message?');">
-                                        <input type="hidden" name="type" value="message">
-                                        <input type="hidden" name="id" value="<?= $message['id'] ?>">
+                                    <form action="/carRental/controller/process_messages.php" method="POST" class="delete-form" onsubmit="return confirm('Are you sure you want to delete this message?');">
+                                        <input type="hidden" name="action" value="deletMessage">
+                                        <input type="hidden" name="message_id" value="<?= $message['id'] ?>">
                                         <button type="submit" class="btn btn-delete">
                                             <i class="fas fa-trash-alt"></i> Delete
                                         </button>
                                     </form>
-                                    <!-- Optional: Add Reply/Mark as Read Buttons here -->
+                                   
                                 </div>
-                            </div> <!-- End message-card -->
+                            </div> 
                             <?php endforeach; ?>
                         <?php endif; ?>
-                    </div> <!-- End messages-list -->
-                 </div> <!-- End section-content -->
-            </section> <!-- End messages section -->
+                    </div> 
+                 </div> 
+            </section> 
 
-        </main> <!-- End admin-main -->
-    </div> <!-- End admin-container -->
-
-    <!-- Essential JavaScript for Interactivity -->
+        </main> 
+    </div> 
+    
     <script src="/carRental/controller/scripts/admin.js"></script> <!-- Ensure path is correct -->
 
 </body>

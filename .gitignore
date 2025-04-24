@@ -1,2 +1,5 @@
 /config/database.php
 *.txt
+/vendor/
+composer.json
+composer.lock

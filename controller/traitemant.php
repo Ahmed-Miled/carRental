@@ -22,20 +22,19 @@ if (!isset($pdo)){
         "<script> console.log(" . json_encode($client) . ");</script>";
         
         if (!$client){
-            
             // error
             
             $_SESSION['error_message'] = "email incorrect. Veuillez essayer une autre fois.";
             $_SESSION['error_type'] = 'authentification';
             header('Location: /carRental/views/feedback.php');
             exit();
-        }elseif ($client['password'] == $password && $client['email'] == $ad && $client['email'] == $email) {
+        }elseif (password_verify($password, $client['password']) && $client['email'] == $ad && $client['email'] == $email) {
             // handeling admin
             echo "<script>console.log('QDSGQ');</script>";
             $_SESSION['admin_logged_in'] = true;
             header('Location: /carRental/views/dash-board/admin.php');
             exit();
-        }elseif ($role == 'client' && $client['password'] == $password && $client['email'] == $email) {
+        }elseif ($role == 'client' && password_verify($password, $client['password']) && $client['email'] == $email) {
             //handeling client
             echo "<script>console.log('connected');</script>";
             
@@ -50,7 +49,7 @@ if (!isset($pdo)){
             header('Location: /carRental/views/dash-board/clientDashBoard.php');
             exit();
 
-        }elseif ($role == 'agency' && $client['password'] == $password && $client['email'] == $email) {
+        }elseif ($role == 'agency' && password_verify($password, $client['password']) && $client['email'] == $email) {
             echo "<script>console.log('connected');</script>";
             
             

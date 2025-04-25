@@ -35,16 +35,16 @@ function emailExists($pdo, $email, $role){
 }
 
 function  createClientAccount($pdo, $fullName, $email, $password, $phoneNumber, $address, $role){
-
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     $table = getTable($role);
     if ($address == null ){
 
         $stmt = $pdo->prepare("INSERT INTO $table (fullName, email, password, phoneNumber) VALUES (?, ?, ?, ?)");
-        $stmt->execute([$fullName, $email, $password, $phoneNumber]);
+        $stmt->execute([$fullName, $email, $hashed_password, $phoneNumber]);
         return true;
     }else{
         $stmt = $pdo->prepare("INSERT INTO agency (fullName, email, password, phoneNumber, address) VALUES (?, ?, ?, ?, ?)");
-        $stmt->execute([$fullName, $email, $password, $phoneNumber, $address]);
+        $stmt->execute([$fullName, $email, $hashed_password, $phoneNumber, $address]);
         return true;
     }
 }
@@ -103,28 +103,18 @@ function getRentalHistory($pdo, $email){
 }
 
 
-function verifyyClientAccount($pdo, $id,  $password ){
-    $stmt = $pdo->prepare("SELECT * FROM clients WHERE id = ?");
-    $stmt->execute([$id]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($user['password']) {
-        echo "<script>console.log('useer password is correct')</script>";
-        return true;
-    }else{
-        return false;
-    }
-}
-
 
 function verifyClientAccount($pdo, $user_id, $password) {
+    // 1. Récupérer le hachage stocké
     $stmt = $pdo->prepare("SELECT password FROM clients WHERE id = ?");
     $stmt->execute([$user_id]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($user && $password == $user['password']) {
-        return true;
+    // 2. Vérifier avec password_verify()
+    if ($user && password_verify($password, $user['password'])) { 
+        return true; //  Mot de passe correct
     }
-    return false;
+    return false; //  Échec
 }
 
 function deleteClientAccount($pdo, $id){
@@ -140,6 +130,31 @@ function deleteClientAccount($pdo, $id){
     return true;
 }
 
+function logout() {
+    // Démarrer la session si pas déjà active
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    
+    // Vider toutes les données de session
+    $_SESSION = [];
 
+    // Détruire le cookie de session
+    if (ini_get("session.use_cookies")) {
+        $params = session_get_cookie_params();
+        setcookie(
+            session_name(),
+            '',
+            time() - 42000,
+            $params["path"],
+            $params["domain"],
+            $params["secure"],
+            $params["httponly"]
+        );
+    }
 
+    // Détruire la session
+    session_destroy();
+    return true;
+}
 ?>

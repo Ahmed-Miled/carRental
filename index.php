@@ -65,19 +65,10 @@ require 'views/includes/header.php';
         <div class="carousel-img" style="background-image: url('assets/img/nouveaute1.jpg');" role="img" aria-label="Nouveauté 1"></div>
       </div>
       <div class="carousel-item">
-        <div class="carousel-img" style="background-image: url('assets/img/v1.jpeg');" role="img" aria-label="Véhicule 1"></div>
-      </div>
-      <div class="carousel-item">
         <div class="carousel-img" style="background-image: url('assets/img/nouveaute2.jpg');" role="img" aria-label="Nouveauté 2"></div>
       </div>
       <div class="carousel-item">
-        <div class="carousel-img" style="background-image: url('assets/img/v2.avif');" role="img" aria-label="Véhicule 2"></div>
-      </div>
-      <div class="carousel-item">
         <div class="carousel-img" style="background-image: url('assets/img/nouveaute3.jpg');" role="img" aria-label="Nouveauté 3"></div>
-      </div>
-      <div class="carousel-item">
-        <div class="carousel-img" style="background-image: url('assets/img/v3.jpg');" role="img" aria-label="Véhicule 3"></div>
       </div>
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev" aria-label="Précédent">

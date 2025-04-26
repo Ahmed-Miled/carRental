@@ -41,28 +41,6 @@ $vehicules = getVehicules($pdo);
         </label>
     </div>
     
-    <div class="icon-row">
-        <label class="icon-item">
-            <input type="checkbox" name="carrosserie" value="hollandais" style="display: none;">
-            <img src="../assets/img/hollandais.png" alt="Hollandais">
-            <br>HOLLANDAIS
-        </label>
-        <label class="icon-item">
-            <input type="checkbox" name="carrosserie" value="tout-chemin" style="display: none;">
-            <img src="../assets/img/tout-chemin.png" alt="Tout chemin">
-            <br>TOUT CHEMIN
-        </label>
-        <label class="icon-item">
-            <input type="checkbox" name="carrosserie" value="velo-de-route" style="display: none;">
-            <img src="../assets/img/velo-de-route.png" alt="Vélo de route">
-            <br>ROUTE
-        </label>
-        <label class="icon-item">
-            <input type="checkbox" name="carrosserie" value="velo-electrique" style="display: none;">
-            <img src="../assets/img/velo-electrique.png" alt="Vélo électrique">
-            <br>ELECTRIQUE
-        </label>
-    </div>
 </div>
 </div>
 
@@ -71,7 +49,7 @@ $vehicules = getVehicules($pdo);
     <!-- affichage dynamique -->
 
 
-    <?php 
+<?php 
     if (isset($vehicules) && is_array($vehicules) && !empty($vehicules)):
     
         foreach ($vehicules as $vehicule):

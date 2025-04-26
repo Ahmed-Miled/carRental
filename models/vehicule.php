@@ -92,6 +92,47 @@ function  deleteVehicle($pdo, $car_id, $agency_id){
     
 }
 
+
+function addPromotion($pdo, $agency_id, $vehicle_id, $new_price, $end_date, $current_price){
+    echo "<script>console.log(" . json_encode($current_price) . ")</script>";
+    echo "<script>console.log(" . json_encode($agency_id) . ")</script>";
+    echo "<script>console.log('add promotion have been called')</script>";
+    try{
+        $stmt = $pdo->prepare("INSERT INTO promotions (agency_id, vehicle_id, promotional_price, original_price, end_date) VALUES (?, ?, ?, ?, ?)");
+        $stmt->execute([$agency_id, $vehicle_id, $new_price, $current_price, $end_date]);
+        return true;
+    }catch(Exception $e){
+        return false;
+    }
+}
+
+function getVehiculesEnPromotion($pdo) {
+    try {
+        $stmt = $pdo->prepare("
+            SELECT 
+                c.*,
+                p.promotional_price,
+                p.original_price,
+                p.end_date,
+                ROUND((p.original_price - p.promotional_price) / p.original_price * 100) AS discount_percent
+            FROM cars c
+            INNER JOIN promotions p ON c.id = p.vehicle_id
+            WHERE p.end_date > NOW()
+            GROUP BY c.id
+            ORDER BY RAND()
+            LIMIT 4
+        ");
+        
+        $stmt->execute();
+        $resultat = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+
+        return $resultat;
+
+    } catch(PDOException $e) {
+        error_log("Erreur getVehiculesEnPromotion: " . $e->getMessage());
+        return [];
+    }
+}
 ?>
 
 

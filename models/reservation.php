@@ -60,6 +60,7 @@ function getDemande($pdo, $id){
     return $resultat;
 }
 
+/*
 function ajouteReservation($pdo, $numDemande){
     // 3andi num demande lazem nzid lel reservation
 
@@ -71,13 +72,7 @@ function ajouteReservation($pdo, $numDemande){
     $status = "booked";
     setStatus($pdo, $status, $demande['vehicule_id']);
     // update cars
-    /*
-    echo "<script>console.log(" . json_encode($demande['start_date']) . ");</script>";
-    echo "<script>console.log(" . json_encode($demande['end_date']) . ");</script>";
-    echo "<script>console.log(" . json_encode($demande['vehicule_id']) . ");</script>";
-    echo "<script>console.log(" . json_encode($status) . ");</script>";
-    echo "<script>console.log(" . json_encode($demande['clientEmail']) . ");</script>";
-    */
+   
     $statment = $pdo->prepare("INSERT INTO reservations (start_date, end_date, status, car_id, client_email) VALUES (?, ?, ?, ?, ?)");
     $statment->execute([$demande['start_date'], $demande['end_date'], $status, $demande['vehicule_id'], $demande['clientEmail']]);
     echo "<script>console.log('requette inster reservation 5edmet mregla');</script>" ;
@@ -86,7 +81,36 @@ function ajouteReservation($pdo, $numDemande){
 
 
 }
+*/
 
+function ajouteReservation($pdo, $numDemande, $id, $start_date, $end_date){
+    // 3andi num demande lazem nzid lel reservation
+
+    echo "<script>console.log('ajoute reservation thave been called ');</script>";
+    $demande = getDemande($pdo, $numDemande);
+    //  id agency_id vehicule_id start_date end_date lieu_prise_en_charge lieu_rest clientName clientEmail phoneNumber status created_at
+    echo "<script>console.log('requette inster reservation tawa bch te5dem ');</script>";
+
+    if (estPossible($pdo,$id, $start_date, $end_date)){
+
+    $status = "booked";
+    setStatus($pdo, $status, $demande['vehicule_id']);
+    // update cars
+    
+    $statment = $pdo->prepare("INSERT INTO reservations (start_date, end_date, status, car_id, client_email) VALUES (?, ?, ?, ?, ?)");
+    $statment->execute([$demande['start_date'], $demande['end_date'], $status, $demande['vehicule_id'], $demande['clientEmail']]);
+    echo "<script>console.log('requette inster reservation 5edmet mregla');</script>" ;
+    //el reservation fih :
+    //  id  start_date  end_date    status  car_id  client_email    created_at  
+    }
+    else{
+        deleteDemande($pdo,$numDemande);
+        $_SESSION['error_message'] = 'azertyui';
+        $_SESSION['error_type'] = 'generic';
+        header('Location: /carRental/views/feedback.php');
+        exit();
+    }
+}
 function deleteDemande($pdo, $id){
     $stmt = $pdo->prepare("DELETE FROM demande WHERE id = ?");
     $stmt->execute([$id]);

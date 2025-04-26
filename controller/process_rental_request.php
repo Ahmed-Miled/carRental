@@ -11,7 +11,11 @@ if (!isset($pdo)){
 }else{
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($_POST['action'] == "approve"){
-            ajouteReservation($pdo, $_POST['numDemande']);
+            //ajouteReservation($pdo, );
+            
+            ajouteReservation($pdo, $_POST['numDemande'], $_POST['vehicule_id'], $_POST['start_date'], $_POST['end_date']);
+
+
             deleteDemande($pdo, $_POST['numDemande']);
             setStatus($pdo, "booked", $_POST['vehicule_id']);
             

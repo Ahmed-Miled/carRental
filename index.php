@@ -1,6 +1,9 @@
 <?php 
 define('ROOT_PATH', __DIR__);
 require 'views/includes/header.php';
+require 'config/database.php';
+require 'models/vehicule.php';
+
 ?>
 
 <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
@@ -80,54 +83,49 @@ require 'views/includes/header.php';
   </div>
 </div>
 
+
 <section class="offers-section">
   <h2 class="section-title">Nos véhicules en promotion</h2>
   <p class="section-subtitle">Profitez de nos offres exceptionnelles sur une sélection de véhicules !</p>
 
   <div class="cards-container">
-    <div class="vehicle" title="Dacia Sandero Stepway">
-      <img src="assets/img/offer2.png" class="card-img" alt="Dacia Sandero Stepway" loading="lazy">
-      <div class="card-body">
-        <h3>Dacia Sandero Stepway</h3>
-        <p>Crossover urbain avec excellent rapport qualité-prix.</p>
-        <a href="#" class="btn btn-details" data-id="1" title="Details">Détails</a>
-      </div>
-    </div>
+    
+    <?php
+    $promotions = getVehiculesEnPromotion($pdo);
+    if (count($promotions) > 0):
+        foreach ($promotions as $promotion):
+        
+          echo "<script>console.log(" . json_encode($promotion) . ")</script>";
+            // Formatage des prix
+            $ancien_prix = number_format($promotion['price_per_day'], 2, ',', ' ');
+            $nouveau_prix = number_format($promotion['promotional_price'], 2, ',', ' ');
+    ?>
+        <div class="vehicle" title="<?= htmlspecialchars($promotion['marque'] . ' ' . $promotion['model']) ?>">
+            <img src="assets/img/<?= htmlspecialchars($promotion['image']) ?>" 
+                 class="card-img" 
+                 alt="<?= htmlspecialchars($promotion['marque'] . ' ' . $promotion['model']) ?>" 
+                 loading="lazy">
 
-    <div class="vehicle" title="Seat Ibiza">
-      <img src="assets/img/offer3.png" class="card-img" alt="Seat Ibiza" loading="lazy">
-      <div class="card-body">
-        <h3>Seat Ibiza</h3>
-        <p>Citadine sportive avec technologies dernières générations.</p>
-        <a href="#" class="btn btn-details" data-id="2" title="Details">Détails</a>
+            <div class="card-body">
+                <h3><?= htmlspecialchars(ucfirst($promotion['marque']) . ' ' . htmlspecialchars(ucfirst($promotion['model']))) ?></h3>
 
-      </div>
-    </div>
-
-    <div class="vehicle" title="Hyundai i20">
-      <img src="assets/img/offer4.png" class="card-img" alt="Hyundai i20" loading="lazy">
-      <div class="card-body">
-        <h3>Hyundai i20</h3>
-        <p>Citadine moderne alliant design élégant et confort optimal.</p>
-        <a href="#" class="btn btn-details" data-id="3" title="Details">Détails</a>
-
-      </div>
-    </div>
-  
-    <div class="vehicle" title="Swift Auto">
-      <img src="assets/img/car5.webp" class="card-img" alt="Swift Auto" loading="lazy">
-      <div class="card-body">
-        <h3>Swift Auto</h3>
-        <p>Son profil abaissé et élargi, associé à des lignes dynamiques et sportives, attire tous les regards.</p>
-        <a class="btn btn-details" data-id="4" title="Details">Détails</a>
-
-      </div>
-    </div>
+                <div class="pricing">
+                    <span class="old-price"><?= $ancien_prix ?> €</span>
+                    <span class="new-price"><?= $nouveau_prix ?> €</span>
+                </div>
+        
+                <a href="#" class="btn btn-details" data-id="<?= $promotion['id'] ?>" title="Details">
+                    Détails
+                </a>
+            </div>
+        </div>
+    <?php
+        endforeach;
+    endif;
+    ?>
   </div>
 
-  <!--<button class="btn btn-more" title="Voir plus" role="button">Voir plus de véhicules</button>-->
-  <a href="views/recherchevehicules.php" class="btn btn-more" title="Voir plus">Voir plus de vélos</a>
-  
+  <a href="views/recherchevehicules.php" class="btn btn-more" title="Voir plus">Voir plus de véhicules</a>
 </section>
 
 <!-- Vehicle Details Modal -->
@@ -149,52 +147,6 @@ require 'views/includes/header.php';
   </div>
 </div>
 
-
-<section class="offers-section">
-  <h2 class="section-title">Nos vélos en promotion</h2>
-  <p class="section-subtitle">Profitez de nos offres exceptionnelles sur une sélection de vélos !</p>
-
-  <div class="cards-container">
-    <div class="vehicle velo" title="VÉLO BEST BIKE 26">
-      <img src="assets/img/v4.jpg" class="card-img" alt="VÉLO BEST BIKE 26" loading="lazy">
-      <div class="card-body">
-        <h3>VÉLO BEST BIKE 26</h3>
-        <p>La bicyclette Best Bike 26" est construite autour d'un cadre en Platinum, offrant ainsi durabilité et résistance.</p>
-        <a href="#" class="btn btn-details" title="Details" role="button">Détails</a>
-      </div>
-    </div>
-
-    <div class="vehicle velo" title="TRQZNLEP Vélo">
-      <img src="assets/img/v5.avif" class="card-img" alt="TRQZNLEP Vélo" loading="lazy">
-      <div class="card-body">
-        <h3>TRQZNLEP Vélo</h3>
-        <p>Transformez Facilement Votre Vélo En Vélo Électrique</p>
-        <a href="#" class="btn btn-details" title="Details" role="button">Détails</a>
-      </div>
-    </div>
-
-    <div class="vehicle velo" title="adulte tout-terrain">
-      <img src="assets/img/v6.avif" class="card-img" alt="adulte tout-terrain" loading="lazy">
-      <div class="card-body">
-        <h3>Adulte tout-terrain</h3>
-        <p>vélo de route hommes femmes 26 pouces couteau roue vélo à vitesse Variable vtt vélo.</p>
-        <a href="#" class="btn btn-details" title="Details" role="button">Détails</a>
-      </div>
-    </div>
-  
-    <div class="vehicle velo" title="Vélos de Ville">
-      <img src="assets/img/v7.avif" class="card-img" alt="Vélos de Ville" loading="lazy">
-      <div class="card-body">
-        <h3>Vélos de Ville</h3>
-        <p>Évadez-vous en ville grâce à nos vélos urbains (hollandais, fixie, longues distances), vélos électriques confortables, sûrs et équipés !</p>
-        <a href="#" class="btn btn-details" title="Details" role="button">Détails</a>
-      </div>
-    </div>  
-  </div>
-
-  <!--<button class="btn btn-more" title="Voir plus" role="button">Voir plus de vélos</button>-->
-  <a href="views/recherchevehicules.php" class="btn btn-more" title="Voir plus">Voir plus de vélos</a>
-</section>
 
 <div class="client-testimonials">
   <h2 class="section-title">Ce que disent nos clients</h2>
@@ -253,6 +205,24 @@ require 'views/includes/header.php';
     </iframe>
   </div>
 </section>
+
+<style>
+  .pricing {
+    margin: 15px 0;
+    font-size: 1.2em;
+}
+
+.old-price {
+    text-decoration: line-through;
+    color: #ff0000;
+    margin-right: 10px;
+}
+
+.new-price {
+    color: #00aa00;
+    font-weight: bold;
+}
+</style>
 
 <?php 
 require 'views/includes/footer.php';

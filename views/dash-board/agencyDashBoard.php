@@ -216,6 +216,15 @@ $rentals = $rentals_stmt->fetchAll();
                                                     data-id="<?php echo $vehicle['id']; ?>">
                                                 <i class="fas fa-edit"></i> Edit
                                             </button>
+
+                                            <!-- Inside the vehicle inventory loop -->
+                                            <button class="btn btn-sm btn-outline-info add-promotion"
+                                                    data-bs-toggle="modal"  
+                                                    data-bs-target="#promotionModal" 
+                                                    data-id="<?php echo $vehicle['id']; ?>"
+                                                    data-price="<?php echo $vehicle['price_per_day']; ?>">
+                                                <i class="fas fa-tag"></i> Add Promotion
+                                            </button>
                                         
                                         
                                         <form action="/carRental/controller/manipuleVehicle.php" method="post">
@@ -277,6 +286,9 @@ $rentals = $rentals_stmt->fetchAll();
                                                 <?php if ($rental['status'] === 'pending'): ?>
                                                     <form action="/carRental/controller/process_rental_request.php" method="post">
                                                         <input type="hidden" name="action" value="approve">
+                                                        <input type="hidden" name="start_date" value="<?= $rental['start_date'] ?>">
+                                                        <input type="hidden" name="end_date" value="<?= $rental['end_date'] ?>">
+                                                        <input type="hidden" name="vehicule_id" value="<?= $rental['vehicule_id'] ?>">
                                                         <input type="hidden" name="numDemande" value="<?= $rental['id'] ?>">
                                                         <input type="hidden" name="vehicule_id" value="<?= $rental['vehicule_id'] ?>">
                                                         <button class="btn btn-sm btn-success approve-rental" 
@@ -334,8 +346,66 @@ $rentals = $rentals_stmt->fetchAll();
     </div>
 </div>
 
+<!-- Promotion Modal -->
+<form action="/carRental/controller/manipuleVehicle.php" method="post">
+    <input type="hidden" name="action" value="addPromotion">
+    <div class="modal fade" id="promotionModal" tabindex="-1" role="dialog" aria-labelledby="promotionModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="promotionModalLabel">Add Promotion</h5>
+                        <!-- Use Bootstrap 5 standard close button structure -->
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                                                    
+                    <div class="modal-body">
+                        <input type="hidden" name="vehicle_id" id="promotionVehicleId">
+                        <input type="hidden" name="agency_id" value="<?= $agency['id']; ?>">
+                                                    
+                        <div class="form-group">
+                            <label>Current Price</label>
+                            <input type="number" class="form-control" name="current_price" id="currentPrice" disabled>
+                        </div>
+                                                    
+                        <div class="form-group">
+                            <label for="newPrice">Promotional Price</label>
+                            <input type="number" step="0.01" class="form-control" name="new_price" required>
+                        </div>
+                                                    
+                        <div class="form-group">
+                            <label for="endDate">Promotion End Date</label>
+                            <input type="date" class="form-control" name="end_date" required min="<?= date('Y-m-d'); ?>">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>      
+                        <button type="submit" class="btn btn-primary">Save Promotion</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!--
+<form action="/carRental/controller/manipuleVehicle.php" method="post">
+                        
+                        <input type="hidden" name="current_price" id="currentPrice">
+                        <button type="submit" class="btn btn-primary">Save Promotion</button>
+                    </form>
+-->
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+
+    $('#promotionModal').on('show.bs.modal', function (event) {
+        const button = $(event.relatedTarget);
+        const vehicleId = button.data('id');
+        const currentPrice = button.data('price');
+        
+        const modal = $(this);
+        modal.find('#promotionVehicleId').val(vehicleId);
+        modal.find('#currentPrice').val(currentPrice);
+    });
+
     // This runs when the page finishes loading
     
     // 1. Toggle Sections

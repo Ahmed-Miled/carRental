@@ -41,6 +41,24 @@ if (!isset($pdo)){
             editVehicle($pdo, $id, $price);
             header("Location: /carRental/views/dash-board/agencyDashBoard.php");
             exit();
+        }elseif($action == "addPromotion"){
+            $agency_id = $_POST['agency_id'];
+            $vehicle_id = $_POST['vehicle_id'];
+            $new_price = $_POST['new_price'];
+            $current_price = $_POST['current_price'];
+            $end_date = $_POST['end_date'];
+            if(addPromotion($pdo, $agency_id, $vehicle_id, $new_price, $end_date, $current_price)){    
+                $_SESSION['success_message'] = "Promotion créée avec succès !";
+                $_SESSION['success_type'] = "promotion ajoutée"; 
+                header("Location: /carRental/views/feedback.php");
+                exit();
+            }else{
+                $_SESSION['error_message'] = "Le voiture est deja en promotion";
+                $_SESSION['error_type'] = "database-error";
+                header("Location: /carRental/views/feedback.php");
+                exit();
+            }
+            
         }
     }elseif ($_SERVER["REQUEST_METHOD"] == "GET") {
         $action = $_GET['action'];

@@ -409,3 +409,19 @@ left: 0;
   columns: 1;
 }
 }
+
+.pricing {
+  margin: 15px 0;
+  font-size: 1.2em;
+}
+
+.old-price {
+    text-decoration: line-through;
+    color: #ff0000;
+    margin-right: 10px;
+}
+
+.new-price {
+    color: #00aa00;
+    font-weight: bold;
+}

@@ -95,10 +95,24 @@ require 'models/vehicule.php';
     if (count($promotions) > 0):
         foreach ($promotions as $promotion):
         
+          $vehicleData = htmlspecialchars(json_encode([
+            'id' => $promotion['id'],
+            'marque' => $promotion['marque'],
+            'model' => $promotion['model'],
+            'year' => $promotion['year'],
+            'fuel_type' => $promotion['carburant'],
+            'mileage' => number_format($promotion['kilometrage'], 0, ',', ' '),
+            'description' => $promotion['boite_vitesse'],
+            'image' => $promotion['image'],
+            'price_per_day' => number_format($promotion['price_per_day'], 2, ',', ' '),
+            'promotional_price' => number_format($promotion['promotional_price'], 2, ',', ' ')
+        ]), ENT_QUOTES, 'UTF-8');
+
+
           echo "<script>console.log(" . json_encode($promotion) . ")</script>";
-            // Formatage des prix
-            $ancien_prix = number_format($promotion['price_per_day'], 2, ',', ' ');
-            $nouveau_prix = number_format($promotion['promotional_price'], 2, ',', ' ');
+           // Formatage des prix
+          $ancien_prix = number_format($promotion['price_per_day'], 2, ',', ' ');
+          $nouveau_prix = number_format($promotion['promotional_price'], 2, ',', ' ');
     ?>
         <div class="vehicle" title="<?= htmlspecialchars($promotion['marque'] . ' ' . $promotion['model']) ?>">
             <img src="assets/img/<?= htmlspecialchars($promotion['image']) ?>" 
@@ -114,9 +128,11 @@ require 'models/vehicule.php';
                     <span class="new-price"><?= $nouveau_prix ?> €</span>
                 </div>
         
-                <a href="#" class="btn btn-details" data-id="<?= $promotion['id'] ?>" title="Details">
-                    Détails
-                </a>
+    <a href="#" class="btn btn-details" 
+    data-vehicle="<?= $vehicleData ?>" 
+    title="Details">
+    Détails
+    </a>
             </div>
         </div>
     <?php
@@ -206,24 +222,8 @@ require 'models/vehicule.php';
   </div>
 </section>
 
-<style>
-  .pricing {
-    margin: 15px 0;
-    font-size: 1.2em;
-}
-
-.old-price {
-    text-decoration: line-through;
-    color: #ff0000;
-    margin-right: 10px;
-}
-
-.new-price {
-    color: #00aa00;
-    font-weight: bold;
-}
-</style>
 
 <?php 
 require 'views/includes/footer.php';
 ?>
+

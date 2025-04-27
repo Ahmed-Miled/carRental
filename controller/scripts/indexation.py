@@ -31,7 +31,7 @@ def get_vehicles():
         
         # Requête de test plus simple pour debug
         debug_log("Exécution de la requête SQL...")
-        cursor.execute("SELECT * FROM cars LIMIT 5")  # Test sans condition WHERE
+        cursor.execute("SELECT * FROM cars ")  # Test sans condition WHERE
         
         vehicles = cursor.fetchall()
         debug_log(f"Nombre de véhicules bruts trouvés: {len(vehicles)}")

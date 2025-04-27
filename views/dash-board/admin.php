@@ -100,7 +100,7 @@ echo "<script>console.log(" . json_encode($cars) . ");</script>";
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - CarRent</title>
+    <title>Tableau de bord d'administration - CarRent</title>
 
     <link rel="icon" href="/carRental/assets/favicon.ico" type="image/x-icon"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -116,16 +116,16 @@ echo "<script>console.log(" . json_encode($cars) . ");</script>";
             <!-- Sidebar Header -->
             <div class="sidebar-header">
                 <a href="/carRental/views/admin/admin.php" class="admin-logo-link">
-                    <i class="fas fa-car-side logo-icon"></i> <!-- Logo Icon -->
-                    <span class="admin-title">CarRent Admin</span> <!-- Title -->
+                    <i class="fas fa-car-side logo-icon"></i> 
+                    <span class="admin-title">CarRent Administrateur</span>
                 </a>
             </div>
             <!-- Navigation Links -->
             <ul class="admin-nav">
-                <!-- Each li is a nav-item, active class added by JS -->
+                
                 <li class="nav-item active" data-target="status">
                     <a href="#status">
-                        <i class="nav-icon fas fa-tachometer-alt"></i> Status <!-- Icon + Text -->
+                        <i class="nav-icon fas fa-tachometer-alt"></i> Statut 
                     </a>
                 </li>
                 <li class="nav-item" data-target="users">
@@ -135,12 +135,12 @@ echo "<script>console.log(" . json_encode($cars) . ");</script>";
                 </li>
                 <li class="nav-item" data-target="agencies">
                     <a href="#agencies">
-                        <i class="nav-icon fas fa-building"></i> Agencies
+                        <i class="nav-icon fas fa-building"></i> Agences
                     </a>
                 </li>
                 <li class="nav-item" data-target="cars">
                     <a href="#cars">
-                        <i class="nav-icon fas fa-car"></i> Cars
+                        <i class="nav-icon fas fa-car"></i> Voitures
                     </a>
                 </li>
                 <li class="nav-item" data-target="messages">
@@ -163,13 +163,13 @@ echo "<script>console.log(" . json_encode($cars) . ");</script>";
                 <li class="nav-item logout-item">
                     
                     <a href="/carRental/views/auth/logout.php"> 
-                        <i class="nav-icon fas fa-sign-out-alt"></i> Log Out
+                        <i class="nav-icon fas fa-sign-out-alt"></i> Se déconnecter
                     </a>
                 </li>
             </ul>
-            <!-- Sidebar Footer -->
+            
             <div class="sidebar-footer">
-                <p>© <?= date('Y') ?> CarRent. All rights reserved.</p>
+                <p>© <?= date('Y') ?> CarRent. Tous droits réservés.</p>
             </div>
         </nav>
 
@@ -187,44 +187,44 @@ echo "<script>console.log(" . json_encode($cars) . ");</script>";
             <section class="content-section active" id="status">
                 <!-- Section Header -->
                 <div class="section-header">
-                    <h3><i class="fas fa-chart-line"></i> Quick Status Overview</h3>
+                    <h3><i class="fas fa-chart-line"></i> Aperçu rapide de l'état</h3>
                 </div>
-                <!-- Section Content -->
+                
                 <div class="section-content">
-                    <!-- Status Cards Grid -->
+                    
                     <div class="status-cards">
-                        <!-- Card for Total Users -->
+                        
                         <div class="status-card card-users"> <!-- Specific class for potential styling -->
                             <div class="card-icon"><i class="fas fa-users"></i></div>
                             <div class="card-content">
-                                <h4>Total Users</h4>
+                                <h4>Nombre total d'utilisateurs</h4>
                                 <p class="card-value"><?= getUsersCount($pdo, 'all') ?></p>
-                                <span class="card-subtext">(<?= getUsersCount($pdo, 'client') ?> Clients, <?= getUsersCount($pdo, 'agency') ?> Agencies)</span>
+                                <span class="card-subtext">(<?= getUsersCount($pdo, 'client') ?> Clients, <?= getUsersCount($pdo, 'agency') ?> Agences)</span>
                             </div>
                         </div>
                         <!-- Card for Active Bookings -->
                         <div class="status-card card-bookings">
                             <div class="card-icon"><i class="fas fa-calendar-check"></i></div>
                             <div class="card-content">
-                                <h4>Active Bookings</h4>
+                                <h4>Réservations actives</h4>
                                 <p class="card-value"><?= $activeBookings ?></p>
-                                <span class="card-subtext">Ongoing or Upcoming</span>
+                                <span class="card-subtext">En cours ou à venir</span>
                             </div>
                         </div>
                         <!-- Card for Available Cars -->
                         <div class="status-card card-cars">
                             <div class="card-icon"><i class="fas fa-car-side"></i></div>
                             <div class="card-content">
-                                <h4>Available Cars Now</h4>
+                                <h4>Voitures disponibles maintenant</h4>
                                 <p class="card-value"><?= $availableCarsCount ?></p>
-                                <span class="card-subtext">Ready for Rent</span>
+                                <span class="card-subtext">Prêt à louer</span>
                             </div>
                         </div>
                          <!-- Card for Unread Messages -->
                         <div class="status-card card-messages">
                             <div class="card-icon"><i class="fas fa-envelope-open-text"></i></div>
                             <div class="card-content">
-                                <h4>Unread Messages</h4>
+                                <h4>Messages non lus</h4>
                                 <p class="card-value"><?= $unreadCount ?></p> <!-- Use calculated unread count -->
                             </div>
                         </div>
@@ -232,22 +232,22 @@ echo "<script>console.log(" . json_encode($cars) . ");</script>";
 
                     <!-- Quick Stats / Recent Activity -->
                     <div class="quick-stats"> <!-- Styling from admin.css -->
-                        <h4>Recent Activity Summary</h4>
+                        <h4>Résumé des activités récentes</h4>
                         <ul class="activity-list"> <!-- Styling from admin.css -->
-                            <li><i class="fas fa-user-plus"></i> <span>2</span> New Signups (Today) <span class="text-muted">(Example - Needs Real Data)</span></li>
-                            <li><i class="fas fa-car"></i> <span><?= count($cars) ?></span> Total Cars Listed</li>
-                            <li><i class="fas fa-check-circle text-success"></i> System Status: Operational</li>
+                            <li><i class="fas fa-user-plus"></i> <span>2</span> Nouvelles inscriptions (aujourd'hui) <span class="text-muted">(Exemple - Nécessite des données réelles)</span></li>
+                            <li><i class="fas fa-car"></i> <span><?= count($cars) ?></span> Nombre total de voitures répertoriées</li>
+                            <li><i class="fas fa-check-circle text-success"></i> État du système : opérationnel</li>
                         </ul>
                     </div>
                 </div> 
             </section>
 
-            <!-- Users (Clients) Section (Matches CSS Structure) -->
+            
             <section class="content-section" id="users">
                 <div class="section-header">
-                    <h3><i class="fas fa-users"></i> Manage Clients</h3>
+                    <h3><i class="fas fa-users"></i> Gérer les clients</h3>
                      <div class="section-actions">
-                        <!-- Stat Badge for total count -->
+                        
                         <span class="stat-badge info-badge"> 
                             <i class="fas fa-user-check"></i> <?= getUsersCount($pdo, 'client') ?> Total Clients
                         </span>
@@ -255,17 +255,17 @@ echo "<script>console.log(" . json_encode($cars) . ");</script>";
                 </div>
                  <div class="section-content">
                     <?php if (empty($clients) && !$dbError): ?> <!-- Show only if no DB error AND no clients -->
-                        <div class="alert alert-info">No client accounts found.</div> <!-- Alert styling -->
+                        <div class="alert alert-info">Aucun compte client trouvé.</div> <!-- Alert styling -->
                     <?php elseif (!empty($clients)): ?>
-                        <!-- Responsive Table Wrapper -->
+                        
                         <div class="table-responsive">
-                            <table class="data-table"> <!-- Table styling from admin.css -->
+                            <table class="data-table"> 
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
+                                        <th>Nom</th>
                                         <th>Email</th>
                                         <th>Phone Number</th>
-                                        <th>Actions</th>
+                                        <th>Actes</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -277,13 +277,13 @@ echo "<script>console.log(" . json_encode($cars) . ");</script>";
                                         
                                         <td class="action-cell">
                                             
-                                            <form action="/carRental/controller/process_messages.php" method="POST" class="delete-form" onsubmit="return confirm('Are you sure you want to delete this client? This action cannot be undone.');">
+                                            <form action="/carRental/controller/process_messages.php" method="POST" class="delete-form" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce client ? Cette action est irréversible.');">
                                                 <input type="hidden" name="type" value="user">
                                                 <input type="hidden" name="action" value="deletClient">
                                                 <input type="hidden" name="client_id" value="<?= $user['id'] ?>">
                                                 
                                                 <button type="submit" class="btn btn-delete">
-                                                    <i class="fas fa-trash-alt"></i> Delete
+                                                    <i class="fas fa-trash-alt"></i> Supprimer
                                                 </button>
                                             </form>
                                         </td>
@@ -291,21 +291,21 @@ echo "<script>console.log(" . json_encode($cars) . ");</script>";
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
-                        </div> <!-- End table-responsive -->
+                        </div> 
                     <?php endif; ?>
-                 </div> <!-- End section-content -->
-            </section> <!-- End users section -->
+                 </div> 
+            </section> 
 
-            <!-- Agencies Section (Matches CSS Structure) -->
+            
             <section class="content-section" id="agencies">
                 <div class="section-header">
-                    <h3><i class="fas fa-building"></i> Manage Agencies</h3>
+                    <h3><i class="fas fa-building"></i> Gérer les agences</h3>
                     <div class="section-actions">
                         <span class="stat-badge info-badge">
-                           <i class="fas fa-building-user"></i> <?= getUsersCount($pdo, 'agency') ?> Total Agencies
+                           <i class="fas fa-building-user"></i> <?= getUsersCount($pdo, 'agency') ?> Total des agences
                         </span>
-                        <!-- Add Agency Button -->
-                        <button class="btn btn-add" id="add-agency-btn"><i class="fas fa-plus"></i> Add Agency</button>
+                        
+                        <button class="btn btn-add" id="add-agency-btn"><i class="fas fa-plus"></i> Ajouter une agence</button>
                     </div>
                 </div>
                  <div class="section-content">
@@ -313,15 +313,15 @@ echo "<script>console.log(" . json_encode($cars) . ");</script>";
                     <form class="add-agency-form" id="add-agency-form" action="/carRental/controller/traitemant.php" method="POST" style="display: none;"> <!-- Ensure action path is correct -->
                     <input type="hidden" name="action" value="signup">
                     <input type="hidden" name="role" value="admin">    
-                    <h4>New Agency Details</h4>
+                    <h4>Détails de la nouvelle agence</h4>
                         <!-- Form Grid for layout -->
                         <div class="form-grid">
                             <div class="form-group">
-                                <label for="user_name">Agency Name</label>
+                                <label for="user_name">Nom de l'agence</label>
                                 <input type="text" id="user_name" name="user_name" placeholder="Enter Agency Name" required>
                             </div>
                             <div class="form-group">
-                                <label for="phoneNumber">Phone Number</label>
+                                <label for="phoneNumber">Numéro de téléphone</label>
                                 <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Enter Phone Number" required>
                             </div>
                             <div class="form-group">
@@ -333,30 +333,30 @@ echo "<script>console.log(" . json_encode($cars) . ");</script>";
                                 <input type="email" id="user_email" name="user_email" placeholder="Enter Email Address" required>
                             </div>
                              <div class="form-group">
-                                <label for="user_password">Password</label>
+                                <label for="user_password">Mot de passe</label>
                                 <input type="password" id="user_password" name="user_password" placeholder="Create a Password" required>
                             </div>
                         </div>
-                        <!-- Form Actions (Cancel/Save) -->
+                        
                         <div class="form-actions">
-                            <button type="button" class="btn btn-cancel" id="cancel-add-agency-btn">Cancel</button>
-                            <button type="submit" class="btn btn-save">Save Agency</button>
+                            <button type="button" class="btn btn-cancel" id="cancel-add-agency-btn">Annuler</button>
+                            <button type="submit" class="btn btn-save">Enregistrer l'agence</button>
                         </div>
-                    </form> <!-- End add-agency-form -->
-
+                    </form>
+                    
                     <!-- Agencies List Table -->
                      <?php if (empty($agencies) && !$dbError): ?>
-                        <div class="alert alert-info">No agency accounts found.</div>
+                        <div class="alert alert-info">Aucun compte d'agence trouvé.</div>
                     <?php elseif (!empty($agencies)): ?>
                         <div class="table-responsive">
                              <table class="data-table">
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
+                                        <th>Nom</th>
                                         <th>Email</th>
-                                        <th>Phone Number</th>
-                                        <th>Address</th>
-                                        <th>Actions</th>
+                                        <th>Numéro de téléphone</th>
+                                        <th>Adresse</th>
+                                        <th>Actes</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -368,12 +368,12 @@ echo "<script>console.log(" . json_encode($cars) . ");</script>";
                                         <td><?= htmlspecialchars($agency['address']) ?></td>
                                          <td class="action-cell">
                                              <!-- Delete Form -->
-                                            <form action="/carRental/controller/process_messages.php" method="POST" class="delete-form" onsubmit="return confirm('Are you sure you want to delete this agency? This may also affect associated cars and bookings.');">
+                                            <form action="/carRental/controller/process_messages.php" method="POST" class="delete-form" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette agence ? Cela pourrait également affecter les voitures et réservations associées.');">
                                                 <input type="hidden" name="type" value="agency">
                                                 <input type="hidden" name="action" value="deletAgency">
                                                 <input type="hidden" name="agency_id" value="<?= $agency['id'] ?>">
                                                 <button type="submit" class="btn btn-delete">
-                                                    <i class="fas fa-trash-alt"></i> Delete
+                                                    <i class="fas fa-trash-alt"></i> Supprimer
                                                 </button>
                                             </form>
                                         </td>
@@ -384,56 +384,56 @@ echo "<script>console.log(" . json_encode($cars) . ");</script>";
                         </div> <!-- End table-responsive -->
                     <?php endif; ?>
                  </div> <!-- End section-content -->
-            </section> <!-- End agencies section -->
+            </section>
 
             <!-- Cars Section (Matches CSS Structure) -->
             <section class="content-section" id="cars">
                 <div class="section-header">
-                    <h3><i class="fas fa-car"></i> Manage Cars</h3>
+                    <h3><i class="fas fa-car"></i> Gérer les voitures</h3>
                      <div class="section-actions">
                         <span class="stat-badge info-badge">
-                            <i class="fas fa-car-side"></i> <?= count($cars) ?> Total Cars
+                            <i class="fas fa-car-side"></i> <?= count($cars) ?>Total des voitures
                         </span>
                     </div>
                 </div>
                  <div class="section-content">
                     <?php if (empty($cars) && !$dbError): ?>
-                        <div class="alert alert-info">No cars found in the system.</div>
+                        <div class="alert alert-info">Aucune voiture trouvée dans le système.</div>
                     <?php elseif (!empty($cars)): ?>
-                        <!-- Cars Grid Layout -->
-                        <div class="cars-grid"> <!-- Grid styling from admin.css -->
+                        
+                        <div class="cars-grid">
                             <?php foreach ($cars as $car): ?>
-                            <!-- Individual Car Card -->
-                            <div class="car-card"> <!-- Card styling from admin.css -->
-                                <!-- Car Image Container -->
+                                
+                            <div class="car-card">
+                                
                                 <div class="car-image-container">
-                                    <!-- Image with fallback -->
-                                    <img src="/carRental/assets/img/<?= htmlspecialchars($car['image'] ?: 'default_car.png') ?>" alt="<?= htmlspecialchars($car['model']) ?>" loading="lazy" onerror="this.onerror=null; this.src='/carRental/assets/img/default_car.png';"> <!-- Ensure paths are correct -->
-                                    <!-- Status Badge positioned absolutely -->
-                                    <span class="status-badge <?= getStatusBadgeClass($car['status']) ?>"> <!-- Dynamic class from helper function -->
+                                    
+                                    <img src="/carRental/assets/img/<?= htmlspecialchars($car['image'] ?: 'default_car.png') ?>" alt="<?= htmlspecialchars($car['model']) ?>" loading="lazy" onerror="this.onerror=null; this.src='/carRental/assets/img/default_car.png';">
+                                    
+                                    <span class="status-badge <?= getStatusBadgeClass($car['status']) ?>"> 
                                         <?= htmlspecialchars(ucfirst($car['status'])) ?>
                                     </span>
                                 </div>
                                 <!-- Car Information -->
                                 <div class="car-info">
                                     <h4><?= htmlspecialchars($car['model']) ?></h4>
-                                    <p class="car-agency"><i class="fas fa-building"></i> Agency: <?= htmlspecialchars($car['fullName']) ?></p>
-                                    <p class="car-price"><i class="fas fa-dollar-sign"></i> <?= htmlspecialchars(number_format((float)$car['price_per_day'], 2)) ?> / day</p> <!-- Format price -->
+                                    <p class="car-agency"><i class="fas fa-building"></i> Agence: <?= htmlspecialchars($car['fullName']) ?></p>
+                                    <p class="car-price"><i class="fas fa-dollar-sign"></i> <?= htmlspecialchars(number_format((float)$car['price_per_day'], 2)) ?> / Jour</p> 
                                 </div>
-                                <!-- Car Actions -->
+                                
                                 <div class="car-actions">
-                                    <!-- Delete Form -->
+                                    
                                     <form action="/carRental/controller/delete_handler.php" method="POST" class="delete-form" onsubmit="return confirm('Are you sure you want to delete this car?');">
                                         <input type="hidden" name="type" value="car">
                                         <input type="hidden" name="id" value="<?= $car['id'] ?>">
                                         <button type="submit" class="btn btn-delete">
-                                            <i class="fas fa-trash-alt"></i> Delete
+                                            <i class="fas fa-trash-alt"></i> Supprimer
                                         </button>
                                     </form>
                                 </div>
-                            </div> <!-- End car-card -->
+                            </div> 
                             <?php endforeach; ?>
-                        </div> <!-- End cars-grid -->
+                        </div> 
                     <?php endif; ?>
                  </div> <!-- End section-content -->
             </section> <!-- End cars section -->
@@ -441,23 +441,23 @@ echo "<script>console.log(" . json_encode($cars) . ");</script>";
              <!-- Messages Section (Matches CSS Structure) -->
             <section class="content-section" id="messages">
                 <div class="section-header">
-                    <h3><i class="fas fa-envelope"></i> Customer Messages</h3>
+                    <h3><i class="fas fa-envelope"></i> Messages clients</h3>
                     <div class="section-actions">
                         <span class="stat-badge info-badge">
-                             <i class="fas fa-inbox"></i> <?= count($messages) ?> Messages Found
+                             <i class="fas fa-inbox"></i> <?= count($messages) ?> Messages trouvés
                         </span>
-                        <!-- Optional: Add Mark All as Read button here -->
+                        
                     </div>
                 </div>
                  <div class="section-content">
                      <!-- Messages List Container -->
-                     <div class="messages-list"> <!-- List styling from admin.css -->
+                     <div class="messages-list"> 
                         <?php if (empty($messages) && !$dbError): ?>
                             <!-- Empty State Message -->
-                            <div class="empty-state"> <!-- Styling from admin.css -->
+                            <div class="empty-state"> 
                                 <i class="fas fa-folder-open"></i>
-                                <h4>No Messages Yet</h4>
-                                <p>Your inbox is currently empty. New messages will appear here.</p>
+                                <h4>Aucun message pour le moment</h4>
+                                <p>Votre boîte de réception est actuellement vide. Les nouveaux messages apparaîtront ici.</p>
                             </div>
                         <?php elseif (!empty($messages)): ?>
                             <?php foreach ($messages as $message): ?>
@@ -468,7 +468,7 @@ echo "<script>console.log(" . json_encode($cars) . ");</script>";
                                     <div class="sender-info"> 
                                         
                                         <div class="contact-details">
-                                            <span class="detail-label">From:</span>
+                                            <span class="detail-label">De:</span>
                                             <span class="message-email">
                                                 <?= htmlspecialchars($message['email'] ?? 'N/A') ?>
                                             </span>
@@ -491,13 +491,13 @@ echo "<script>console.log(" . json_encode($cars) . ");</script>";
                                 </div> 
                                 
                                 <div class="message-subject-line">
-                                     <span class="subject-label">Subject:</span>
-                                     <span class="message-subject"><?= htmlspecialchars($message['object'] ?? 'No Subject') ?></span>
+                                     <span class="subject-label">Sujet:</span>
+                                     <span class="message-subject"><?= htmlspecialchars($message['object'] ?? 'Aucun sujet') ?></span>
                                 </div>
                                 
                                 <div class="message-content-card">
                                     <div class="message-content scrollable-content"> <!-- Scrollable content -->
-                                        <?= nl2br(htmlspecialchars($message['content'] ?? 'No Content')) ?>
+                                        <?= nl2br(htmlspecialchars($message['content'] ?? 'Aucun contenu')) ?>
                                     </div>
                                 </div>
                                 
@@ -522,7 +522,7 @@ echo "<script>console.log(" . json_encode($cars) . ");</script>";
         </main> 
     </div> 
     
-    <script src="/carRental/controller/scripts/admin.js"></script> <!-- Ensure path is correct -->
+    <script src="/carRental/controller/scripts/admin.js"></script> 
 
 </body>
 </html>

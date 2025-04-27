@@ -22,8 +22,8 @@ $isLogin = !isset($_GET['action']) || $_GET['action'] === 'login';
     <div class="auth-container">
         <!-- Role Selection -->
         <div class="role-selection ">
-            <h2 class="section-title">Welcome to CarRent</h2>
-            <p class="section-subtitle">Choose your account type</p>
+            <h2 class="section-title">Bienvenue à CarRent</h2>
+            <p class="section-subtitle">Choisissez votre type de compte</p>
             <div class="role-options">
                 <a href="?role=client&action=login" class="role-card">
                     <div class="role-icon client">
@@ -31,10 +31,10 @@ $isLogin = !isset($_GET['action']) || $_GET['action'] === 'login';
                     </div>
                     <div class="role-content">
                         <h3>Client</h3>
-                        <p>Find and rent your perfect vehicle</p>
+                        <p>Trouvez et louez votre véhicule idéal</p>
                     </div>
                     <div class="role-hover">
-                        <span>Get Started <i class="fas fa-arrow-right"></i></span>
+                        <span>Commencer <i class="fas fa-arrow-right"></i></span>
                     </div>
                 </a>
                 
@@ -43,11 +43,11 @@ $isLogin = !isset($_GET['action']) || $_GET['action'] === 'login';
                         <i class="fas fa-building"></i>
                     </div>
                     <div class="role-content">
-                        <h3>Agency Owner</h3>
-                        <p>Manage your fleet and reservations</p>
+                        <h3>Propriétaire de l'agence</h3>
+                        <p>Gérez votre flotte et vos réservations</p>
                     </div>
                     <div class="role-hover">
-                        <span>Manage Now <i class="fas fa-arrow-right"></i></span>
+                        <span>Gérer maintenant <i class="fas fa-arrow-right"></i></span>
                     </div>
                 </a>
             </div>
@@ -58,7 +58,7 @@ $isLogin = !isset($_GET['action']) || $_GET['action'] === 'login';
             <div class="auth-forms">
                 <div class="form-header">
                     <img src="/carRental/assets/images/logo.png" class="auth-logo" alt="CarRent Logo">
-                    <h2 class="form-title"><?= $role === 'client' ? 'Client Portal' : 'Agency Portal' ?></h2>
+                    <h2 class="form-title"><?= $role === 'client' ? 'Portail client' : 'Portail de l\'agence' ?></h2>
                 </div>
 
                 <!-- Error Messages -->
@@ -85,13 +85,13 @@ $isLogin = !isset($_GET['action']) || $_GET['action'] === 'login';
 
                     <div class="form-group floating">
                         <input type="email" id="logInEmail" name="logInEmail" required placeholder=" ">
-                        <label for="logInEmail">Email Address</label>
+                        <label for="logInEmail">Adresse email</label>
                         <i class="fas fa-envelope input-icon"></i>
                     </div>
 
                     <div class="form-group floating">
                         <input type="password" id="logInPassword" name="logInPassword" required placeholder=" ">
-                        <label for="logInPassword">Password</label>
+                        <label for="logInPassword">Mot de passe</label>
                         <i class="fas fa-lock input-icon"></i>
                         <button type="button" class="password-toggle" aria-label="Show password">
                             <i class="fas fa-eye" aria-hidden="true"></i>
@@ -102,17 +102,17 @@ $isLogin = !isset($_GET['action']) || $_GET['action'] === 'login';
                         <label class="remember-me">
                             <input type="checkbox" name="remember">
                             <span class="checkmark"></span>
-                            Remember me
+                            Souviens de moi
                         </label>
-                        <a href="#" class="forgot-password">Forgot Password?</a>
+                        <a href="#" class="forgot-password">Mot de passe oublié?</a>
                     </div>
 
-                    <button type="submit" class="btn-primary">Sign In</button>
+                    <button type="submit" class="btn-primary">Se connecter</button>
 
                     <?php if ($role === 'client'): ?>
                         <p class="auth-switch">
-                            Don't have an account? 
-                            <a href="?role=<?= $role ?>&action=signup">Create Account</a>
+                        Vous n'avez pas de compte ? 
+                            <a href="?role=<?= $role ?>&action=signup">Créer un compte</a>
                         </p>
                     <?php endif; ?>
                 </form>
@@ -124,34 +124,34 @@ $isLogin = !isset($_GET['action']) || $_GET['action'] === 'login';
 
                     <div class="form-group floating">
                         <input type="text" id="SignUpName" name="SignUpName" required placeholder=" ">
-                        <label for="SignUpName">Full Name</label>
+                        <label for="SignUpName">Nom et prénom</label>
                         <i class="fas fa-user input-icon"></i>
                     </div>
 
                     <div class="form-group floating">
                         <input type="tel" id="SignUpPhoneNumber" name="SignUpPhoneNumber" required placeholder=" ">
-                        <label for="SignUpPhoneNumber">Phone Number</label>
+                        <label for="SignUpPhoneNumber">Numéro de téléphone</label>
                         <i class="fas fa-phone input-icon"></i>
                     </div>
 
                     <div class="form-group floating">
                         <input type="email" id="SignUpEmail" name="SignUpEmail" required placeholder=" ">
-                        <label for="SignUpEmail">Email Address</label>
+                        <label for="SignUpEmail">Adresse email</label>
                         <i class="fas fa-envelope input-icon"></i>
                     </div>
 
                     <div class="form-group floating">
                         <input type="password" id="SignUpPassword" name="SignUpPassword" required placeholder=" ">
-                        <label for="SignUpPassword">Create Password</label>
+                        <label for="SignUpPassword">Créer un mot de passe</label>
                         <i class="fas fa-lock input-icon"></i>
                         
                     </div>
 
-                    <button type="submit" class="btn-primary">Create Account</button>
+                    <button type="submit" class="btn-primary">Créer un compte</button>
 
                     <p class="auth-switch">
-                        Already have an account? 
-                        <a href="?role=<?= $role ?>&action=login">Sign In</a>
+                    Vous avez déjà un compte ? 
+                        <a href="?role=<?= $role ?>&action=login">Se connecter</a>
                     </p>
                 </form>
             </div>

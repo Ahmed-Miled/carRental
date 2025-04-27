@@ -49,10 +49,10 @@ $rentals = $rentals_stmt->fetchAll();
 <div class="dashboard-container">
     <div class="main-content">
         <div class="dashboard-header">
-            <h1>Welcome, <?php echo htmlspecialchars($agency['name']); ?></h1>
+            <h1>Bienvenue, <?php echo htmlspecialchars($agency['name']); ?></h1>
             <div class="dashboard-actions">
                 <a href="/carRental/views/auth/logout.php" class="btn btn-outline-danger">
-                    <i class="fas fa-sign-out-alt"></i> Logout
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
                 </a>
             </div>
         </div>
@@ -62,7 +62,7 @@ $rentals = $rentals_stmt->fetchAll();
             <div class="dashboard-card">
                 <div class="card-header toggle-section" data-target="agency-info">
                     <h2>
-                        <i class="fas fa-building"></i> Agency Information
+                        <i class="fas fa-building"></i> Informations sur l'agence
                         <i class="fas fa-chevron-down toggle-icon float-end"></i>
                     </h2>
                 </div>
@@ -70,7 +70,7 @@ $rentals = $rentals_stmt->fetchAll();
                     <form action="/carRental/controller/updateProfile.php" method="POST">
                         <input type="hidden" name="action" value="updateAgency" >
                         <div class="mb-3">
-                            <label class="form-label">Agency Name</label>
+                            <label class="form-label">Nom de l'agence</label>
                             <input type="text" class="form-control" name="name" 
                                    value="<?php echo htmlspecialchars($agency['name']); ?>">
                         </div>
@@ -80,17 +80,17 @@ $rentals = $rentals_stmt->fetchAll();
                                    value="<?php echo htmlspecialchars($agency['email']); ?>">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Phone</label>
+                            <label class="form-label">numéro de téléphone</label>
                             <input type="tel" class="form-control" name="phone" 
                                    value="<?php echo htmlspecialchars($agency['phoneNumber']); ?>">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Address</label>
+                            <label class="form-label">emplacement</label>
                             <input type="text" class="form-control" name="address" 
                                    value="<?php echo htmlspecialchars($agency['address']); ?>">
                         </div>
                         <button type="submit" class="btn btn-success">
-                            <i class="fas fa-save"></i> Update Profile
+                            <i class="fas fa-save"></i> Mettre à jour le profil
                         </button>
                     </form>
                 </div>
@@ -101,7 +101,7 @@ $rentals = $rentals_stmt->fetchAll();
                 <div class="card-header toggle-section" data-target="add-vehicle">
                     <h2>
                         <i class="fas fa-plus toggle-icon"></i>
-                        Add New Vehicle
+                        Ajouter un nouveau véhicule
                         <i class="fas fa-chevron-down toggle-icon float-end"></i>
                     </h2>
                 </div>
@@ -117,12 +117,12 @@ $rentals = $rentals_stmt->fetchAll();
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Model</label>
+                            <label class="form-label">Modèle</label>
                             <input type="text" class="form-control" name="model" required>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Kilometrage</label>
+                            <label class="form-label">Kilométrage</label>
                             <input type="number" class="form-control" name="kilometrage" min="0" required>
                         </div>
 
@@ -132,7 +132,7 @@ $rentals = $rentals_stmt->fetchAll();
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Prix Par Jour ($)</label>
+                            <label class="form-label">Prix Par Jour (DT)</label>
                             <input type="number" class="form-control" name="price_per_day" step="0.01" min="0" required>
                         </div>
 
@@ -149,7 +149,7 @@ $rentals = $rentals_stmt->fetchAll();
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Fuel Type (Carburant)</label>
+                            <label class="form-label">Type de carburant</label>
                             <select class="form-select" name="carburant" required>
                                 <option value="essence">Essance</option>
                                 <option value="diesel">Diesel</option>
@@ -158,17 +158,17 @@ $rentals = $rentals_stmt->fetchAll();
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Number of Seats (nbr_place)</label>
+                            <label class="form-label">Nombre de sièges</label>
                             <input type="number" class="form-control" name="nbr_place" min="1" required>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Nombre des cylinders</label>
+                            <label class="form-label">Nombre de cylindres</label>
                             <input type="number" class="form-control" name="nbr_cylindres" min="1" required>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Boite vitesse</label>
+                            <label class="form-label">Boîte de vitesse</label>
                             <select class="form-select" name="boite_vitesse" required>
                                 <option value="manuelle">Manuelle</option>
                                 <option value="automatique">Automatique</option>
@@ -184,9 +184,9 @@ $rentals = $rentals_stmt->fetchAll();
 
             <!-- Vehicle Inventory -->
             <div class="dashboard-card">
-                <h2><i class="fas fa-warehouse"></i> Vehicle Inventory</h2>
+                <h2><i class="fas fa-warehouse"></i> Inventaire des véhicules</h2>
                 <?php if (empty($vehiclesInventory)): ?>
-                    <div class="alert alert-info">No vehicles in inventory.</div>
+                    <div class="alert alert-info">Aucun véhicule en inventaire.</div>
                 <?php else: ?>
                     <div class="vehicle-list">
                         <?php foreach ($vehiclesInventory as $vehicle): ?>
@@ -214,7 +214,7 @@ $rentals = $rentals_stmt->fetchAll();
                                         
                                             <button class="btn btn-sm btn-outline-success edit-vehicle" 
                                                     data-id="<?php echo $vehicle['id']; ?>">
-                                                <i class="fas fa-edit"></i> Edit
+                                                <i class="fas fa-edit"></i> Modifier
                                             </button>
 
                                             <!-- Inside the vehicle inventory loop -->
@@ -223,7 +223,7 @@ $rentals = $rentals_stmt->fetchAll();
                                                     data-bs-target="#promotionModal" 
                                                     data-id="<?php echo $vehicle['id']; ?>"
                                                     data-price="<?php echo $vehicle['price_per_day']; ?>">
-                                                <i class="fas fa-tag"></i> Add Promotion
+                                                <i class="fas fa-tag"></i> Ajouter une promotion
                                             </button>
                                         
                                         
@@ -233,7 +233,7 @@ $rentals = $rentals_stmt->fetchAll();
                                             <input type="hidden" name="agency_id" value="<?= $agency['id']; ?>">
                                             <button class="btn btn-sm btn-outline-danger delete-vehicle" 
                                                     data-id="<?php echo $vehicle['id']; ?>">
-                                                <i class="fas fa-trash-alt"></i> Delete
+                                                <i class="fas fa-trash-alt"></i> Supprimer
                                             </button>
                                         </form>
                                     </div>
@@ -246,9 +246,9 @@ $rentals = $rentals_stmt->fetchAll();
 
             <!-- Rental Requests -->
             <div class="dashboard-card">
-                <h2><i class="fas fa-list-alt"></i> Rental Requests</h2>
+                <h2><i class="fas fa-list-alt"></i>Demandes de location</h2>
                 <?php if (empty($rentals)): ?>
-                    <div class="alert alert-info">No rental requests found.</div>
+                    <div class="alert alert-info">Aucune demande de location trouvée.</div>
                 <?php else: ?>
                     <div class="rental-requests">
                         <div class="table-responsive">
@@ -318,12 +318,12 @@ $rentals = $rentals_stmt->fetchAll();
 
             <!-- Account Management -->
             <div class="dashboard-card danger-zone">
-                <h2><i class="fas fa-exclamation-triangle"></i> Account Management</h2>
+                <h2><i class="fas fa-exclamation-triangle"></i> Gestion de compte</h2>
                 <div class="alert alert-warning">
-                    <strong>Warning:</strong> These actions are irreversible.
+                    <strong>Avertissement:</strong> Ces actions sont irréversibles.
                 </div>
                 <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                    <i class="fas fa-trash-alt"></i> Delete Agency Account
+                    <i class="fas fa-trash-alt"></i> Supprimer le compte de l'agence
                 </button>
             </div>
         </div>
@@ -336,7 +336,7 @@ $rentals = $rentals_stmt->fetchAll();
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-success text-white">
-                <h5 class="modal-title">Edit Vehicle</h5>
+                <h5 class="modal-title">Modifier le véhicule</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -353,7 +353,7 @@ $rentals = $rentals_stmt->fetchAll();
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="promotionModalLabel">Add Promotion</h5>
+                        <h5 class="modal-title" id="promotionModalLabel">Ajouter une promotion</h5>
                         <!-- Use Bootstrap 5 standard close button structure -->
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -363,35 +363,28 @@ $rentals = $rentals_stmt->fetchAll();
                         <input type="hidden" name="agency_id" value="<?= $agency['id']; ?>">
                                                     
                         <div class="form-group">
-                            <label>Current Price</label>
+                            <label>Prix ​​actuel</label>
                             <input type="number" class="form-control" name="current_price" id="currentPrice" disabled>
                         </div>
                                                     
                         <div class="form-group">
-                            <label for="newPrice">Promotional Price</label>
+                            <label for="newPrice">Prix ​​promotionnel</label>
                             <input type="number" step="0.01" class="form-control" name="new_price" required>
                         </div>
                                                     
                         <div class="form-group">
-                            <label for="endDate">Promotion End Date</label>
+                            <label for="endDate">Date de fin de la promotion</label>
                             <input type="date" class="form-control" name="end_date" required min="<?= date('Y-m-d'); ?>">
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>      
-                        <button type="submit" class="btn btn-primary">Save Promotion</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>      
+                        <button type="submit" class="btn btn-primary">Enregistrer la promotion</button>
                     </div>
             </div>
         </div>
     </div>
 </form>
-<!--
-<form action="/carRental/controller/manipuleVehicle.php" method="post">
-                        
-                        <input type="hidden" name="current_price" id="currentPrice">
-                        <button type="submit" class="btn btn-primary">Save Promotion</button>
-                    </form>
--->
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

@@ -26,10 +26,10 @@ echo "<script>console.log(" . json_encode($rentals) . ");</script>";
     
     <div class="main-content">
         <div class="dashboard-header">
-            <h1>Welcome, <?php echo htmlspecialchars($_SESSION['user_name']); ?></h1>
+            <h1>Bienvenue, <?php echo htmlspecialchars($_SESSION['user_name']); ?></h1>
             <div class="dashboard-actions">
                 <a href="/carRental/views/auth/logout.php" class="btn btn-outline-danger">
-                    <i class="fas fa-sign-out-alt"></i> Logout
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
                 </a>
             </div>
         </div>
@@ -37,11 +37,11 @@ echo "<script>console.log(" . json_encode($rentals) . ");</script>";
         <div class="dashboard-grid">
             <!-- Profile Section -->
             <div class="dashboard-card">
-                <h2><i class="fas fa-user-circle"></i> Profile Information</h2>
+                <h2><i class="fas fa-user-circle"></i>Information du client</h2>
                 <form action="/carRental/controller/updateProfile.php" method="POST">
                     <input type="hidden" name="action" value="updateClient">
                     <div class="mb-3">
-                        <label class="form-label">Username</label>
+                        <label class="form-label">Nom d'utilisateur</label>
                         <input type="text" class="form-control" name="username" 
                                value="<?php echo htmlspecialchars($_SESSION['user_name']); ?>">
                     </div>
@@ -51,21 +51,21 @@ echo "<script>console.log(" . json_encode($rentals) . ");</script>";
                                value="<?php echo htmlspecialchars($_SESSION['user_email']); ?>">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Phone</label>
+                        <label class="form-label">numéro de téléphone</label>
                         <input type="tel" class="form-control" name="phone" 
                                value="<?php echo htmlspecialchars($_SESSION['phoneNumber'] ?? ''); ?>">
                     </div>
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i> Update Profile
+                        <i class="fas fa-save"></i> Mettre à jour le Profil
                     </button>
                 </form>
             </div>
 
             <!-- Rental History -->
             <div class="dashboard-card">
-                <h2><i class="fas fa-history"></i> Rental History</h2>
+                <h2><i class="fas fa-history"></i> Historique de location</h2>
                 <?php if (empty($rentals)): ?>
-                    <div class="alert alert-info">No rental history found.</div>
+                    <div class="alert alert-info">Aucun historique de location trouvé.</div>
                 <?php else: ?>
                     <div class="rental-list">
                        
@@ -104,13 +104,13 @@ echo "<script>console.log(" . json_encode($rentals) . ");</script>";
 
             <!-- Account Management -->
             <div class="dashboard-card danger-zone">
-                <h2><i id="warning-icon" class="fas fa-exclamation-triangle"></i> Account Management</h2>
+                <h2><i id="warning-icon" class="fas fa-exclamation-triangle"></i>Gestion de Compte</h2>
                 <div class="alert alert-warning">
-                    <strong>Warning:</strong> These actions are irreversible.
+                    <strong>Avertissement:</strong> Ces actions sont irréversibles.
                 </div>
                 
                 <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                    <i class="fas fa-trash-alt"></i> Delete My Account
+                    <i class="fas fa-trash-alt"></i> Supprimer Mon Compte
                 </button>
             </div>
         </div>

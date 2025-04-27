@@ -1,114 +1,204 @@
-<?php 
-//require __DIR__ . '../views/includes/header.php';
+<?php
 require __DIR__ . '/includes/header.php';
 require __DIR__ . '/../models/vehicule.php';
 require __DIR__ . '/../config/database.php';
-$vehicules = getVehicules($pdo);
+
+// Configuration Python
+define('PYTHON_SCRIPT', __DIR__ . '/../controller/scripts/indexation.py');
+
+function searchVehicles($query) {
+    try {
+        $descriptors = [
+            0 => ["pipe", "r"], // STDIN
+            1 => ["pipe", "w"], // STDOUT
+            2 => ["pipe", "w"]  // STDERR
+        ];
+
+        $process = proc_open(
+            //escapeshellcmd('python ' . PYTHON_SCRIPT),
+            //escapeshellcmd('/usr/bin/python3 ' . PYTHON_SCRIPT), // Chemin absolu
+            escapeshellcmd('env LD_LIBRARY_PATH= /usr/bin/python3 ' . PYTHON_SCRIPT),
+
+            $descriptors,
+            $pipes,
+            dirname(PYTHON_SCRIPT)
+        );
+        if (!is_resource($process)) {
+            throw new Exception("Erreur: Impossible de démarrer le processus Python");
+        }
+
+        // Envoi de la requête
+        fwrite($pipes[0], $query);
+        fclose($pipes[0]);
+
+        // Récupération des résultats
+        $jsonOutput = stream_get_contents($pipes[1]);
+        $errorOutput = stream_get_contents($pipes[2]);
+
+        fclose($pipes[1]);
+        fclose($pipes[2]);
+        $exitCode = proc_close($process);
+
+        if ($exitCode !== 0) {
+            throw new Exception("Erreur Python: " . $errorOutput);
+        }
+
+        $result = json_decode($jsonOutput, true);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new Exception("Erreur: Format de réponse invalide");
+        }
+
+        return $result;
+
+    } catch (Exception $e) {
+        error_log("Erreur recherche: " . $e->getMessage());
+        return ['error' => $e->getMessage()];
+    }
+}
+
+function getVehiculesr($pdo, $vehiculesData) {
+    $vehiculesComplets = [];
+    
+    if (!is_array($vehiculesData)) {
+        error_log("Erreur: données véhicules invalides");
+        return $vehiculesComplets;
+    }
+
+    foreach ($vehiculesData as $vehicule) {
+        if (!isset($vehicule['id'])) {
+            continue;
+        }
+
+        try {
+            // Modified query with JOIN to get agency name
+            $stmt = $pdo->prepare("
+                SELECT cars.*, agency.fullName AS agency_name 
+                FROM cars 
+                LEFT JOIN agency ON cars.agency_id = agency.id 
+                WHERE cars.id = ?
+            ");
+            $stmt->execute([$vehicule['id']]);
+            $vehiculeComplet = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            if ($vehiculeComplet) {
+                // Add agency name to results
+                echo "<script>console.log('Vehicule Complet:', " . json_encode($vehiculeComplet['agency_name']) . ");</script>";
+                
+                // Keep search score if exists
+                if (isset($vehicule['score'])) {
+                    $vehiculeComplet['score'] = $vehicule['score'];
+                }
+                $vehiculesComplets[] = $vehiculeComplet;
+                $vehiculeComplet['agency_name'] = $vehiculeComplet['agency_name'] ?? 'Non spécifier';
+            }
+        } catch (PDOException $e) {
+            error_log("Erreur PDO: " . $e->getMessage());
+            continue;
+        }
+    }
+
+    return $vehiculesComplets;
+}
+
+// Gestion de la recherche
+$searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
+$vehicules = [];
+$searchError = null;
+
+if (!empty($searchQuery)) {
+    $result = searchVehicles($searchQuery);
+    if (isset($result['error'])) {
+        $searchError = $result['error'];
+    } elseif (isset($result['vehicules'])) {
+        $vehicules = getVehiculesr($pdo, $result['vehicules']);
+    }
+} else {
+    // Mode affichage de tous les véhicules
+    $vehicules = getVehicules($pdo);
+}
 ?>
 
-<head>
-    <title>Recherche Vehicule</title>
-    <link rel="stylesheet" href="/carRental/assets/css/recherchevoiture.css">
-</head>
-
-<div class="rechercheContainer">
-<div class="container">
-    <h1>TROUVEZ LE PRIX</h1>
-    <h2>D'UNE VOITURE</h2>
-
-    
-    <div class="carrosserie-icons">
-        <div class="icon-row">
-        <label class="icon-item">
-            <input type="checkbox" name="carrosserie" value="berline" style="display: none;">
-            <img src="../assets/img/berline.png" alt="Berline">
-            <br>BERLINE
-        </label>
-        <label class="icon-item">
-            <input type="checkbox" name="carrosserie" value="suv" style="display: none;">
-            <img src="../assets/img/suv.png" alt="SUV">
-            <br>SUV
-        </label>
-        <label class="icon-item">
-            <input type="checkbox" name="carrosserie" value="coupe" style="display: none;">
-            <img src="../assets/img/coupe.png" alt="Coupé">
-            <br>COUPÉ
-        </label>
-        <label class="icon-item">
-            <input type="checkbox" name="carrosserie" value="utilitaire" style="display: none;">
-            <img src="../assets/img/UTILITAIRE.png" alt="Utilitaire">
-            <br>UTILITAIRE
-        </label>
-    </div>
-    
-</div>
-</div>
-
-    <button class="rech">Rechercher</button>
-
-    <!-- affichage dynamique -->
-
-
-<?php 
-    if (isset($vehicules) && is_array($vehicules) && !empty($vehicules)):
-    
-        foreach ($vehicules as $vehicule):
-            // --- Provide default values in case keys are missing ---
-            $marque = $vehicule['marque'] ?? 'Marque inconnue';
-            $model = $vehicule['model'] ?? 'Modèle inconnu';
-            $year = $vehicule['year'] ?? 'anne inconnue';
-            $prixParJour = $vehicule['price_per_day'] ?? 0;
-            $agency_id = $vehicule['agency_id'] ?? null;
-            $imageFilename = $vehicule['image'] ?? 'default_car.png'; 
-            $vehiculeId = $vehicule['id'] ?? '#'; 
-            $kilometrage = $vehicule['kilometrage'] ?? 0;
-
-            $agencyName = getAgencyName($pdo, $agency_id);
-            
-            // --- Determine Agency display text ---
-            $agencyDisplayText = 'Agence inconnue'; 
-            if (!empty($agencyName)) {
-                $agencyDisplayText = $agencyName; 
-            } elseif (!empty($agencId)) {
-                $agencyDisplayText = 'Agence ID: ' . $agencId; 
-            }
-          
-            
-            $imagePath = '../assets/img/' . $imageFilename;
-            $formattedPrice = number_format((float)$prixParJour, 2, ',', ' ') . ' DT/Jour'; // Format with 2 decimals, comma separator
-          
-    ?>
-        <div class="vehicule">
-            <!-- Dynamic Image Source and Alt Text -->
-            <img src="<?= htmlspecialchars($imagePath) ?>" alt="<?= htmlspecialchars($marque . ' ' . $model) ?>" onerror="this.onerror=null; this.src='../assets/img/default_car.png';">
-            <!-- Add onerror fallback for broken image links -->
-            
-            <div class="vehicule-contenu">
-                
-                <div class="titre"><?= htmlspecialchars($marque) ?> <?= htmlspecialchars($model) ?></div>
-          
-                <div class="year"><?= htmlspecialchars($year) ?></div>
-          
-                <div class="details"> <?= htmlspecialchars ($kilometrage) ?>Km</div>
-
-                <div class="prix"><?= htmlspecialchars($formattedPrice) ?></div>
-          
-                <div class="concessionnaire"><?= htmlspecialchars($agencyDisplayText) ?></div>
-          
-                <a href="/carRental/views/reservation.php?id=<?= htmlspecialchars($vehiculeId) ?>&agency_id=<?= htmlspecialchars($agency_id) ?>" class="boutton" title="Réserver <?= htmlspecialchars($marque . ' ' . $model) ?>">Réserver</a>
-                <!-- Adjust href="reservation.php..." to your actual reservation page -->
-            </div>
-        </div>
-    <?php
-        endforeach; // End the loop for each vehicle
-    else: // If $vehicules is not set, not an array, or empty
-    ?>
-        <p>Aucun véhicule disponible pour le moment.</p> <!-- Or any other message -->
+<div class="container mt-5">
+    <?php if (!empty($searchQuery)): ?>
+        <h2 class="mb-4">
+            <?php if (!empty($vehicules)): ?>
+                <?= count($vehicules) ?> résultat(s) pour "<?= htmlspecialchars($searchQuery) ?>"
+            <?php else: ?>
+                Aucun résultat pour "<?= htmlspecialchars($searchQuery) ?>"
+            <?php endif; ?>
+        </h2>
+    <?php else: ?>
+        <h2 class="mb-4">Tous nos véhicules disponibles</h2>
     <?php endif; ?>
 
-  
+    <?php if ($searchError): ?>
+        <div class="alert alert-danger mb-4">
+            <?= htmlspecialchars($searchError) ?>
+        </div>
+    <?php endif; ?>
+
+    <div class="row">
+        <?php if (!empty($vehicules)): ?>
+            <?php foreach ($vehicules as $vehicule): ?>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <img src="/carRental/assets/img/<?= htmlspecialchars($vehicule['image'] ?? 'default-car.jpg') ?>" 
+                             class="card-img-top vehicle-img"
+                             alt="<?= htmlspecialchars($vehicule['marque'] . ' ' . $vehicule['model']) ?>">
+                        
+                        <?php if (isset($vehicule['score'])): ?>
+                            <div class="position-absolute top-0 end-0 m-2">
+                                <span class="badge bg-success">
+                                    <?= round($vehicule['score'] * 100) ?>% match
+                                </span>
+                            </div>
+                        <?php endif; ?>
+
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <?= htmlspecialchars($vehicule['marque']) ?> <?= htmlspecialchars($vehicule['model']) ?>
+                            </h5>
+                            <div class="vehicle-specs">
+                                <p><i class="fas fa-calendar-alt"></i> Année: <?= $vehicule['year'] ?? 'N/A' ?></p>
+                                <p><i class="fas fa-tachometer-alt"></i> KM: <?= number_format($vehicule['kilometrage'] ?? 0, 0, '', ' ') ?></p>
+                                <p><i class="fas fa-gas-pump"></i> Carburant: <?= htmlspecialchars($vehicule['carburant'] ?? 'N/A') ?></p>
+                                <?php echo "<script>console.log('nbr place:', " . json_encode($vehicule) . ");</script>" ?>
+                                <p><i class="fas fa-user-tie"></i> Propriétaire: <?= htmlspecialchars($vehicule['agency_name'] ?? 'Propriétaire non renseigné') ?></p>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-white">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="h5 text-success mb-0">
+                                    <?= number_format($vehicule['price_per_day'] ?? 0, 2, ',', ' ') ?> DT/jour
+                                </span>
+                                <a href="/carRental/views/reservation.php?id=<?= $vehicule['id'] ?>" class="btn btn-success">
+                                    <i class="fas fa-car"></i> Réserver
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <div class="col-12">
+                <div class="alert alert-info text-center py-5">
+                    <i class="fas fa-info-circle fa-3x mb-3"></i>
+                    <h3>Aucun véhicule disponible</h3>
+                    <p class="mb-0">Essayez avec d'autres critères de recherche</p>
+                </div>
+            </div>
+        <?php endif; ?>
+    </div>
 </div>
-</div>
-<?php 
-require __DIR__ . '/includes/footer.php';
-?>
+
+<style>
+.vehicle-img {
+    height: 200px;
+    object-fit: cover;
+}
+.vehicle-specs p {
+    margin-bottom: 0.5rem;
+}
+</style>
+
+<?php require __DIR__ . '/includes/footer.php'; ?>

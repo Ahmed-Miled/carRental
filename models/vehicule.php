@@ -1,10 +1,19 @@
 <?php
-function getVehicules($pdo){
-    echo "<script>console.log('get vehicule have been called')</script>";
-    $stmt = $pdo->prepare("SELECT * FROM cars");
-    $stmt->execute();
-    $vehicules = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    return $vehicules;
+
+function getVehicules($pdo) {
+    try {
+        $stmt = $pdo->prepare("
+            SELECT cars.*, agency.fullName AS agency_name 
+            FROM cars 
+            LEFT JOIN agency ON cars.agency_id = agency.id
+        ");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+    } catch (PDOException $e) {
+        error_log("Erreur PDO: " . $e->getMessage());
+        return [];
+    }
 }
 
 function getVehicule($pdo, $vehicule_id){

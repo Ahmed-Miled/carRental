@@ -32,9 +32,10 @@
     <a href="/carRental/index.php" class="nom" title="CarRent">CarRent</a>
     
     <div class="search-container">
-      <form id="searchForm" class="search-form">
+      
+      <form id="searchForm" class="search-form" method="GET">
         <div class="search-field">
-          <input type="text" placeholder="Rechercher véhicules..." name="query" required>
+          <input type="text" id="globalSearchInput" placeholder="Rechercher véhicules..." name="search" required>
           <button type="submit" title="Rechercher">
             <span>🔍</span>
           </button>
@@ -68,3 +69,17 @@
   </nav>
   
 </header>
+<script>
+// Script pour gérer la recherche globale
+$(document).ready(function() {
+    $('#searchForm').on('submit', function(e) {
+        e.preventDefault();
+        const searchQuery = $('#globalSearchInput').val().trim();
+        
+        if (searchQuery) {
+            // Redirige vers la page de recherche avec le paramètre
+            window.location.href = '/carRental/views/recherchevehicules.php?search=' + encodeURIComponent(searchQuery);
+        }
+    });
+});
+</script>

@@ -205,6 +205,9 @@ if (!empty($searchQuery)) {
 .vehicle-specs p {
     margin-bottom: 0.5rem;
 }
+.row{    
+    margin-bottom: 4rem;
+}
 </style>
 
 <?php require __DIR__ . '/includes/footer.php'; ?>

@@ -1,9 +1,5 @@
 <?php
 
-//require_once '../config/database.php'; athi te5dem
-//require_once __DIR__ . '/../config/database.php';
-//require_once ROOT_PATH . '/config/database.php';
-
 // Always load paths first
 require_once __DIR__ . '/../config/paths.php';
 require_once __DIR__ . '/../models/admin.php';

@@ -32,8 +32,7 @@ if (!isset($pdo)){
 
             
             echo "<script>console.log('reservation ajoute normalement avec succes');</script>";
-            //header("Location: /carRental/views/auth/success.php");
-            //exit();
+            
             header("Location: /carRental/views/feedback.php");
             exit();
         }else{

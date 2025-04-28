@@ -23,7 +23,6 @@ if (!isset($_SESSION['logged_in'])) {
             }
         }elseif ($_POST['action'] == "updateAgency") {
             
-        
             // Get form data
             $username = $_POST['name'] ?? null;
             $phoneNumber = $_POST['phone'] ?? null;

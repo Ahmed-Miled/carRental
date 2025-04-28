@@ -141,6 +141,7 @@ $rentals = $rentals_stmt->fetchAll();
                             <select class="form-select" name="image" required>
                                 <option value="offer1.png">Kia rio</option>
                                 <option value="offer2.png">dacia sandro</option>
+                                <option value="polo.jpg">VOLKSWAGEN Polo</option>
                                 <option value="offer3.png">Seat ibiza</option>
                                 <option value="offer4.png">I20</option>
                                 <option value="BMW_Série_1.jpg">Bmw serie 1</option>

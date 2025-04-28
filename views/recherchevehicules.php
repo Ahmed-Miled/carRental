@@ -140,6 +140,11 @@ if (!empty($searchQuery)) {
     <div class="row">
         <?php if (!empty($vehicules)): ?>
             <?php foreach ($vehicules as $vehicule): ?>
+            
+                <?php 
+                    echo "<script>console.log('lena laezm tal9a el id mta3 el agence');</script>"; 
+                    echo "<script>console.log('Vehicule:', " . json_encode($vehicule) . ");</script>"
+                ?>
                 <div class="col-md-4 mb-4">
                     <div class="card h-100 shadow-sm">
                         <img src="/carRental/assets/img/<?= htmlspecialchars($vehicule['image'] ?? 'default-car.jpg') ?>" 
@@ -171,7 +176,8 @@ if (!empty($searchQuery)) {
                                 <span class="h5 text-success mb-0">
                                     <?= number_format($vehicule['price_per_day'] ?? 0, 2, ',', ' ') ?> DT/jour
                                 </span>
-                                <a href="/carRental/views/reservation.php?id=<?= $vehicule['id'] ?>" class="btn btn-success">
+                                <a href="/carRental/views/reservation.php?id=<?= $vehicule['id'] ?>&agency_id=<?= htmlspecialchars($vehicule['agency_id']) ?>" class="btn btn-success">
+                                
                                     <i class="fas fa-car"></i> Réserver
                                 </a>
                             </div>

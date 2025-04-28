@@ -57,7 +57,6 @@ $isLogin = !isset($_GET['action']) || $_GET['action'] === 'login';
         <?php if ($role): ?>
             <div class="auth-forms">
                 <div class="form-header">
-                    <img src="/carRental/assets/images/logo.png" class="auth-logo" alt="CarRent Logo">
                     <h2 class="form-title"><?= $role === 'client' ? 'Portail client' : 'Portail de l\'agence' ?></h2>
                 </div>
 

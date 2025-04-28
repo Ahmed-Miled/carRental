@@ -6,6 +6,7 @@ session_start();
 $agency_id = $_GET['agency_id'] ?? null;
 //$agency_id = isset($_GET['agency_id']) ? trim($_GET['agency_id']) : null;
 $vehicule_id = $_GET['id'] ?? null; // Récupère l'ID de l'URL (?id=123)
+
 $role = $_SESSION['role'] ?? null;
 
 
@@ -88,7 +89,12 @@ require __DIR__ . '/includes/header.php';
                 <input type="hidden" name="agency_id" value="<?= htmlspecialchars($agency_id) ?>">
                 <input type="hidden" id="prix_total" name="prix_total" >
                 
+                <?php
+                echo "<script>console.log('donner vehucule');</script>";
+                echo "<script>console.log(" . json_encode($vehicule) . ");</script>";
+                echo "<script>console.log('fin donner vehucule');</script>";
 
+                ?>
                 <input type="hidden" name="status" value="<?= htmlspecialchars($vehicule['status']) ?>">
                 <fieldset>
                     <legend>Dates de location</legend>

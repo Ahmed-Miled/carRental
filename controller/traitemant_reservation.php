@@ -12,7 +12,7 @@ if (!isset($pdo)){
         $user_name = isset($_SESSION['user_name']) ? trim($_SESSION['user_name']) : null;
         $user_email = isset($_SESSION['user_email']) ? trim($_SESSION['user_email']) : null;
         $phoneNumber = isset($_SESSION['phoneNumber']) ? trim($_SESSION['phoneNumber']) : null;
-
+        
         $agency_id = isset($_POST['agency_id']) ? trim($_POST['agency_id']) : null;
         $vehicule_id = isset($_POST['vehicule_id']) ? trim($_POST['vehicule_id']) : null;
         $date_debut = isset($_POST['date_debut']) ? trim($_POST['date_debut']) : null;
@@ -21,6 +21,10 @@ if (!isset($pdo)){
         $lieu_restitution = isset($_POST['lieu_restitution']) ? trim($_POST['lieu_restitution']) : null;
         $status = isset($_POST['status']) ? trim($_POST['status']) : null;
         $prix_total = isset($_POST['prix_total']) ? trim($_POST['prix_total']) : 0;
+        echo "<script>console.log('id agenc');</script>";
+        echo "<script>console.log(" . json_encode($_POST['agency_id']) . ");</script>";
+        echo "<script>console.log(" . json_encode($agency_id) . ");</script>";
+
         
         if (ajouteDemande($pdo, $agency_id, $user_name, $user_email, $phoneNumber, $vehicule_id, $date_debut, $date_fin, $lieu_prise_en_charge, $lieu_restitution, $status, $prix_total)){
             $_SESSION['success_message'] = "Votre reservation a bien ete ajoute.";

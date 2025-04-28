@@ -14,6 +14,15 @@ function ajouteDemande($pdo, $agency_id, $user_name, $user_email, $phoneNumber, 
     }elseif($status == 'pending' || $status == "available"){
         if (estPossible($pdo, $vehicule_id, $date_debut, $date_fin)){
             
+            echo "<script>console.log(" . json_encode($agency_id) . ");</script>";
+            echo "<script>console.log(" . json_encode($vehicule_id) . ");</script>";
+            echo "<script>console.log(" . json_encode($date_debut) . ");</script>";
+            echo "<script>console.log(" . json_encode($date_fin) . ");</script>";
+            echo "<script>console.log(" . json_encode($lieu_prise_en_charge) . ");</script>";
+            echo "<script>console.log(" . json_encode($lieu_restitution) . ");</script>";   
+            echo "<script>console.log(" . json_encode($status) . ");</script>";
+            echo "<script>console.log(" . json_encode($prix_total) . ");</script>";
+
             $status = 'pending';
             //update cars
             $stmt = $pdo->prepare("INSERT INTO demande (agency_id, vehicule_id	, start_date, end_date, lieu_prise_en_charge, lieu_rest, clientName, clientEmail, phoneNumber, status, prix_total) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");

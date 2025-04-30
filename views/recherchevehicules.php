@@ -15,8 +15,6 @@ function searchVehicles($query) {
         ];
 
         $process = proc_open(
-            //escapeshellcmd('python ' . PYTHON_SCRIPT),
-            //escapeshellcmd('/usr/bin/python3 ' . PYTHON_SCRIPT), // Chemin absolu
             escapeshellcmd('env LD_LIBRARY_PATH= /usr/bin/python3 ' . PYTHON_SCRIPT),
 
             $descriptors,

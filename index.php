@@ -1,64 +1,10 @@
 <?php 
-define('ROOT_PATH', __DIR__);
+
 require 'views/includes/header.php';
 require 'config/database.php';
 require 'models/vehicule.php';
 
 ?>
-
-<div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <!-- Role Selection Screen -->
-      <div class="modal-body" id="roleSelection">
-        <p>Veuillez sélectionner votre rôle :</p>
-        <div class="d-grid gap-2">
-          <button class="btn btn-success role-btn" data-role="client">Client</button>
-          <button class="btn btn-success role-btn" data-role="agency">Propriétaire d'agence</button>
-        </div>
-      </div>
-
-      <!-- Login/Signup Forms (initially hidden) -->
-      <div id="authForms" style="display:none;">
-        <!-- Login Form -->
-        <form id="loginForm" class="p-3">
-          <div class="mb-3">
-            <label for="loginEmail" class="form-label">Email</label>
-            <input type="email" class="form-control" id="loginEmail" required>
-          </div>
-          <div class="mb-3">
-            <label for="loginPassword" class="form-label">Mot de passe</label>
-            <input type="password" class="form-control" id="loginPassword" required>
-          </div>
-          <button type="submit" class="btn btn-primary w-100">Se connecter</button>
-          <p class="text-center mt-2">
-            <a href="#" class="toggle-auth" data-action="signup">Créer un compte</a>
-          </p>
-        </form>
-
-        <!-- Signup Form -->
-        <form id="signupForm" class="p-3" style="display:none;">
-          <div class="mb-3">
-            <label for="signupName" class="form-label">Nom complet</label>
-            <input type="text" class="form-control" id="signupName" required>
-          </div>
-          <div class="mb-3">
-            <label for="signupEmail" class="form-label">Email</label>
-            <input type="email" class="form-control" id="signupEmail" required>
-          </div>
-          <div class="mb-3">
-            <label for="signupPassword" class="form-label">Mot de passe</label>
-            <input type="password" class="form-control" id="signupPassword" required>
-          </div>
-          <button type="submit" class="btn btn-primary w-100">S'inscrire</button>
-          <p class="text-center mt-2">
-            <a href="#" class="toggle-auth" data-action="login">Déjà un compte? Se connecter</a>
-          </p>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
 
 
 <div class="carousel-container">
@@ -92,6 +38,7 @@ require 'models/vehicule.php';
     
     <?php
     $promotions = getVehiculesEnPromotion($pdo);
+    echo "<script>console.log(" . json_encode($promotions) . ");</script>";
     if (count($promotions) > 0):
         foreach ($promotions as $promotion):
         
@@ -124,8 +71,8 @@ require 'models/vehicule.php';
                 <h3><?= htmlspecialchars(ucfirst($promotion['marque']) . ' ' . htmlspecialchars(ucfirst($promotion['model']))) ?></h3>
 
                 <div class="pricing">
-                    <span class="old-price"><?= $ancien_prix ?> €</span>
-                    <span class="new-price"><?= $nouveau_prix ?> €</span>
+                    <span class="old-price"><?= $ancien_prix ?> DT</span>
+                    <span class="new-price"><?= $nouveau_prix ?> DT</span>
                 </div>
         
     <a href="#" class="btn btn-details" 
@@ -153,7 +100,7 @@ require 'models/vehicule.php';
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body" id="vehicleModalBody">
-        <!-- Dynamic content will be inserted here -->
+      <!-- affichage dynamique dans cette block -->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>

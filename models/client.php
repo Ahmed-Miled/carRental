@@ -1,5 +1,5 @@
 <?php
-//require_once '../config/database.php';
+
 function getClient($pdo, $email, $role){
     $table = getTable($role);
     try{
@@ -93,10 +93,7 @@ function getRentalHistory($pdo, $email){
             $cars[] = $car;
         }
     }
-    // le table cars have : id agency_id marque model kilometrage image price_per_day status year carburant nbr_place nbr_cylindres boite_vitesse
-    // le table reservation have : id start_date end_date status car_id client_email created_at
-    // and in the cars i want it hev the value of the reservation id 
-    // if that possible how ?
+    
     echo "<script>console.log('get rental history has been called')</script>";
     
     return $cars;
@@ -110,7 +107,18 @@ function verifyClientAccount($pdo, $user_id, $password) {
     $stmt->execute([$user_id]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // 2. Vérifier avec password_verify()
+    if ($user && password_verify($password, $user['password'])) { 
+        return true; //  Mot de passe correct
+    }
+    return false; //  Échec
+}
+
+function verifyAgencyAccount($pdo, $user_id, $password) {
+    // 1. Récupérer le hachage stocké
+    $stmt = $pdo->prepare("SELECT password FROM agency WHERE id = ?");
+    $stmt->execute([$user_id]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
     if ($user && password_verify($password, $user['password'])) { 
         return true; //  Mot de passe correct
     }
@@ -118,28 +126,31 @@ function verifyClientAccount($pdo, $user_id, $password) {
 }
 
 function deleteClientAccount($pdo, $id){
-    echo "<script>console.log('delete client Account funtion have been called')</script>";
-    $stmt = $pdo->prepare("DELETE FROM reservations WHERE client_id = ?");
-    $stmt->execute([$id]);
-    echo "<script>console.log('delete reservation have been called')</script>";
+
     // Delete the client
     $stmt = $pdo->prepare("DELETE FROM clients WHERE id = ?");
     $stmt->execute([$id]);
-    echo "<script>console.log('delete client have been called')</script>";
+    echo "<script>console.log('delete client has been called')</script>";
+
+    return true;
+}
+function deleteAgencyAccount($pdo, $id){
+
+    // Delete the client
+    $stmt = $pdo->prepare("DELETE FROM agency WHERE id = ?");
+    $stmt->execute([$id]);
+    echo "<script>console.log('delete client has been called')</script>";
 
     return true;
 }
 
 function logout() {
-    // Démarrer la session si pas déjà active
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
     
-    // Vider toutes les données de session
     $_SESSION = [];
 
-    // Détruire le cookie de session
     if (ini_get("session.use_cookies")) {
         $params = session_get_cookie_params();
         setcookie(
@@ -153,7 +164,6 @@ function logout() {
         );
     }
 
-    // Détruire la session
     session_destroy();
     return true;
 }

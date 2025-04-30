@@ -22,25 +22,7 @@ $agency['created_at'] = $_SESSION['created_at'];
 
 $rentals = getRentalRequests($pdo, $agency['id']);
 $vehiclesInventory = getAgencyVehicles($pdo, $agency['id']);
-echo "<script>console.log('rental request');</script>";
-echo "<script>console.log(" . json_encode($rentals) . ");</script>";
-echo "<script>console.log('vh inventory');</script>";
-echo "<script>console.log(" . json_encode($vehiclesInventory) . ");</script>";
 
-
-/*
-// Fetch rental requests
-$rentals_stmt = $pdo->prepare("
-    SELECT r.*, v.model, v.brand, u.name as client_name
-    FROM rentals r
-    JOIN vehicles v ON r.vehicle_id = v.id
-    JOIN users u ON r.user_id = u.id
-    WHERE v.agency_id = ?
-    ORDER BY r.rental_date DESC
-");
-$rentals_stmt->execute([$agency_id]);
-$rentals = $rentals_stmt->fetchAll();
-*/
 ?>
 
 <link rel="stylesheet" href="/carRental/assets/css/agencyDashBoard.css">
@@ -199,9 +181,7 @@ $rentals = $rentals_stmt->fetchAll();
                                 <div class="vehicle-details">
                                     <h4><?php echo htmlspecialchars($vehicle['model'].' ('.$vehicle['year'].')'.' id : '.$vehicle['id']); ?></h4>
                                     <div class="vehicle-meta">
-                                        <!--
-                                        <span><i class="fas fa-tag"></i> <?php echo ucfirst($vehicle['type']); ?></span>
-                                        -->
+                                        <?php echo ucfirst($vehicle['type']); ?></span>
                                         <span><i class="fas fa-dollar-sign"></i> <?php echo number_format($vehicle['price_per_day'], 2); ?>/day</span>
                                         
                                         <span class="badge bg-<?php 
@@ -341,7 +321,7 @@ $rentals = $rentals_stmt->fetchAll();
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <!-- Content will be loaded via AJAX -->
+                <!-- Content will be loaded  -->
             </div>
         </div>
     </div>
@@ -386,7 +366,34 @@ $rentals = $rentals_stmt->fetchAll();
         </div>
     </div>
 </form>
-
+ <form id="deleteForm" action="/carRental/controller/updateProfile.php" method="POST">
+<!-- Delete Account Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">Confirm Account Deletion</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>This will permanently delete your account and all associated data. This action cannot be undone.</p>
+               
+                    <input type="hidden" name="action" value="deleteAgencyAccount">
+                    <div class="mb-3">
+                        <label class="form-label">Enter your password to confirm:</label>
+                        <input type="password" class="form-control" name="password" required>
+                        <input type="hidden" name="user_id" value="<?php echo $_SESSION['user_id']; ?>">
+                    </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" form="deleteForm" class="btn btn-danger">Delete Account</button>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
 
@@ -400,24 +407,19 @@ document.addEventListener('DOMContentLoaded', function() {
         modal.find('#currentPrice').val(currentPrice);
     });
 
-    // This runs when the page finishes loading
-    
-    // 1. Toggle Sections
+    // Toggle Sections
     document.querySelectorAll('.toggle-section').forEach(function(element) {
         element.addEventListener('click', function() {
             const target = this.dataset.target;
             const targetElement = document.getElementById(target);
             
-            // Toggle collapse
             targetElement.classList.toggle('show');
             
-            // Toggle icons
             this.querySelectorAll('.toggle-icon').forEach(function(icon) {
-                // Chevron icons
+                
                 icon.classList.toggle('fa-chevron-down');
                 icon.classList.toggle('fa-chevron-up');
                 
-                // Plus/Minus icons
                 if (icon.classList.contains('fa-plus')) {
                     icon.classList.toggle('fa-plus');
                     icon.classList.toggle('fa-minus');

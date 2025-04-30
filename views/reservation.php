@@ -4,9 +4,7 @@ require __DIR__ . '/../models/vehicule.php';
 session_start();
 
 $agency_id = $_GET['agency_id'] ?? null;
-//$agency_id = isset($_GET['agency_id']) ? trim($_GET['agency_id']) : null;
-$vehicule_id = $_GET['id'] ?? null; // Récupère l'ID de l'URL (?id=123)
-
+$vehicule_id = $_GET['id'] ?? null; 
 $role = $_SESSION['role'] ?? null;
 
 
@@ -26,8 +24,6 @@ if($role == null){
 
 $vehicule = null;
 if ($vehicule_id) {
-    // VOTRE CODE ICI : Interrogez votre base de données pour trouver le véhicule
-    // Exemple de structure de données attendue :
     $vehicule = getVehicule($pdo, $vehicule_id);
     if (!$vehicule) {
         echo "<script>console.log('haja wrong  na9ess');</script>";
@@ -102,17 +98,15 @@ require __DIR__ . '/includes/header.php';
                         <div class="form-group">
                             <label for="date_debut">Date de début <span class="required">*</span></label>
                             <input type="date" id="date_debut" name="date_debut" required
-                                   min="<?= date('Y-m-d') // Empêche de sélectionner une date passée ?>">
-                            <!-- Ajoutez type="time" si vous gérez les heures -->
+                                   min="<?= date('Y-m-d') ?>">
                         </div>
                         <div class="form-group">
                             <label for="date_fin">Date de fin <span class="required">*</span></label>
                             <input type="date" id="date_fin" name="date_fin" required
                                    min="<?= date('Y-m-d') ?>">
-                            <!-- Ajoutez type="time" si vous gérez les heures -->
                         </div>
                     </div>
-                     <!-- Espace pour afficher le coût total (calculé via JS ou après soumission) -->
+
                      <div id="cost-summary" class="cost-summary-placeholder" style="margin-top: 15px; font-weight: bold;">
                         Coût estimé : (sera calculé)
                      </div>
@@ -120,7 +114,6 @@ require __DIR__ . '/includes/header.php';
 
                 <fieldset>
                     <legend>Choisissez les lieux</legend>
-                     <!-- Si l'utilisateur est connecté, vous pouvez pré-remplir ces champs -->
                      <div class="form-group">
                         <label for="lieu_prise">Lieu de prise en charge <span class="required">*</span></label>
                         <select id="lieu_prise" name="lieu_prise" required>
@@ -156,49 +149,44 @@ require __DIR__ . '/includes/header.php';
 
                 <div class="form-actions">
                     <button type="submit" class="btn btn-success btn-reserve">Confirmer la réservation</button>
-                    <a href="liste_vehicules.php" class="btn btn-secondary">Annuler</a> <!-- Lien vers la page précédente -->
+                    <a href="liste_vehicules.php" class="btn btn-secondary">Annuler</a> 
                 </div>
 
-                 <!-- Zone pour afficher les messages d'erreur ou de succès (via PHP/JS) -->
                  <div id="form-messages" class="form-messages" style="margin-top: 20px;">
                  </div>
 
             </form>
         </section>
 
-    </div> <!-- .reservation-content -->
+    </div> 
 
 </main>
 
 <?php
-// --- Inclusion du pied de page ---
 require __DIR__ . '/includes/footer.php';
 ?>
 
 
-<!-- Optionnel : Script JS (par exemple pour validation avancée, calcul de coût, datepicker) -->
 <script>
-    // --- Logique JavaScript Optionnelle ---
-
+    
     document.addEventListener('DOMContentLoaded', function() {
         const dateDebutInput = document.getElementById('date_debut');
         const dateFinInput = document.getElementById('date_fin');
         const costSummaryDiv = document.getElementById('cost-summary');
-        const dailyRate = <?= (float)($vehicule['price_per_day'] ?? 0) ?>; // Taux journalier du véhicule
+        const dailyRate = <?= (float)($vehicule['price_per_day'] ?? 0) ?>; 
         const hiddenInput = document.getElementById('prix_total');
 
-        // Fonction pour mettre à jour la date minimum de fin
         function updateMinEndDate() {
             if (dateDebutInput.value) {
                 dateFinInput.min = dateDebutInput.value;
-                // Si la date de fin est antérieure à la nouvelle date de début, la réinitialiser (optionnel)
+
                 if (dateFinInput.value && dateFinInput.value < dateDebutInput.value) {
                      dateFinInput.value = dateDebutInput.value;
                 }
             } else {
-                dateFinInput.min = "<?= date('Y-m-d') ?>"; // Retour au minimum par défaut
+                dateFinInput.min = "<?= date('Y-m-d') ?>"; 
             }
-             calculateCost(); // Recalculer le coût quand la date de début change
+             calculateCost(); 
         }
 
         // Fonction pour calculer le coût estimé
@@ -207,34 +195,26 @@ require __DIR__ . '/includes/footer.php';
                 const start = new Date(dateDebutInput.value);
                 const end = new Date(dateFinInput.value);
 
-                // S'assurer que les dates sont valides et que fin >= début
                 if (!isNaN(start.getTime()) && !isNaN(end.getTime()) && end >= start) {
-                     // Calculer la différence en jours (en millisecondes)
-                     const diffTime = Math.abs(end - start);
-                     // Ajouter 1 jour car la location inclut le jour de début et de fin
-                     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) ;
-
+                    const diffTime = Math.abs(end - start);
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) ;
                     const totalCost = diffDays * dailyRate;
 
-                     // Afficher le coût formaté
                     costSummaryDiv.textContent = `Coût estimé (${diffDays} jour${diffDays > 1 ? 's' : ''}) : ${totalCost.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' }).replace('EUR', 'DT')}`; // Adaptez la devise si besoin
                     hiddenInput.value = totalCost;
                     } else {
-                     costSummaryDiv.textContent = 'Coût estimé : (dates invalides)';
+                        costSummaryDiv.textContent = 'Coût estimé : (dates invalides)';
                 }
             } else {
-                 costSummaryDiv.textContent = 'Coût estimé : (sélectionnez les dates)';
+                    costSummaryDiv.textContent = 'Coût estimé : (sélectionnez les dates)';
             }
         }
 
-        // Écouteurs d'événements
         dateDebutInput.addEventListener('change', updateMinEndDate);
         dateFinInput.addEventListener('change', calculateCost);
 
-        // Initialiser la date minimum de fin au chargement
         updateMinEndDate();
-         calculateCost(); // Calcul initial si dates pré-remplies
+         calculateCost(); 
     });
-
-    // Vous pouvez ajouter ici plus de validation JS avant soumission si nécessaire
+    
 </script>

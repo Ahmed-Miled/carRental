@@ -165,18 +165,28 @@
     color: white;
 }
 
-/* Modal Header */
 .modal-header.bg-danger {
     background-color: #e53e3e !important; /* Keeping red for destructive actions */
 }
 
-/* Responsive Adjustments */
 @media (max-width: 768px) {
-    
-    
-    
     .rental-meta {
         gap: 0.5rem;
     }
 }
 
+
+.rental-actions {
+    margin-top: auto; /* Push actions to the bottom */
+    padding-top: 10px; /* Space above actions */
+    display: flex;
+    gap: 10px; /* Space between action buttons/forms */
+}
+.stop-rental-form, .pending-actions form {
+     margin-bottom: 0; /* Remove default form margin */
+}
+/* Optional: Adjust button sizes/styles if needed */
+.btn-sm {
+     padding: 0.25rem 0.5rem;
+     font-size: 0.875rem;
+}

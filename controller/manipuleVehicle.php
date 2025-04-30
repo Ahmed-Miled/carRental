@@ -67,7 +67,7 @@ if (!isset($pdo)){
         if ($action == "getCar"){
             $car = getCar($pdo, $car_id);
             if ($car) {
-                include '../views/editVehicleForm.php'; // only the form HTML
+                include '../views/editVehicleForm.php'; 
             } else {
                 echo "<p>Car not found.</p>";
             }

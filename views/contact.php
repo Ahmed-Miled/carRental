@@ -1,8 +1,5 @@
-
-
 <?php
 
-session_start();
 require __DIR__ . '/includes/header.php';
 
 // Get form data and errors from session

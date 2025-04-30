@@ -5,7 +5,6 @@ require __DIR__ . '/../../config/database.php';
 require __DIR__ . '/../../models/client.php';
 
 
-// Check if user is logged in
 if (!isset($_SESSION['logged_in'])) {
     header('Location: /carRental/views/auth/logout.php');
     exit();
@@ -22,7 +21,6 @@ echo "<script>console.log(" . json_encode($rentals) . ");</script>";
 <link rel="stylesheet" href="/carRental/assets/css/clientDashBoard.css">
 
 <div class="dashboard-container">
-    <!-- Removed the sidebar since we have the main nav -->
     
     <div class="main-content">
         <div class="dashboard-header">
@@ -87,8 +85,8 @@ echo "<script>console.log(" . json_encode($rentals) . ");</script>";
                                         <span>
                                             <form action="/carRental/controller/manage_rental.php" method="post" class="stop-rental-form">
                                                 <input type="hidden" name="action" value="stop_rental">
-                                                <input type="hidden" name="reservation_id" value="<?php echo htmlspecialchars($rental['reservation_id']); // Use the reservation ID ?>">
-                                                <input type="hidden" name="car_id" value="<?php echo htmlspecialchars($rental['id']); // Use the reservation ID ?>">
+                                                <input type="hidden" name="reservation_id" value="<?php echo htmlspecialchars($rental['reservation_id']); ?>">
+                                                <input type="hidden" name="car_id" value="<?php echo htmlspecialchars($rental['id']); ?>">
                                                 <button type="submit" class="btn btn-sm btn-warning" title="Marquer cette location comme terminée">
                                                     <i class="fas fa-hand-paper"></i> Arrêter Location
                                                 </button>
@@ -132,7 +130,7 @@ echo "<script>console.log(" . json_encode($rentals) . ");</script>";
                     <div class="mb-3">
                         <label class="form-label">Enter your password to confirm:</label>
                         <input type="password" class="form-control" name="password" required>
-                        <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
+                        <input type="hidden" name="user_id" value="<?php echo $_SESSION['user_id']; ?>">
                     </div>
                 </form>
             </div>
@@ -144,24 +142,7 @@ echo "<script>console.log(" . json_encode($rentals) . ");</script>";
     </div>
 </div>
 
-<!-- Add some CSS for layout -->
-<style>
 
-.rental-actions {
-    margin-top: auto; /* Push actions to the bottom */
-    padding-top: 10px; /* Space above actions */
-    display: flex;
-    gap: 10px; /* Space between action buttons/forms */
-}
-.stop-rental-form, .pending-actions form {
-     margin-bottom: 0; /* Remove default form margin */
-}
-/* Optional: Adjust button sizes/styles if needed */
-.btn-sm {
-     padding: 0.25rem 0.5rem;
-     font-size: 0.875rem;
-}
-</style>
 <?php 
 require __DIR__ . '/../includes/footer.php';  
 ?>

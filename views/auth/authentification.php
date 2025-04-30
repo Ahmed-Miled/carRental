@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 require __DIR__ . '/../includes/header.php';  
 // Clear existing session errors if page is refreshed
 if (!isset($_GET['action'])) {
@@ -11,8 +11,6 @@ if (!isset($_GET['action'])) {
 $role = $_GET['role'] ?? null;
 $isLogin = !isset($_GET['action']) || $_GET['action'] === 'login';
 ?>
-
-    <title>Authentification - CarRent</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="/carRental/assets/css/authentification.css">
 

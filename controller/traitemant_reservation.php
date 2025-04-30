@@ -21,9 +21,6 @@ if (!isset($pdo)){
         $lieu_restitution = isset($_POST['lieu_restitution']) ? trim($_POST['lieu_restitution']) : null;
         $status = isset($_POST['status']) ? trim($_POST['status']) : null;
         $prix_total = isset($_POST['prix_total']) ? trim($_POST['prix_total']) : 0;
-        echo "<script>console.log('id agenc');</script>";
-        echo "<script>console.log(" . json_encode($_POST['agency_id']) . ");</script>";
-        echo "<script>console.log(" . json_encode($agency_id) . ");</script>";
 
         
         if (ajouteDemande($pdo, $agency_id, $user_name, $user_email, $phoneNumber, $vehicule_id, $date_debut, $date_fin, $lieu_prise_en_charge, $lieu_restitution, $status, $prix_total)){
@@ -40,12 +37,11 @@ if (!isset($pdo)){
             $_SESSION['error_message'] = "impossible d'effectue cette reservation";
             $_SESSION['error_type'] = 'reservation';
             header("Location: /carRental/views/feedback.php");
-            echo "<script>console.log(" . json_encode($agency_id) . ");</script>";
-            //exit();
+            exit();
         }
         
     }else{
-        echo "<script>console.log('POST non reçu');</script>";
+        echo "<script>console.log('post non reçu');</script>";
     }
 }
 

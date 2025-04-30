@@ -6,7 +6,7 @@ if (!isset($pdo)){
     die("ERREUR: Connexion DB échouée. Vérifiez database.php");
 }else{
     session_start();
-    // connxion avec la base du donner est verifier
+    
     $role = $_POST['role'];
     $action = $_POST['action'];
     if ($action == 'login' && $role !== 'admin') {
@@ -15,14 +15,13 @@ if (!isset($pdo)){
         
         $email = $_POST['logInEmail'];
         $password = $_POST['logInPassword'];
-        echo "<script> console.log(" . json_encode($_POST['logInEmail']) . ");</script>";
+        
         
         
         $client = getClient($pdo, $email, $role);
-        "<script> console.log(" . json_encode($client) . ");</script>";
-        
+        //veification d'existance du client
         if (!$client){
-            // error
+            
             
             $_SESSION['error_message'] = "email incorrect. Veuillez essayer une autre fois.";
             $_SESSION['error_type'] = 'authentification';
@@ -30,13 +29,12 @@ if (!isset($pdo)){
             exit();
         }elseif (password_verify($password, $client['password']) && $client['email'] == $ad && $client['email'] == $email) {
             // handeling admin
-            echo "<script>console.log('QDSGQ');</script>";
+            
             $_SESSION['admin_logged_in'] = true;
             header('Location: /carRental/views/dash-board/admin.php');
             exit();
         }elseif ($role == 'client' && password_verify($password, $client['password']) && $client['email'] == $email) {
             //handeling client
-            echo "<script>console.log('connected');</script>";
             
             $_SESSION['logged_in'] = true;
             $_SESSION['role'] = 'client';

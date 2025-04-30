@@ -51,11 +51,14 @@
     <ul class="nav-links">
       <?php if ($logged_in && $role === 'client'): ?>
         <li><a href="/carRental/views/dash-board/clientDashBoard.php" >compte</a></li> 
+
       <?php elseif ($logged_in && $role === 'agency'): ?>
         <li><a href="/carRental/views/dash-board/agencyDashBoard.php" >compte</a></li>
+
       <?php endif; ?>
       <li><a href="/carRental/index.php"  title="Accueil" >Accueil</a></li>
       <?php if ($role !== 'agency'): ?>
+        
       <li><a href="/carRental/views/recherchevehicules.php" title="Véhicules">Véhicules</a></li>
       <?php endif; ?>
       <li><a href="/carRental/views/contact.php" title="Contact">Contact</a></li>

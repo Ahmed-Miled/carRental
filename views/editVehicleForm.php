@@ -1,4 +1,3 @@
-<!-- No <html>, <head>, or <body> tags -->
 <form id="editVehicleForm" action="/carRental/controller/manipuleVehicle.php" method="POST">
     <input type="hidden" name="id" value="<?= htmlspecialchars($car['id']) ?>">
     <input type="hidden" name="action" value="edit">

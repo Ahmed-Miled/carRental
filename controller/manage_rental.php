@@ -12,10 +12,6 @@ if (!isset($pdo)){
 }else{
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($_POST['action'] == "stop_rental"){
-            //echo "<script>console.log('car id ');</script>";
-            //echo "<script>console.log(" . json_encode($_POST['car_id']) . ");</script>";
-            //echo "<script>console.log('reservation id ');</script>";
-            //echo "<script>console.log(" . json_encode($_POST['reservation_id']) . ");</script>";
             
             
             stopRental($pdo, $_POST['car_id'], $_POST['reservation_id']);

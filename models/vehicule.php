@@ -126,7 +126,7 @@ function getVehiculesEnPromotion($pdo) {
                 ROUND((p.original_price - p.promotional_price) / p.original_price * 100) AS discount_percent
             FROM cars c
             INNER JOIN promotions p ON c.id = p.vehicle_id
-            WHERE p.end_date > NOW()
+            
             GROUP BY c.id
             ORDER BY RAND()
             LIMIT 4
